@@ -1,0 +1,40 @@
+package test.util;
+
+import junit.framework.TestCase;
+
+import org.hcmus.Util.MessageHelper;
+import org.jpos.iso.ISOMsg;
+
+public class MessageHelper_TEST extends TestCase {
+
+	ISOMsg msg = null;
+	public MessageHelper_TEST(String name) {
+		super(name);
+	}
+
+	protected void setUp() throws Exception {
+		super.setUp();
+		msg = new ISOMsg();
+		msg.set("35","1234567812345678=10041011765710800000");
+		msg.set("63","000000000000000000000000000150000000000000000000000000000150");
+	}
+
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
+
+	public void testGetTotalPoint() {
+		int point = MessageHelper.getTotalPoint(msg);
+		assertEquals("Expected is 150 but actual is" + Integer.toString(point),150,point);
+	}
+
+	public void testGetCardId() {
+		String cardid = MessageHelper.getCardId(msg);
+		assertEquals("Expected is 150 but actual is" + cardid,"1234567812345678",cardid);
+	}
+
+	public void testPointToStringField63() {
+		String strPoint = MessageHelper.pointToStringField63(0,0,150,0,0);
+		assertEquals("000000000000000000000000000150000000000000000000000000000150",strPoint);
+	}
+}

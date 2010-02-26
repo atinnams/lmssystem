@@ -1,0 +1,129 @@
+package org.hcmus.Util;
+
+import org.jpos.iso.ISOException;
+import org.jpos.iso.ISOMsg;
+
+public class MessageHelper {
+	public static int getTotalPoint(ISOMsg msg) {
+		int result = 0;
+		String strPoint = "";
+		try {
+			String field63 = (String) msg.getValue(63);
+			if (field63.isEmpty())
+				return -1;
+			if (field63.length() != 60) {
+				// System.out.println(field63.length());
+				return -1;
+			}
+
+			for (int i = 0; i < 5; i++) {
+				strPoint = field63.substring(i * 10, (i + 1) * 10);
+				// System.out.println("strPoint: " + strPoint);
+				result += Integer.parseInt(strPoint);
+			}
+
+			strPoint = field63.substring(51, 60);
+
+			// checksum for point
+			if (result != Integer.parseInt(strPoint)) {
+				System.out.println("strPoint: " + strPoint);
+				return -1;
+			}
+
+		} catch (ISOException e) {
+			e.printStackTrace();
+			return -1;
+		} catch (NumberFormatException ex) {
+			ex.printStackTrace();
+			return -1;
+		}
+
+		return result;
+	}
+
+	public static String getCardId(ISOMsg msg) {
+		String result = "";
+		try {
+			String field35 = (String) msg.getValue(35);
+			result = field35.substring(0, 16);
+		} catch (ISOException ex) {
+			ex.printStackTrace();
+		}
+		return result;
+
+	}
+	
+	public static String getTID(ISOMsg msg) {
+		String field41 = "";
+		try {
+			field41 = (String)msg.getValue(41);
+		} catch (ISOException ex) {
+			ex.printStackTrace();
+		}
+		return field41;
+	}
+	
+	public static String getMID(ISOMsg msg) {
+		String field42 = "";
+		try {
+			field42 = (String)msg.getValue(42);
+		} catch (ISOException ex) {
+			ex.printStackTrace();
+		}
+		return field42;
+	}
+	
+	public static String getPoSCC(ISOMsg msg) {
+		String field25 = "";
+		try {
+			field25 = (String)msg.getValue(25);
+		} catch (ISOException ex) {
+			ex.printStackTrace();
+		}
+		return field25;
+	}
+	
+	private static String format(String s) {
+		int length = s.length();
+		if (length >= 10) {
+			return s.substring(0,10);
+		} else {
+			StringBuffer buffer = new StringBuffer(5);
+			for (int i = length; i < 10; i++) {
+				buffer.append('0');
+			}
+			buffer.append(s);
+			return buffer.toString();
+		}
+	}
+
+	public static String pointToStringField63(int rangePoint,int promotionPoint,int frequencyPoint,int birthdayPoint,int joinPoint) {
+		String result = "";
+		int totalPoint = rangePoint + promotionPoint + frequencyPoint + birthdayPoint + joinPoint;
+		result += MessageHelper.format(Integer.toString(rangePoint));
+		result += MessageHelper.format(Integer.toString(promotionPoint));
+		result += MessageHelper.format(Integer.toString(frequencyPoint));
+		result += MessageHelper.format(Integer.toString(birthdayPoint));
+		result += MessageHelper.format(Integer.toString(joinPoint));
+		result += MessageHelper.format(Integer.toString(totalPoint));
+		System.out.println(result);
+		return result;
+	}
+	
+	public static int getPoint(ISOMsg msg) {
+		int result = 0;
+		try {
+			String strPoint = (String)msg.getValue(4);
+			ExchangeHelper ex = new ExchangeHelper();
+			result = Integer.parseInt(strPoint) / ex.getRate();
+		} catch (ISOException e) {
+			e.printStackTrace();
+			result = -1;
+		} catch(NumberFormatException ex) {
+			ex.printStackTrace();
+			result = -1;
+		}
+		
+		return result;
+	}
+}
