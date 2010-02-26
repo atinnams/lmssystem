@@ -1,0 +1,10 @@
+<?xml version="1.0" ?>
+<server class="org.jpos.q2.iso.QServer" logger="Q2" 
+  name="lms-server">
+ <attr name="port" type="java.lang.Integer">9800</attr>
+ <channel class="org.jpos.iso.channel.ASCIIChannel"
+        logger="Q2" packager="org.jpos.iso.packager.ISO87BPackager">
+ </channel>
+ <request-listener class="org.hcmus.lms.LMSISOListener" logger="Q2"></request-listener>
+</server>
+

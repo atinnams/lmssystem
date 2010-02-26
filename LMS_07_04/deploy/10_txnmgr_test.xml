@@ -1,0 +1,54 @@
+<txnmgr-lms class="org.jpos.transaction.TransactionManager" logger="Q2">
+ <property name="queue"            value="TXNMGRTEST" />
+ <property name="sessions"         value="5" />
+ <property name="persistent-space" value="jdbm:txnmgrtest" />
+ <property name="debug"            value="true" />
+ <property name="retry-interval"   value="250" />
+ <property name="pause-timeout"   value="2000" />
+ 
+ <participant class="org.hcmus.myparticipant.CheckField" logger="Q2" >
+ 	<property name="fields" value="3,4,11,12,13,25,35,41,42" /> 
+ </participant>
+ 
+ <participant class="org.hcmus.myparticipant.CheckCard" logger="Q2" > </participant>
+ <participant class="org.hcmus.myparticipant.CheckMerchant" logger="Q2" > </participant>
+ <participant class="org.hcmus.myparticipant.CheckPoSCC" logger="Q2" > </participant>
+ <participant class="org.hcmus.myparticipant.AddPoint" logger="Q2" > </participant>
+ <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
+ 
+ <!--  
+ <participant class="org.hcmus.myparticipant.Switch" logger="Q2"> 
+        <property name="407000" value="AddPoint"/> 
+        <property name="417000" value="SubtractPoint"/>
+        <property name="427000" value="Redemption"/>
+        <property name="447000" value="BalanceInquiry"/>
+ </participant> 
+ 
+ <group name="AddPoint">
+ 
+ </group> 
+ 
+ <group name="SubtractPoint">
+ <participant class="org.hcmus.myparticipant.OpenDB"></participant>
+ <participant class="org.hcmus.myparticipant.CheckField" ></participant>
+ <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
+ <participant class="org.hcmus.myparticipant.CloseDB"></participant>
+ </group> 
+ 
+ <group name="Redemption">
+ <participant class="org.hcmus.myparticipant.OpenDB"></participant>
+ <participant class="org.hcmus.myparticipant.CheckField" ></participant>
+ <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
+ <participant class="org.hcmus.myparticipant.CloseDB"></participant>
+ </group> 
+ 
+ <group name="BalanInquiry">
+ <participant class="org.hcmus.myparticipant.OpenDB"></participant>
+ <participant class="org.hcmus.myparticipant.CheckField" ></participant>
+ <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
+ <participant class="org.hcmus.myparticipant.CloseDB"></participant>
+ </group> 
+ 
+ -->
+</txnmgr-lms>
+
