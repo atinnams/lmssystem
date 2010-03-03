@@ -36,6 +36,8 @@ public class AddPoint implements TransactionParticipant {
 			JPOS_CustomerDTO customer = new JPOS_CustomerDTO();
 			customer.setJPOS_Barcode(cardNumber);
 			int result = JPOS_CustomerBUS.addPoint(customer, 1, point, mid, tid, poscc);
+			String strPoint = MessageHelper.pointToStringField63(0, 0, point, 0, 0);
+			ctx.put(Constant.POINT, strPoint);
 			
 			// TODO Change it after prepare procedure in DB
 			/*if(result == 0) {

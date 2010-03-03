@@ -16,13 +16,11 @@ public class SendResponse implements AbortParticipant {
 
 	@Override
 	public void abort(long id, Serializable context) {
-		// TODO Auto-generated method stub
 		
 	}
 	
 	@Override
 	public int prepareForAbort(long id, Serializable context) {
-		// TODO Auto-generated method stub
 		sendResponse(id, (Context)context);
 		return ABORTED | READONLY | NO_JOIN;
 	}
@@ -54,12 +52,37 @@ public class SendResponse implements AbortParticipant {
 		try {
 			ISOMsg msg = (ISOMsg) ctx.get(Constant.REQUEST);
 			String rc = (String)ctx.get(Constant.RC);
+			String point = (String)ctx.get(Constant.POINT);
 			if (source != null && source.isConnected() && msg != null) {
 				if(rc == null || "00".equals(rc)) {
 					msg.set(39, "00");
+					msg.set(62,Constant.SUCCESFULL);
+					if(point != null){
+						msg.set(63,point);
+					}
 				}
 				else if(rc != null) {
-					msg.set(39,rc);
+					int error = Integer.parseInt(rc);
+					switch(error){
+					case 14 :
+						msg.set(62,Constant.CARD_NOT_FOUND);
+						break;
+					case 54 :
+						msg.set(62,Constant.EXPIRE_CARD);
+						break;
+					case 15:
+						msg.set(62,Constant.INVALID_FIELD);
+						break;
+					case 3 :
+						msg.set(62,Constant.MID_OR_TID_NOT_FOUND);
+						break;
+					case 58:
+						msg.set(62,Constant.POSCC_NOT_FOUND);
+						break;
+					default :
+						msg.set(62,Constant.OTHER_ERROR);
+						break;
+					}
 				}
 				source.send(msg);
 			}
