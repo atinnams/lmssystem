@@ -13,19 +13,16 @@ public class CheckPoSCC implements TransactionParticipant {
 
 	@Override
 	public void abort(long id, Serializable serializeable) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void commit(long id, Serializable serializeable) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public int prepare(long id, Serializable serializeable) {
-		// TODO Auto-generated method stub
 		Context ctx = (Context)serializeable;
 		ISOMsg msg = (ISOMsg)ctx.get(Constant.REQUEST);
 		if(msg != null) {
@@ -43,7 +40,7 @@ public class CheckPoSCC implements TransactionParticipant {
 				return ABORTED | READONLY | NO_JOIN;
 			}
 		}else {
-			ctx.put(Constant.RC, "12");
+			ctx.put(Constant.RC, 12);
 			return ABORTED | READONLY | NO_JOIN;
 		}
 	}

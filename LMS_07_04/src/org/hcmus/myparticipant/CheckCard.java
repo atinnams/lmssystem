@@ -13,13 +13,11 @@ public class CheckCard implements TransactionParticipant {
 
 	@Override
 	public void abort(long id, Serializable serializeable) {
-		// DONT DO ANY THING
 		
 	}
 
 	@Override
 	public void commit(long id, Serializable serialieable) {
-		// DONT DO ANY THING
 		
 	}
 
