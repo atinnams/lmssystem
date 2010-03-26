@@ -7,15 +7,12 @@ import java.sql.SQLException;
 import org.hcmus.dao.idao.IJPOS_Merchant;
 
 public class JPOS_MerchantDAO implements IJPOS_Merchant {
-
-	Connection con = null;
 	
 	@Override
-	public int checkMerchant(String mid, String tid) {
+	public int checkMerchant(String mid, String tid,Connection con) {
 		// TODO Auto-generated method stub
 		int result = -1;
 		try {
-			con = DataProvider.getConnection();
 			if(con != null) {
 				CallableStatement cstmt = null;
 				cstmt = (CallableStatement) con
@@ -31,14 +28,8 @@ public class JPOS_MerchantDAO implements IJPOS_Merchant {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			result = -1;
-		} finally {
-			try {
-				con.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		} 
+		
 		return result;
 	}
 

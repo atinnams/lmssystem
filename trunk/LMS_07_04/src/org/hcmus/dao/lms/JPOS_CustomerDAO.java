@@ -11,16 +11,14 @@ import org.hcmus.dao.idao.IJPOS_Customer;
 
 public class JPOS_CustomerDAO implements IJPOS_Customer {
 
-	Connection con = null;
 	
 	@Override
-	public JPOS_CustomerDTO getCustomer(int customerId) {
+	public JPOS_CustomerDTO getCustomer(int customerId,Connection con) {
 		// TODO Auto-generated method stub
 		JPOS_CustomerDTO customer = new JPOS_CustomerDTO();
 		String SQL = "select * from JPOS_Customer where JPOS_IDCustomer = " +  customerId;
 		Statement st;
 		try {
-			con = DataProvider.getConnection();
 			st = con.createStatement();
 			ResultSet rs = st.executeQuery(SQL);
 			if(rs.next()) {
@@ -38,11 +36,10 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 
 	@Override
 	public int subtractPoint(JPOS_CustomerDTO customer, int taskid, int point,
-			String mid, String tid, String poscc) {
+			String mid, String tid, String poscc,Connection con) {
 		// TODO Auto-generated method stub
 		int result = -1;
 		try {
-			con = DataProvider.getConnection();
 			if(con != null) {
 				CallableStatement cstmt = null;
 				cstmt = (CallableStatement) con
@@ -62,24 +59,17 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			result = -1;
-		} finally {
-			try {
-				con.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		} 
+		
 		return result;
 	}
 
 	@Override
 	public int addPoint(JPOS_CustomerDTO customer, int taskid, int point,
-			String mid, String tid, String poscc) {
+			String mid, String tid, String poscc,Connection con) {
 		// TODO Auto-generated method stub
 		int result = -1;
 		try {
-			con = DataProvider.getConnection();
 			if(con != null) {
 				CallableStatement cstmt = null;
 				cstmt = (CallableStatement) con
@@ -99,14 +89,8 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			result = -1;
-		} finally {
-			try {
-				con.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
+		
 		return result;
 	}
 

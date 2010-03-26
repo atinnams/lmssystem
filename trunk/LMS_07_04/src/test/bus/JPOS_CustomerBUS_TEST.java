@@ -35,22 +35,22 @@ public class JPOS_CustomerBUS_TEST extends TestCase {
 	}
 	
 	public void testGetCustomer() {
-		JPOS_CustomerDTO customer = JPOS_CustomerBUS.getCustomer(38);
+		JPOS_CustomerDTO customer = JPOS_CustomerBUS.getCustomer(38,con);
 		Assert.assertEquals(customer.getJPOS_Barcode(), "1234567812345678");
 		Assert.assertEquals(customer.getJPOS_CurrentPoint(), 150);
 	}
 	
 	public void testAddPoint() {
 		JPOS_CustomerDTO customer = new JPOS_CustomerDTO(38,"1234567812345678",0);
-		JPOS_CustomerBUS.addPoint(customer,1, 150, "000000000000001","00000001","01");
-		JPOS_CustomerDTO customerAssert = JPOS_CustomerBUS.getCustomer(38);
+		JPOS_CustomerBUS.addPoint(customer,1, 150, "000000000000001","00000001","01",con);
+		JPOS_CustomerDTO customerAssert = JPOS_CustomerBUS.getCustomer(38,con);
 		Assert.assertEquals(customerAssert.getJPOS_CurrentPoint(), 300);
 	}
 	
 	public void testSubPoint() {
 		JPOS_CustomerDTO customer = new JPOS_CustomerDTO(38,"1234567812345678",0);
-		JPOS_CustomerBUS.subtractPoint(customer,1, 100, "000000000000001","00000001","01");
-		JPOS_CustomerDTO customerAssert = JPOS_CustomerBUS.getCustomer(38);
+		JPOS_CustomerBUS.subtractPoint(customer,1, 100, "000000000000001","00000001","01",con);
+		JPOS_CustomerDTO customerAssert = JPOS_CustomerBUS.getCustomer(38,con);
 		Assert.assertEquals(customerAssert.getJPOS_CurrentPoint(), 50);
 	}
 }

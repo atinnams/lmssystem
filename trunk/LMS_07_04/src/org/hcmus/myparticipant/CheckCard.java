@@ -1,6 +1,7 @@
 package org.hcmus.myparticipant;
 
 import java.io.Serializable;
+import java.sql.Connection;
 
 import org.hcmus.Util.Constant;
 import org.hcmus.Util.MessageHelper;
@@ -23,26 +24,37 @@ public class CheckCard implements TransactionParticipant {
 
 	@Override
 	public int prepare(long id, Serializable serializeable) {
-		// TODO Auto-generated method stub
+		
+		//get context from space
 		Context ctx = (Context)serializeable;
+		
+		//get message from context
 		ISOMsg msg = (ISOMsg)ctx.get(Constant.REQUEST);
+		
+		//Get connection from context
+		Connection con = (Connection)ctx.get(Constant.CONN);
+		if(con == null){
+			ctx.put(Constant.RC, "12");
+			return ABORTED | READONLY | NO_JOIN;
+		}
+		
 		if(msg != null) {
 			String cardNumber = MessageHelper.getCardId(msg);
-			int result = JPOS_CardBUS.checkCard(cardNumber);
+			int result = JPOS_CardBUS.checkCard(cardNumber,con);
 			if(result == 0) {
 				ctx.put(Constant.RC, "14");
-				return ABORTED | NO_JOIN;
+				return ABORTED | READONLY | NO_JOIN;
 			}else
 			{
-				result = JPOS_CardBUS.checkExpire(cardNumber);
-				if(result == 0) {
+				result = JPOS_CardBUS.checkExpire(cardNumber,con);
+				if(result == 1) {
 					ctx.put(Constant.RC, "54");
-					return ABORTED | NO_JOIN;
+					return ABORTED | READONLY | NO_JOIN;
 				}
 			}
 		}else {
 			ctx.put(Constant.RC, "12");
-			return ABORTED | NO_JOIN;
+			return ABORTED | READONLY | NO_JOIN;
 		}
 		return PREPARED | READONLY | NO_JOIN;
 	}
