@@ -8,14 +8,11 @@ import org.hcmus.dao.idao.IJPOS_Card;
 
 public class JPOS_CardDAO implements IJPOS_Card {
 
-	Connection con = null;
-	
 	@Override
-	public int checkCard(String cardId) {
+	public int checkCard(String cardId,Connection con) {
 		// TODO Auto-generated method stub
 		int result = -1;
 		try {
-			con = DataProvider.getConnection();
 			if(con != null) {
 				CallableStatement cstmt = null;
 				cstmt = (CallableStatement) con
@@ -30,23 +27,16 @@ public class JPOS_CardDAO implements IJPOS_Card {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			result = -1;
-		} finally {
-			try {
-				con.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		} 
+		
 		return result;
 	}
 
 	@Override
-	public int checkExpire(String cardId) {
+	public int checkExpire(String cardId,Connection con) {
 		// TODO Auto-generated method stub
 		int result = -1;
 		try {
-			con = DataProvider.getConnection();
 			if(con != null) {
 				CallableStatement cstmt = null;
 				cstmt = (CallableStatement) con
@@ -61,14 +51,8 @@ public class JPOS_CardDAO implements IJPOS_Card {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			result = -1;
-		} finally {
-			try {
-				con.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
+		} 
+		
 		return result;
 	}
 }

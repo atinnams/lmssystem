@@ -27,23 +27,27 @@ public class SendResponse implements AbortParticipant {
 	
 	@Override
 	public void commit(long id, Serializable context) {
-		// TODO send response here
 		sendResponse(id, (Context)context);
 	}
 
 	@Override
 	public int prepare(long id, Serializable context) {
-		// TODO Auto-generated method stub
+		
+		//get context from space
 		Context ctx = (Context) context;
+		
+		//get source or sender from context
 		ISOSource source = (ISOSource) ctx.get(Constant.SOURCE);
 		if (source == null || !source.isConnected()) {
 			return ABORTED | READONLY | NO_JOIN;
 		}
-
+		
+		
 		return PREPARED | READONLY;
 	}
 
 	private void sendResponse(long id,Context ctx) {
+		
 		ISOSource source = (ISOSource) ctx.get(Constant.SOURCE);
 		if (source == null || !source.isConnected()) {
 			return; // too late to send
@@ -65,21 +69,27 @@ public class SendResponse implements AbortParticipant {
 					int error = Integer.parseInt(rc);
 					switch(error){
 					case 14 :
+						msg.set(39,"14");
 						msg.set(62,Constant.CARD_NOT_FOUND);
 						break;
 					case 54 :
+						msg.set(39,"54");
 						msg.set(62,Constant.EXPIRE_CARD);
 						break;
 					case 15:
+						msg.set(39,"15");
 						msg.set(62,Constant.INVALID_FIELD);
 						break;
 					case 3 :
+						msg.set(39,"03");
 						msg.set(62,Constant.MID_OR_TID_NOT_FOUND);
 						break;
 					case 58:
+						msg.set(39,"58");
 						msg.set(62,Constant.POSCC_NOT_FOUND);
 						break;
 					default :
+						msg.set(39,"12");
 						msg.set(62,Constant.OTHER_ERROR);
 						break;
 					}
