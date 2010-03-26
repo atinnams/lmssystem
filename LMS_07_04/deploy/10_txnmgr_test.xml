@@ -10,11 +10,13 @@
  	<property name="fields" value="3,4,11,12,13,25,35,41,42" /> 
  </participant>
  
+ <participant class="org.hcmus.myparticipant.Open" logger="Q2"></participant>
  <participant class="org.hcmus.myparticipant.CheckCard" logger="Q2" > </participant>
  <participant class="org.hcmus.myparticipant.CheckMerchant" logger="Q2" > </participant>
  <participant class="org.hcmus.myparticipant.CheckPoSCC" logger="Q2" > </participant>
  <participant class="org.hcmus.myparticipant.AddPoint" logger="Q2" > </participant>
  <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
+ <participant class="org.hcmus.myparticipant.Close" logger="Q2"></participant>
  
  <!--  
  <participant class="org.hcmus.myparticipant.Switch" logger="Q2"> 
