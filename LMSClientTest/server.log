@@ -1,0 +1,37 @@
+<log realm="server" at="Wed Sep 23 23:20:57 ICT 2009.343">
+  <iso-server>
+    listening on port 5001
+  </iso-server>
+</log>
+<log realm="server.session/127.0.0.1" at="Wed Sep 23 23:21:04 ICT 2009.62">
+  <session-start/>
+</log>
+<log realm="channel/127.0.0.1:2362" at="Wed Sep 23 23:21:04 ICT 2009.93">
+  <receive>
+    <isomsg direction="incoming">
+      <field id="0" value="0800"/>
+      <field id="3" value="000000"/>
+      <field id="41" value="00000001"/>
+      <field id="70" value="301"/>
+    </isomsg>
+  </receive>
+</log>
+<log realm="channel/127.0.0.1:2362" at="Wed Sep 23 23:21:04 ICT 2009.109">
+  <send>
+    <isomsg direction="outgoing">
+      <field id="0" value="0810"/>
+      <field id="3" value="000000"/>
+      <field id="39" value="00"/>
+      <field id="41" value="00000001"/>
+      <field id="70" value="301"/>
+    </isomsg>
+  </send>
+</log>
+<log realm="channel/127.0.0.1:2362" at="Wed Sep 23 23:21:04 ICT 2009.109">
+  <receive>
+    <peer-disconnect>Connection reset</peer-disconnect>
+  </receive>
+</log>
+<log realm="server.session/127.0.0.1" at="Wed Sep 23 23:21:04 ICT 2009.109">
+  <session-end/>
+</log>
