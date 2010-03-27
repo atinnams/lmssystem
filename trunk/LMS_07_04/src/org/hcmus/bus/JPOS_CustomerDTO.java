@@ -1,10 +1,25 @@
 package org.hcmus.bus;
 
+/**
+ * 
+ * @author HUNGPT
+ * Customer Data Transfer Object
+ */
 public class JPOS_CustomerDTO {
 	
+	/****************** Attribute *****************/
+	
+	//Customer Identify.
 	private int jPOSID_Customer;
+	
+	//Bar code of Card of customer.
 	private String jPOS_Barcode;
+	
+	//Current point of customer.
 	private int jPOS_CurrentPoint;
+	
+	
+	/**************** Constructor ************************/
 	
 	public JPOS_CustomerDTO() {
 		jPOSID_Customer = 0;
@@ -17,6 +32,9 @@ public class JPOS_CustomerDTO {
 		jPOS_Barcode = barcode;
 		jPOS_CurrentPoint = currentPoint;
 	}
+	
+	
+	/******************** Properties ************************/
 	
 	public int getJPOSID_Customer() {
 		return jPOSID_Customer;
