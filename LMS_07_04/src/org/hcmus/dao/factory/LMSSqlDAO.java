@@ -21,49 +21,41 @@ public class LMSSqlDAO extends LMSDAOFactory {
 
 	@Override
 	public IJPOS_Customer getJPOS_Customer() {
-		// TODO Auto-generated method stub
 		return new JPOS_CustomerDAO();
 	}
 
 	@Override
 	public IJPOS_Gift getJPOS_Gift() {
-		// TODO Auto-generated method stub
 		return new JPOS_GiftDAO();
 	}
 
 	@Override
 	public IJPOS_Log getJPOS_Log() {
-		// TODO Auto-generated method stub
 		return new JPOS_LogDAO();
 	}
 
 	@Override
 	public IJPOS_Log_Exchange getJPOS_Log_Exchange() {
-		// TODO Auto-generated method stub
 		return new JPOS_Log_ExchangeDAO();
 	}
 
 	@Override
 	public IJPOS_Task getJPOS_Task() {
-		// TODO Auto-generated method stub
 		return new JPOS_TaskDAO();
 	}
 
 	@Override
-	public IJPOS_Card getJPOS_Card() {
-		// TODO Auto-generated method stub
+	public IJPOS_Card getJPOS_Card() {		
 		return new JPOS_CardDAO();
 	}
 
 	@Override
 	public IJPOS_Merchant getJPOS_Merchant() {
-		// TODO Auto-generated method stub
 		return new JPOS_MerchantDAO();
 	}
 
 	@Override
 	public IJPOS_PoSCC getJPOS_PoSCC() {
-		// TODO Auto-generated method stub
 		return new JPOS_PoSCCDAO();
 	}
 }

@@ -6,11 +6,15 @@ import java.sql.SQLException;
 
 import org.hcmus.dao.idao.IJPOS_Card;
 
+/**
+ * 
+ * @author HUNGPT
+ * Card Data access player.
+ */
 public class JPOS_CardDAO implements IJPOS_Card {
 
 	@Override
 	public int checkCard(String cardId,Connection con) {
-		// TODO Auto-generated method stub
 		int result = -1;
 		try {
 			if(con != null) {
@@ -34,7 +38,6 @@ public class JPOS_CardDAO implements IJPOS_Card {
 
 	@Override
 	public int checkExpire(String cardId,Connection con) {
-		// TODO Auto-generated method stub
 		int result = -1;
 		try {
 			if(con != null) {
@@ -47,8 +50,7 @@ public class JPOS_CardDAO implements IJPOS_Card {
 				
 				result = cstmt.getInt(1);
 			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+		} catch (SQLException e) {			
 			e.printStackTrace();
 			result = -1;
 		} 
