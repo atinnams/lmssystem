@@ -22,4 +22,6 @@ public class Constant {
 	public final static String SUBTRACT_POINT_PROCESS = "417000";
 	public final static String BALANCE_INQUIRY_PROCESS = "427000";
 	public final static String REDEMPTION_PROCESS = "447000";
+	
+	public final static String SQL_DB = "SQL";
 }
