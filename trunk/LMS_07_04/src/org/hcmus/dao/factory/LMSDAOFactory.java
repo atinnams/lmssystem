@@ -1,4 +1,6 @@
 package org.hcmus.dao.factory;
+import org.hcmus.Util.Constant;
+import org.hcmus.Util.LMSConfig;
 import org.hcmus.dao.idao.IJPOS_Card;
 import org.hcmus.dao.idao.IJPOS_Customer;
 import org.hcmus.dao.idao.IJPOS_Gift;
@@ -45,6 +47,14 @@ public abstract class LMSDAOFactory {
 	 * @return instance of class indicate for specific database.
 	 */
 	public static LMSDAOFactory getInstances() {
+		LMSConfig cfg = new LMSConfig();
+		if(cfg.getTypeOfDatabase().equals(Constant.SQL_DB)){
+			//waiting JVM deallocate cfg reference.
+			cfg = null;
+			return new LMSSqlDAO();
+		}
+		
+		//default SQL server
 		return new LMSSqlDAO();
 	}
 	
