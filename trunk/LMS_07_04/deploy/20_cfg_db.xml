@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<LMSConfig name="LMSConfig" value="org.hcmus.Util.LMSConfig">
+<object name="LMSConfig" class="org.hcmus.Util.LMSConfig">
 	<property name="dbtype" value="SQL" />
-	<propertt name="host" value="localhost" />
+	<property name="host" value="localhost" />
 	<property name="port" value="1433" />
 	<property name="dbname" value="LMSDB" />
 	<property name="username" value="sa" />
 	<property name="password" value="matkhau" />
-</LMSConfig>
+</object>
