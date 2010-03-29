@@ -7,6 +7,12 @@ import org.jpos.core.ReConfigurable;
 public class LMSConfig implements ReConfigurable {
 
 	Configuration cfg ;
+	
+	public LMSConfig(){
+		super();
+	}
+	
+	
 	@Override
 	public void setConfiguration(Configuration cfg)
 			throws ConfigurationException {
