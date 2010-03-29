@@ -5,52 +5,58 @@
  <property name="debug"            value="true" />
  <property name="retry-interval"   value="250" />
  <property name="pause-timeout"   value="2000" />
- 
- <participant class="org.hcmus.myparticipant.CheckField" logger="Q2" >
- 	<property name="fields" value="3,4,11,12,13,25,35,41,42" /> 
- </participant>
- 
- <participant class="org.hcmus.myparticipant.Open" logger="Q2"></participant>
- <participant class="org.hcmus.myparticipant.CheckCard" logger="Q2" > </participant>
- <participant class="org.hcmus.myparticipant.CheckMerchant" logger="Q2" > </participant>
- <participant class="org.hcmus.myparticipant.CheckPoSCC" logger="Q2" > </participant>
- <participant class="org.hcmus.myparticipant.AddPoint" logger="Q2" > </participant>
- <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
- <participant class="org.hcmus.myparticipant.Close" logger="Q2"></participant>
- 
- <!--  
- <participant class="org.hcmus.myparticipant.Switch" logger="Q2"> 
+  
+ <participant class="org.hcmus.lms.Switch" logger="Q2">
+  
         <property name="407000" value="AddPoint"/> 
         <property name="417000" value="SubtractPoint"/>
-        <property name="427000" value="Redemption"/>
-        <property name="447000" value="BalanceInquiry"/>
- </participant> 
+        <property name="000000" value="ErrorFlow"/>
+        <!--<property name="427000" value="Redemption"/>
+        <property name="447000" value="BalanceInquiry"/>-->
+</participant> 
  
  <group name="AddPoint">
+ 	<participant class="org.hcmus.myparticipant.CheckField" logger="Q2" >
+ 		<property name="fields" value="3,4,11,12,13,25,35,41,42" /> 
+ 	</participant>
  
+	 <participant class="org.hcmus.myparticipant.Open" logger="Q2"></participant>
+	 <participant class="org.hcmus.myparticipant.CheckCard" logger="Q2" > </participant>
+	 <participant class="org.hcmus.myparticipant.CheckMerchant" logger="Q2" > </participant>
+	 <participant class="org.hcmus.myparticipant.CheckPoSCC" logger="Q2" > </participant>
+	 <participant class="org.hcmus.myparticipant.AddPoint" logger="Q2" > </participant>
+	 <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
+	 <participant class="org.hcmus.myparticipant.Close" logger="Q2"></participant>
+	 
  </group> 
  
  <group name="SubtractPoint">
- <participant class="org.hcmus.myparticipant.OpenDB"></participant>
- <participant class="org.hcmus.myparticipant.CheckField" ></participant>
- <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
- <participant class="org.hcmus.myparticipant.CloseDB"></participant>
+	 <participant class="org.hcmus.myparticipant.CheckField" logger="Q2" >
+ 		<property name="fields" value="3,4,11,12,13,25,35,41,42" /> 
+ 	 </participant>
+ 
+	 <participant class="org.hcmus.myparticipant.Open" logger="Q2"></participant>
+	 <participant class="org.hcmus.myparticipant.CheckCard" logger="Q2" > </participant>
+	 <participant class="org.hcmus.myparticipant.CheckMerchant" logger="Q2" > </participant>
+	 <participant class="org.hcmus.myparticipant.CheckPoSCC" logger="Q2" > </participant>
+	 <participant class="org.hcmus.myparticipant.SubtractPoint" logger="Q2" > </participant>
+	 <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
+	 <participant class="org.hcmus.myparticipant.Close" logger="Q2"></participant>
  </group> 
  
+<group name="ErrorFlow">
+	 <participant class="org.hcmus.myparticipant.CheckForward" logger="Q2" ></participant>
+	 <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
+ </group> 
+ 
+ 
+ <!-- 
  <group name="Redemption">
- <participant class="org.hcmus.myparticipant.OpenDB"></participant>
- <participant class="org.hcmus.myparticipant.CheckField" ></participant>
- <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
- <participant class="org.hcmus.myparticipant.CloseDB"></participant>
  </group> 
  
  <group name="BalanInquiry">
- <participant class="org.hcmus.myparticipant.OpenDB"></participant>
- <participant class="org.hcmus.myparticipant.CheckField" ></participant>
- <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
- <participant class="org.hcmus.myparticipant.CloseDB"></participant>
  </group> 
- 
  -->
+ 
 </txnmgr-lms>
 
