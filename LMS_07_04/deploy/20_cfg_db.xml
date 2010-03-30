@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<object name="LMSConfig" class="org.hcmus.Util.LMSConfig">
+<lmsconfig name="LMSConfig" class="org.hcmus.Util.LMSConfig" logger="Q2">
 	<property name="dbtype" value="SQL" />
 	<property name="host" value="localhost" />
 	<property name="port" value="1433" />
 	<property name="dbname" value="LMSDB" />
 	<property name="username" value="sa" />
 	<property name="password" value="matkhau" />
-</object>
+</lmsconfig>
