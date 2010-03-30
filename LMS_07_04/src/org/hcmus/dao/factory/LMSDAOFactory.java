@@ -9,6 +9,8 @@ import org.hcmus.dao.idao.IJPOS_Log_Exchange;
 import org.hcmus.dao.idao.IJPOS_Merchant;
 import org.hcmus.dao.idao.IJPOS_PoSCC;
 import org.hcmus.dao.idao.IJPOS_Task;
+import org.jpos.util.NameRegistrar;
+import org.jpos.util.NameRegistrar.NotFoundException;
 
 /**
  * 
@@ -47,16 +49,18 @@ public abstract class LMSDAOFactory {
 	 * @return instance of class indicate for specific database.
 	 */
 	public static LMSDAOFactory getInstances() {
-		LMSConfig cfg = new LMSConfig();
-		if(cfg.getTypeOfDatabase().equals(Constant.SQL_DB)){
-			//waiting JVM deallocate cfg reference.
-			cfg = null;
-			return new LMSSqlDAO();
+		LMSConfig cfg;
+		try {
+			cfg = (LMSConfig)NameRegistrar.get("MyConfigDB");
+			if(cfg.getTypeOfDatabase().equals(Constant.SQL_DB)){
+				return new LMSSqlDAO();
+			}
+		} catch (NotFoundException e) {
+			e.printStackTrace();
 		}
+		
 		
 		//default SQL server
 		return new LMSSqlDAO();
 	}
-	
-	
 }

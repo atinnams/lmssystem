@@ -3,12 +3,12 @@ package test.bus;
 import java.sql.Connection;
 import java.sql.Statement;
 
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
 import org.hcmus.bus.JPOS_CustomerBUS;
 import org.hcmus.bus.JPOS_CustomerDTO;
 import org.hcmus.dao.lms.DataProvider;
-
-import junit.framework.Assert;
-import junit.framework.TestCase;
 
 
 public class JPOS_CustomerBUS_TEST extends TestCase {
