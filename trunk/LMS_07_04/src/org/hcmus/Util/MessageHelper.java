@@ -12,13 +12,11 @@ public class MessageHelper {
 			if (field63.isEmpty())
 				return -1;
 			if (field63.length() != 60) {
-				// System.out.println(field63.length());
 				return -1;
 			}
 
 			for (int i = 0; i < 5; i++) {
 				strPoint = field63.substring(i * 10, (i + 1) * 10);
-				// System.out.println("strPoint: " + strPoint);
 				result += Integer.parseInt(strPoint);
 			}
 
@@ -106,7 +104,6 @@ public class MessageHelper {
 		result += MessageHelper.format(Integer.toString(birthdayPoint));
 		result += MessageHelper.format(Integer.toString(joinPoint));
 		result += MessageHelper.format(Integer.toString(totalPoint));
-		System.out.println(result);
 		return result;
 	}
 	

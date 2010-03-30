@@ -1,23 +1,12 @@
 package org.hcmus.Util;
 
-import org.jpos.core.Configuration;
-import org.jpos.core.ConfigurationException;
-import org.jpos.core.ReConfigurable;
+import org.jpos.q2.QBeanSupport;
+import org.jpos.util.NameRegistrar;
 
-public class LMSConfig implements ReConfigurable {
-
-	Configuration cfg ;
+public class LMSConfig extends QBeanSupport implements ILMSConfigMBean {
 	
 	public LMSConfig(){
 		super();
-	}
-	
-	
-	@Override
-	public void setConfiguration(Configuration cfg)
-			throws ConfigurationException {
-		// TODO Auto-generated method stub
-		this.cfg = cfg;
 	}
 	
 	public String getTypeOfDatabase() {
@@ -43,5 +32,14 @@ public class LMSConfig implements ReConfigurable {
 	public String getPassword() {
 		return cfg.get("password");
 	}
-
+	
+	public void startService(){
+		log.info("LMSConfig start");
+		this.setName("MyConfigDB");
+	}
+	
+	public void setName(String name){
+		super.setName(name);
+		NameRegistrar.register(name, this);
+	}
 }
