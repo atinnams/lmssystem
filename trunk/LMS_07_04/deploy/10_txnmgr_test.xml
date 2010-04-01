@@ -10,9 +10,9 @@
   
         <property name="407000" value="AddPoint"/> 
         <property name="417000" value="SubtractPoint"/>
+        <property name="427000" value="Redemption"/>
         <property name="000000" value="ErrorFlow"/>
-        <!--<property name="427000" value="Redemption"/>
-        <property name="447000" value="BalanceInquiry"/>-->
+        <!--<property name="447000" value="BalanceInquiry"/>-->
 </participant> 
  
  <group name="AddPoint">
@@ -49,11 +49,21 @@
 	 <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
  </group> 
  
- 
- <!-- 
  <group name="Redemption">
- </group> 
+ 	 <participant class="org.hcmus.myparticipant.CheckField" logger="Q2" >
+ 		<property name="fields" value="3,11,12,13,25,35,41,42" /> 
+ 	 </participant>
  
+	 <participant class="org.hcmus.myparticipant.Open" logger="Q2"></participant>
+	 <participant class="org.hcmus.myparticipant.CheckCard" logger="Q2" > </participant>
+	 <participant class="org.hcmus.myparticipant.CheckMerchant" logger="Q2" > </participant>
+	 <participant class="org.hcmus.myparticipant.CheckPoSCC" logger="Q2" > </participant>
+	 <participant class="org.hcmus.myparticipant.BalanceInquiry" logger="Q2" > </participant>
+	 <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
+	 <participant class="org.hcmus.myparticipant.Close" logger="Q2"></participant>
+ </group>
+  
+ <!-- 
  <group name="BalanInquiry">
  </group> 
  -->
