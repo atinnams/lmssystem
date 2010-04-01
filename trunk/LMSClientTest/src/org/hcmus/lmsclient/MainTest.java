@@ -24,6 +24,9 @@ public class MainTest extends TestCase {
 		//add subtract point test suite
 		mainTest.addTest(SubtractPointTestSuite.suite());
 		
+		//add balance inquiry suite
+		mainTest.addTest(BalanceInquiryTestSuite.suite());
+		
 		// TODO Add other test suite here
 		
 		return mainTest;
