@@ -44,4 +44,12 @@ public interface IJPOS_Customer {
 	 * @return result of add point business.
 	 */
 	public int subtractPoint(JPOS_CustomerDTO customer,int taskid, int point,String mid,String tid,String poscc,Connection con);
+	
+	/**
+	 * Get current point of customer with their card id
+	 * @param cardId CardId of customer
+	 * @param con Connection to loyalty manage system
+	 * @return Current point
+	 */
+	public int getCurrentPoint(String cardId,Connection con);
 }

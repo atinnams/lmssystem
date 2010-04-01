@@ -45,7 +45,12 @@ public class SendResponse implements AbortParticipant {
 		
 		return PREPARED | READONLY;
 	}
-
+	
+	/**
+	 * Send response to client.
+	 * @param id Identify of transaction
+	 * @param ctx Context of transaction
+	 */
 	private void sendResponse(long id,Context ctx) {
 		
 		ISOSource source = (ISOSource) ctx.get(Constant.SOURCE);
@@ -58,6 +63,7 @@ public class SendResponse implements AbortParticipant {
 			String rc = (String)ctx.get(Constant.RC);
 			String point = (String)ctx.get(Constant.POINT);
 			if (source != null && source.isConnected() && msg != null) {
+				msg.set(0,"0210");
 				if(rc == null || "00".equals(rc)) {
 					msg.set(39, "00");
 					msg.set(62,Constant.SUCCESFULL);
@@ -97,13 +103,10 @@ public class SendResponse implements AbortParticipant {
 				source.send(msg);
 			}
 		} catch (VetoException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (IOException e) {			
 			e.printStackTrace();
-		} catch (ISOException e) {
-			// TODO Auto-generated catch block
+		} catch (ISOException e) {			
 			e.printStackTrace();
 		}
 	}
