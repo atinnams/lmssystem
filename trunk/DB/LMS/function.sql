@@ -104,7 +104,16 @@ create function fn_balance_inquiry(@cardid varchar(16))
 returns int
 as
 begin
-	declare @result int default(0);
-	set @result = select JPOS_CurrentPoint from JPOS_Customer where JPOS_CardId = @cardid ;
+	declare @result int ;
+	set @result = (select JPOS_CurrentPoint from JPOS_Customer where JPOS_CardId = @cardid) ;
 	return @result;
 end
+
+/*
+
+--test
+declare @result int;
+select @result = dbo.fn_balance_inquiry('1234567812345678');
+select @result;
+select * from JPOS_Customer;
+*/
