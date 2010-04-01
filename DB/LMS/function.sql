@@ -94,4 +94,17 @@ select @result; --expected to 1;
 declare @result int;
 select @result = dbo.fn_check_poscc('04');
 select @result; --expected to 0;
-*/
+*/ 
+
+if object_id('fn_balance_inquiry') is not null
+	drop function fn_balance_inquiry
+go
+
+create function fn_balance_inquiry(@cardid varchar(16))
+returns int
+as
+begin
+	declare @result int default(0);
+	set @result = select JPOS_CurrentPoint from JPOS_Customer where JPOS_CardId = @cardid ;
+	return @result;
+end
