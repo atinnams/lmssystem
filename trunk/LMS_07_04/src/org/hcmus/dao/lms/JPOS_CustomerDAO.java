@@ -14,7 +14,6 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 	
 	@Override
 	public JPOS_CustomerDTO getCustomer(int customerId,Connection con) {
-		// TODO Auto-generated method stub
 		JPOS_CustomerDTO customer = new JPOS_CustomerDTO();
 		String SQL = "select * from JPOS_Customer where JPOS_IDCustomer = " +  customerId;
 		Statement st;
@@ -27,7 +26,6 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 				customer.setJPOS_CurrentPoint(rs.getInt("JPOS_CurrentPoint"));
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -37,7 +35,6 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 	@Override
 	public int subtractPoint(JPOS_CustomerDTO customer, int taskid, int point,
 			String mid, String tid, String poscc,Connection con) {
-		// TODO Auto-generated method stub
 		int result = -1;
 		try {
 			if(con != null) {
@@ -56,7 +53,6 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 				result = cstmt.getInt("Result");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			result = -1;
 		} 
@@ -67,7 +63,7 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 	@Override
 	public int addPoint(JPOS_CustomerDTO customer, int taskid, int point,
 			String mid, String tid, String poscc,Connection con) {
-		// TODO Auto-generated method stub
+		
 		int result = -1;
 		try {
 			if(con != null) {
@@ -93,5 +89,25 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 		
 		return result;
 	}
-
+	
+	@Override
+	public int getCurrentPoint(String cardId,Connection con){
+		int result = -1;
+		try {
+			if(con != null) {
+				CallableStatement cstmt = null;
+				cstmt = (CallableStatement) con
+						.prepareCall("{ ? = call dbo.fn_balance_inquiry(?)}");
+				cstmt.registerOutParameter(1,java.sql.Types.INTEGER );
+				cstmt.setString(2, cardId);
+				cstmt.execute();
+				result = cstmt.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result = -1;
+		}
+		
+		return result;
+	}
 }

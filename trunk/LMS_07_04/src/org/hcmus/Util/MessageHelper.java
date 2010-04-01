@@ -81,7 +81,7 @@ public class MessageHelper {
 		return field25;
 	}
 	
-	private static String format(String s) {
+	public static String format(String s) {
 		int length = s.length();
 		if (length >= 10) {
 			return s.substring(0,10);

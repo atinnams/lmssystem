@@ -59,4 +59,16 @@ public class JPOS_CustomerBUS {
 		IJPOS_Customer myCustomer = factory.getJPOS_Customer();
 		return myCustomer.getCustomer(customerId,con);
 	}
+	
+	/**
+	 * Get current point of customer.
+	 * @param cardId Card id of customer.
+	 * @param con Connection
+	 * @return Current point
+	 */
+	public static int getCurrentPoint(String cardId,Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+		return myCustomer.getCurrentPoint(cardId, con);
+	}
 }
