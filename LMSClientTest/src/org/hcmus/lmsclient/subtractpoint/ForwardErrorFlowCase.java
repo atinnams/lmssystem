@@ -17,7 +17,7 @@ public class ForwardErrorFlowCase extends TestCase {
 	
 	public void testLackOfFieldNo3(){
 		try {
-			// set package iso87binary.xml
+			// set package iso87binary.XML
 			ISOPackager p = new GenericPackager("cfg/iso87binary.xml");
 
 			// create and set field for message
@@ -51,8 +51,8 @@ public class ForwardErrorFlowCase extends TestCase {
 			if (!r.hasField(62) && !r.hasField(39)) {
 				fail();
 			}
-			assertEquals("15",r.getValue(39));
-			assertEquals(Constant.INVALID_FIELD,r.getValue(62));
+			assertEquals("24",r.getValue(39));
+			assertEquals(Constant.FORWARD_FAIL,r.getValue(62));
 			// close connection
 			channel.disconnect();
 
@@ -98,8 +98,9 @@ public class ForwardErrorFlowCase extends TestCase {
 			if (!r.hasField(62) && !r.hasField(39)) {
 				fail();
 			}
-			assertEquals("15",r.getValue(39));
-			assertEquals(Constant.INVALID_FIELD,r.getValue(62));
+			assertEquals("24",r.getValue(39));
+			assertEquals(Constant.FORWARD_FAIL,r.getValue(62));
+			
 			// close connection
 			channel.disconnect();
 

@@ -23,7 +23,7 @@ public class LackFieldCase extends TestCase {
 	
 	public void testLackField(){
 		try {
-			// set package iso87binary.xml
+			// set package iso87binary.XML
 			ISOPackager p = new GenericPackager("cfg/iso87binary.xml");
 
 			// create and set field for message
@@ -59,6 +59,7 @@ public class LackFieldCase extends TestCase {
 			}
 			assertEquals("15",r.getValue(39));
 			assertEquals(Constant.INVALID_FIELD,r.getValue(62));
+			
 			// close connection
 			channel.disconnect();
 

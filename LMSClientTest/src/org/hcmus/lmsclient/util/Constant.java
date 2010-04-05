@@ -18,4 +18,7 @@ public class Constant {
 	public final static String EXPIRE_CARD = "EXPIRE CARD";
 	public final static String SUCCESFULL = "TRANSACTION SUCESSFULLY";
 	public final static String INVALID_FIELD = "INVALID FIELD";
+	public final static String ACTIVATED_CARD = "CARD WAS ACTIVATED";
+	public final static String FORWARD_FAIL = "FORWARD_FAIL";
+	public final static String NO_ACTIVATED_CARD = "CARD WASN'T ACTIVATED ";
 }

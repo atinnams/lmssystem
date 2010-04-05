@@ -27,6 +27,9 @@ public class MainTest extends TestCase {
 		//add balance inquiry suite
 		mainTest.addTest(BalanceInquiryTestSuite.suite());
 		
+		//add activation suite
+		mainTest.addTest(ActivationTestSuite.suite());
+		
 		// TODO Add other test suite here
 		
 		return mainTest;

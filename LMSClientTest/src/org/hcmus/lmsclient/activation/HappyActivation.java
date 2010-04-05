@@ -1,8 +1,9 @@
-package org.hcmus.lmsclient.balanceinquiry;
+package org.hcmus.lmsclient.activation;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+import org.hcmus.lmsclient.util.Constant;
 import org.hcmus.lmsclient.util.DataProvider;
 import org.jpos.iso.ISOChannel;
 import org.jpos.iso.ISOMsg;
@@ -11,28 +12,27 @@ import org.jpos.iso.channel.ASCIIChannel;
 import org.jpos.iso.packager.GenericPackager;
 
 import junit.framework.TestCase;
-
 /**
- * Purpose of this test case is used to check MTI request and response.
+ * Purpose of this case use to check check card hasn’t activated yet.
  * @author HUNGPT
  *
  */
-public class MTITest extends TestCase {
+public class HappyActivation extends TestCase {
 
-	public MTITest(String name) {
+	public HappyActivation(String name) {
 		super(name);
 	}
 	
 	protected void setUp() throws Exception {
 		super.setUp();
 		Connection con = DataProvider.getConnection();
-		String sql = "update JPOS_Card set JPOS_IsActivate = '1' where JPOS_CardId = '8765432112345678' ";
+		String sql = "update JPOS_Card set JPOS_IsActivate = '0' where JPOS_CardId = '8765432112345678' ";
 		PreparedStatement st = con.prepareStatement(sql);
 		st.executeUpdate();
 		con.close();
 	}
 	
-	public void testMTI(){
+	public void testHappyActivation(){
 		try {
 			// set package iso87binary.XML
 			ISOPackager p = new GenericPackager("cfg/iso87binary.xml");
@@ -40,7 +40,7 @@ public class MTITest extends TestCase {
 			// create and set field for message
 			ISOMsg m = new ISOMsg();
 			m.setMTI("0200");
-			m.set("3", "427000");
+			m.set("3", "457000");
 			m.set("11", "123456");
 			m.set("12", "114109");
 			m.set("13", "0122");
@@ -65,12 +65,12 @@ public class MTITest extends TestCase {
 			ISOMsg r = channel.receive();
 
 			// logic
-			if (!r.hasField(63) && !r.hasField(39) && !r.hasField(3)) {
+			if (!r.hasField(62) && !r.hasField(39)) {
 				fail();
 			}
 			assertEquals("00",r.getValue(39));
-			assertEquals("0000000050",r.getValue(63));
-			assertEquals("0210",r.getValue(0));
+			assertEquals(Constant.SUCCESFULL,r.getValue(62));
+			
 			// close connection
 			channel.disconnect();
 

@@ -1,8 +1,9 @@
-package org.hcmus.lmsclient.balanceinquiry;
+package org.hcmus.lmsclient.activation;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 
+import org.hcmus.lmsclient.util.Constant;
 import org.hcmus.lmsclient.util.DataProvider;
 import org.jpos.iso.ISOChannel;
 import org.jpos.iso.ISOMsg;
@@ -12,35 +13,32 @@ import org.jpos.iso.packager.GenericPackager;
 
 import junit.framework.TestCase;
 
-/**
- * Purpose of this test case is used to check MTI request and response.
- * @author HUNGPT
- *
- */
-public class MTITest extends TestCase {
+public class NoActivatedCard extends TestCase {
 
-	public MTITest(String name) {
+	public NoActivatedCard(String name) {
 		super(name);
 	}
-	
+
 	protected void setUp() throws Exception {
 		super.setUp();
 		Connection con = DataProvider.getConnection();
-		String sql = "update JPOS_Card set JPOS_IsActivate = '1' where JPOS_CardId = '8765432112345678' ";
+		String sql = "update JPOS_Card set JPOS_IsActivate = '0' where JPOS_CardId = '8765432112345678' ";
 		PreparedStatement st = con.prepareStatement(sql);
 		st.executeUpdate();
 		con.close();
 	}
-	
-	public void testMTI(){
+
+	public void testNoActivatedCase() {
 		try {
-			// set package iso87binary.XML
+
+			// set package iso87binary.xml
 			ISOPackager p = new GenericPackager("cfg/iso87binary.xml");
 
 			// create and set field for message
 			ISOMsg m = new ISOMsg();
 			m.setMTI("0200");
-			m.set("3", "427000");
+			m.set("3", "407000");
+			m.set("4", "000001500000");
 			m.set("11", "123456");
 			m.set("12", "114109");
 			m.set("13", "0122");
@@ -65,12 +63,13 @@ public class MTITest extends TestCase {
 			ISOMsg r = channel.receive();
 
 			// logic
-			if (!r.hasField(63) && !r.hasField(39) && !r.hasField(3)) {
+			if (!r.hasField(62) || !r.hasField(39)) {
 				fail();
 			}
-			assertEquals("00",r.getValue(39));
-			assertEquals("0000000050",r.getValue(63));
-			assertEquals("0210",r.getValue(0));
+			
+			assertEquals("93", r.getValue(39));
+			assertEquals(Constant.NO_ACTIVATED_CARD, r.getValue(62));
+			
 			// close connection
 			channel.disconnect();
 
@@ -78,4 +77,5 @@ public class MTITest extends TestCase {
 			fail("Some exceptions founded.");
 		}
 	}
+
 }

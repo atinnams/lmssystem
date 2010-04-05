@@ -7,6 +7,11 @@ import junit.framework.TestSuite;
 import org.hcmus.lmsclient.balanceinquiry.BalanceInquiryTest;
 import org.hcmus.lmsclient.balanceinquiry.MTITest;
 
+/**
+ * Bundle of Balance Inquiry test case.
+ * @author HUNGPT
+ *
+ */
 public class BalanceInquiryTestSuite extends TestCase {
 
 	public BalanceInquiryTestSuite(String name) {

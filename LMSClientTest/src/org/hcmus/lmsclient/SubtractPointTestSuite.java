@@ -18,6 +18,8 @@ public class SubtractPointTestSuite extends TestCase {
 		
 		//add happy path
 		testSuite.addTest(new SubtractPointCase("testSubtractHappyPath"));
+		
+		//add switching error case
 		testSuite.addTestSuite(ForwardErrorFlowCase.class);
 		
 		return testSuite;
