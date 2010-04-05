@@ -10,6 +10,11 @@ import org.jpos.iso.ISOMsg;
 import org.jpos.transaction.Context;
 import org.jpos.transaction.TransactionParticipant;
 
+/**
+ * Check device which sends ISO8583 message is supported.
+ * @author HUNGPT
+ *
+ */
 public class CheckPoSCC implements TransactionParticipant {
 
 	@Override

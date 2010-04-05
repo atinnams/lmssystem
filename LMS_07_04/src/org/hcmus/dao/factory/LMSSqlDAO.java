@@ -17,6 +17,11 @@ import org.hcmus.dao.lms.JPOS_MerchantDAO;
 import org.hcmus.dao.lms.JPOS_PoSCCDAO;
 import org.hcmus.dao.lms.JPOS_TaskDAO;
 
+/**
+ * Concrete SQL database object of LMS DAO Factory.
+ * @author HUNGPT
+ * @see LMSDAOFactory
+ */
 public class LMSSqlDAO extends LMSDAOFactory {
 
 	@Override

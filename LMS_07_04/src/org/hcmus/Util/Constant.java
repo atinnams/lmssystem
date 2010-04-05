@@ -16,12 +16,16 @@ public class Constant {
 	public final static String EXPIRE_CARD = "EXPIRE CARD";
 	public final static String SUCCESFULL = "TRANSACTION SUCESSFULLY";
 	public final static String INVALID_FIELD = "INVALID FIELD";
+	public final static String ACTIVATED_CARD = "CARD WAS ACTIVATED";
+	public final static String FORWARD_FAIL = "FORWARD_FAIL";
+	public final static String NO_ACTIVATED_CARD = "CARD WASN'T ACTIVATED ";
 	
 	public final static String ERROR_FLOW = "000000" ;
 	public final static String ADD_POINT_PROCESS = "407000";
 	public final static String SUBTRACT_POINT_PROCESS = "417000";
 	public final static String BALANCE_INQUIRY_PROCESS = "427000";
 	public final static String REDEMPTION_PROCESS = "447000";
+	public final static String ACTIVATION_PROCESS = "457000";
 	
 	public final static String SQL_DB = "SQL";
 }

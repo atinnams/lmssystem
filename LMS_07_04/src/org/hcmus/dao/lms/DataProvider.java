@@ -8,28 +8,47 @@ import org.hcmus.Util.LMSConfig;
 import org.jpos.util.NameRegistrar;
 import org.jpos.util.NameRegistrar.NotFoundException;
 
+/**
+ * 
+ * @author HUNGPT
+ * 
+ */
 public class DataProvider {
-	public static Connection getConnection() {	
-		
-		// Declare the JDBC objects.
+
+	/**
+	 * Read configuration parameters from configuration XML file through
+	 * LMSConfig Object. After a while, Get connection with parameters which it
+	 * got.
+	 * 
+	 * @return Connection to specify database.
+	 * @see LMSConfig
+	 */
+	public static Connection getConnection() {
+
+		/** Declare the JDBC objects. **/
 		Connection con = null;
 
 		try {
+			
+			/**
+			 * Read all configuration value from configuration file through
+			 * configuration object which is registered in NameRegistrar.
+			 */
 			LMSConfig dbConfig = (LMSConfig) NameRegistrar.get("MyConfigDB");
 			String host = dbConfig.getHost();
 			String port = dbConfig.getPort();
 			String dbName = dbConfig.getDBName();
 
-			// Create a variable for the connection string.
-			// String connectionUrl = "jdbc:sqlserver://localhost:1433;" +
-			// "databaseName=LMSDB;";
-			
-			// Create a variable for the connection string.
-			 String connectionUrl = "jdbc:sqlserver://" + host + ":" + port +";" +
-			 "databaseName=" + dbName + ";";
-			// Establish the connection.
+			/** Create a variable for the connection string. **/
+			String connectionUrl = "jdbc:sqlserver://" + host + ":" + port
+					+ ";" + "databaseName=" + dbName + ";";
+
+			/** Register SQL server driver and establish the connection. **/
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+			
+			/** Get connection **/
 			con = DriverManager.getConnection(connectionUrl, "sa", "matkhau");
+			
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			return null;

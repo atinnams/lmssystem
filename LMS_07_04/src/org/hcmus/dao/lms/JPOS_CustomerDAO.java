@@ -9,6 +9,11 @@ import java.sql.Statement;
 import org.hcmus.bus.JPOS_CustomerDTO;
 import org.hcmus.dao.idao.IJPOS_Customer;
 
+/**
+ * JPOS Customer Data Access Player
+ * @author HUNGPT
+ *
+ */
 public class JPOS_CustomerDAO implements IJPOS_Customer {
 
 	

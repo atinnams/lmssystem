@@ -24,4 +24,20 @@ public interface IJPOS_Card {
 	 * @return result : 1 means expired and 0 didn't 
 	 */
 	public int checkExpire(String cardId,Connection con);
+	
+	/**
+	 * Check card was activated.
+	 * @param cardId Identify of card
+	 * @param con Connection of database server.
+	 * @return Checking result. 0 means that card has been activated yet but 1 means by contrast.
+	 */
+	public int checkActivatedCard(String cardId,Connection con);
+	
+	/**
+	 * Activate card.
+	 * @param cardId Identify of card.
+	 * @param con Connection which connect to database server.
+	 */
+	public void activateCard(String cardId,Connection con);
+	
 }

@@ -10,7 +10,6 @@ public class JPOS_MerchantDAO implements IJPOS_Merchant {
 	
 	@Override
 	public int checkMerchant(String mid, String tid,Connection con) {
-		// TODO Auto-generated method stub
 		int result = -1;
 		try {
 			if(con != null) {
@@ -25,7 +24,6 @@ public class JPOS_MerchantDAO implements IJPOS_Merchant {
 				result = cstmt.getInt(1);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			result = -1;
 		} 
