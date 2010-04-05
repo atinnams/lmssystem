@@ -13,7 +13,7 @@ import org.jpos.transaction.GroupSelector;
 
 /**
  * 
- * @author HUNGPT Switch message to right business by field no3 of message.
+ * @author HUNGPT Switch message to accurate business by field no3 of message.
  */
 public class Switch implements GroupSelector, Configurable {
 
@@ -23,14 +23,14 @@ public class Switch implements GroupSelector, Configurable {
 	public String select(long arg0, Serializable context) {
 
 		try {
-			// Get context from space
+			/** Get context from space **/
 			Context ctx = (Context) context;
 
-			// Get message from context
+			/** Get message from context **/
 			ISOMsg msg = (ISOMsg) ctx.get(Constant.REQUEST);
 
 			String groups = "";
-			// Get groups from fields No3 of message.
+			/** Get group String from fields No3 of message. **/
 			if (!msg.hasField(3)) {
 				return cfg.get(Constant.ERROR_FLOW);
 			}
@@ -40,7 +40,8 @@ public class Switch implements GroupSelector, Configurable {
 				if (!Constant.ADD_POINT_PROCESS.equals(field3)
 						&& !Constant.SUBTRACT_POINT_PROCESS.equals(field3)
 						&& !Constant.BALANCE_INQUIRY_PROCESS.equals(field3)
-						&& !Constant.REDEMPTION_PROCESS.equals(field3)) {
+						&& !Constant.REDEMPTION_PROCESS.equals(field3)
+						&& !Constant.ACTIVATION_PROCESS.equals(field3)) {
 					return cfg.get(Constant.ERROR_FLOW);
 				}
 			} catch (ISOException e) {
@@ -57,12 +58,10 @@ public class Switch implements GroupSelector, Configurable {
 	}
 
 	@Override
-	public void abort(long arg0, Serializable arg1) {
-	}
+	public void abort(long arg0, Serializable arg1) { }
 
 	@Override
-	public void commit(long arg0, Serializable arg1) {
-	}
+	public void commit(long arg0, Serializable arg1) { }
 
 	@Override
 	public int prepare(long arg0, Serializable arg1) {

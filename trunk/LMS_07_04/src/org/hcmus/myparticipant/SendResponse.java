@@ -10,14 +10,16 @@ import org.jpos.iso.ISOSource;
 import org.jpos.iso.ISOFilter.VetoException;
 import org.jpos.transaction.AbortParticipant;
 import org.jpos.transaction.Context;
-import org.jpos.transaction.TransactionParticipant;
 
+/**
+ * Send transaction information to client.
+ * @author HUNGPT
+ *
+ */
 public class SendResponse implements AbortParticipant {
 
 	@Override
-	public void abort(long id, Serializable context) {
-		
-	}
+	public void abort(long id, Serializable context) { }
 	
 	@Override
 	public int prepareForAbort(long id, Serializable context) {
@@ -93,6 +95,14 @@ public class SendResponse implements AbortParticipant {
 					case 58:
 						msg.set(39,"58");
 						msg.set(62,Constant.POSCC_NOT_FOUND);
+						break;
+					case 24:
+						msg.set(39,"24");
+						msg.set(62,Constant.FORWARD_FAIL);
+						break;
+					case 93 :
+						msg.set(39,"93");
+						msg.set(62,Constant.NO_ACTIVATED_CARD);
 						break;
 					default :
 						msg.set(39,"12");

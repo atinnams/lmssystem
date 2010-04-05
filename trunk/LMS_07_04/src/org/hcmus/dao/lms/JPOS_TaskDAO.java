@@ -7,7 +7,6 @@ public class JPOS_TaskDAO implements IJPOS_Task {
 
 	@Override
 	public JPOS_TaskDTO getTask(int taskId) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 

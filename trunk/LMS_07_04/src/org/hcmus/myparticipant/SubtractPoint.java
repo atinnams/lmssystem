@@ -11,17 +11,18 @@ import org.jpos.iso.ISOMsg;
 import org.jpos.transaction.Context;
 import org.jpos.transaction.TransactionParticipant;
 
+/**
+ * Subtract point to database server.
+ * @author HUNGPT
+ *
+ */
 public class SubtractPoint implements TransactionParticipant {
 
 	@Override
-	public void abort(long arg0, Serializable arg1) {
-		
-	}
+	public void abort(long arg0, Serializable arg1) { }
 
 	@Override
-	public void commit(long arg0, Serializable arg1) {		
-		
-	}
+	public void commit(long arg0, Serializable arg1) { }
 
 	@Override
 	public int prepare(long id, Serializable serializable) {
@@ -35,36 +36,36 @@ public class SubtractPoint implements TransactionParticipant {
 		}
 		if (msg != null) {
 
-			/* get point from the message */
+			/** get point from the message **/
 			int point = MessageHelper.getPoint(msg);
 
-			/* get card number */
+			/** get card number **/
 			String cardNumber = MessageHelper.getCardId(msg);
 
-			/* get MID */
+			/** get MID **/
 			String mid = MessageHelper.getMID(msg);
 
-			/* get TID */
+			/** get TID **/
 			String tid = MessageHelper.getTID(msg);
 
-			/* Get poscc */
+			/** Get PoSCC **/
 			String poscc = MessageHelper.getPoSCC(msg);
 
-			/* Construct a customer */
+			/** Construct a customer **/
 			JPOS_CustomerDTO customer = new JPOS_CustomerDTO();
 
-			/* Set bar code for customer */
+			/** Set bar code for customer **/
 			customer.setJPOS_Barcode(cardNumber);
 
-			// Add point business
+			/** Subtract point business **/
 			int result = JPOS_CustomerBUS.subtractPoint(customer, 2 , point, mid,
 					tid, poscc, con);
 
-			// convert point to response string message
+			/** convert point to response string message **/
 			String strPoint = MessageHelper.pointToStringField63(0, 0, point,
 					0, 0);
 
-			// put it to context for response participant
+			/** put it to context for response participant **/
 			ctx.put(Constant.POINT, strPoint);
 
 			// TODO Change it after prepare procedure in DB

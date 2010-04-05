@@ -11,7 +11,7 @@ import org.jpos.transaction.Context;
 import org.jpos.transaction.TransactionParticipant;
 
 /**
- * 
+ * Check all field the LMS system needs.
  * @author HungPT
  * 
  */
@@ -19,14 +19,10 @@ public class CheckField implements TransactionParticipant,Configurable {
 	
 	Configuration cfg = null;
 	@Override
-	public void abort(long id, Serializable context) {
-
-	}
+	public void abort(long id, Serializable context) { }
 
 	@Override
-	public void commit(long id, Serializable context) {
-
-	}
+	public void commit(long id, Serializable context) { }
 
 	@Override
 	public int prepare(long id, Serializable context) {
@@ -51,7 +47,6 @@ public class CheckField implements TransactionParticipant,Configurable {
 	@Override
 	public void setConfiguration(Configuration cfg)
 			throws ConfigurationException {
-		// TODO Auto-generated method stub
 		this.cfg = cfg;
 	}
 }

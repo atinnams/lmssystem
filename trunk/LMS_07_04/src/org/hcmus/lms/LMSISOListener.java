@@ -8,7 +8,10 @@ import org.jpos.space.Space;
 import org.jpos.space.SpaceFactory;
 import org.jpos.transaction.Context;
 
-
+/**
+ * This is perception of server. Listen ISO 8583 message from client.
+ * @author HUNGPT
+ */
 public class LMSISOListener implements ISORequestListener {
     
     public LMSISOListener() {
@@ -17,17 +20,17 @@ public class LMSISOListener implements ISORequestListener {
     @Override
     public boolean process(ISOSource source, ISOMsg m) {
     	
-    	// Create a Context
+    	/** Create a Context **/
         Context ctx = new Context();
         
-        //put everything into context container
+        /** put everything into context container **/
         ctx.put(Constant.REQUEST, m,true);
         ctx.put(Constant.SOURCE,source);
         
-        //get default space (space correspond to queue but stronger)
+        /** get default space (space correspond to queue but stronger) **/
         Space sp = SpaceFactory.getSpace();
         
-        //put context into space (first come first server)
+        /** put context into space (first come first server) **/
         sp.out(Constant.QUEUE, ctx, 200);
         return true;
     }

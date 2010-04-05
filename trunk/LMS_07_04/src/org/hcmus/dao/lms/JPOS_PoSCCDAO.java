@@ -10,7 +10,6 @@ public class JPOS_PoSCCDAO implements IJPOS_PoSCC {
 	
 	@Override
 	public int checkPoSCC(String posccid,Connection con) {
-		// TODO Auto-generated method stub
 		int result = -1;
 		try {
 			if(con != null) {
@@ -24,7 +23,6 @@ public class JPOS_PoSCCDAO implements IJPOS_PoSCC {
 				result = cstmt.getInt(1);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			result = -1;
 		} 

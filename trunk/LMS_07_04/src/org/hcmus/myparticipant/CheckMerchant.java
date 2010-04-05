@@ -10,30 +10,29 @@ import org.jpos.iso.ISOMsg;
 import org.jpos.transaction.Context;
 import org.jpos.transaction.TransactionParticipant;
 
+/**
+ * Put Merchant which sends ISO 8583 message is correct.
+ * @author HUNGPT
+ *
+ */
 public class CheckMerchant implements TransactionParticipant {
 
 	@Override
-	public void abort(long id, Serializable serializeable) {
-		// DONT DO ANYTHING
-
-	}
+	public void abort(long id, Serializable serializeable) { }
 
 	@Override
-	public void commit(long id, Serializable serializeable) {
-		// TODO DONT DO ANYTHING
-
-	}
+	public void commit(long id, Serializable serializeable) { }
 
 	@Override
 	public int prepare(long id, Serializable serializeable) {
 
-		// get context from space
+		/** get context from space **/
 		Context ctx = (Context) serializeable;
 
-		// get message from context
+		/** get message from context **/
 		ISOMsg msg = (ISOMsg) ctx.get(Constant.REQUEST);
 
-		// Get connection from context
+		/** Get connection from context **/
 		Connection con = (Connection) ctx.get(Constant.CONN);
 		if (con == null) {
 			ctx.put(Constant.RC, "12");

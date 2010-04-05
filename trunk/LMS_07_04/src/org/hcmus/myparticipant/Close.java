@@ -7,18 +7,19 @@ import java.sql.SQLException;
 import org.hcmus.Util.Constant;
 import org.jpos.transaction.AbortParticipant;
 import org.jpos.transaction.Context;
-import org.jpos.transaction.TransactionParticipant;
 
+/** 
+ * Closed connection after a while the transaction had finished. 
+ * @author HUNGPT
+ *
+ */
 public class Close implements AbortParticipant {
 
 	@Override
-	public void abort(long id, Serializable serializable) {
-		
-	}
+	public void abort(long id, Serializable serializable) { }
 
 	@Override
 	public void commit(long id, Serializable serializable) {
-		// TODO Auto-generated method stub
 		closeConnection(id, serializable);
 	}
 
@@ -29,17 +30,16 @@ public class Close implements AbortParticipant {
 
 	@Override
 	public int prepareForAbort(long id, Serializable serializable) {
-		// TODO Auto-generated method stub
 		closeConnection(id, serializable);
 		return ABORTED | READONLY | NO_JOIN;
 	}
 	
 	public void closeConnection(long id,Serializable serializable){
 		
-		//get context from space
+		/** get context from space **/
 		Context ctx = (Context)serializable;
 		
-		//get connection from context
+		/** get connection from context **/
 		Connection con = (Connection)ctx.get(Constant.CONN);
 		if(con != null){
 			try {
