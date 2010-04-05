@@ -117,3 +117,25 @@ select @result = dbo.fn_balance_inquiry('1234567812345678');
 select @result;
 select * from JPOS_Customer;
 */
+
+if object_id('fn_check_activated') is not null
+	drop function fn_check_activated
+go
+
+create function fn_check_activated(@cardid varchar(16))
+returns int
+as
+begin
+	return (select count(*) from JPOS_Card where JPOS_CardId = @cardid and JPOS_IsActivate = '1' );
+end
+
+/*
+--test
+declare @result int;
+select @result = dbo.fn_check_activated('1234567812345678');
+select @result;
+
+select @result = dbo.fn_check_activated('1234567887654321');
+select @result;
+
+*/
