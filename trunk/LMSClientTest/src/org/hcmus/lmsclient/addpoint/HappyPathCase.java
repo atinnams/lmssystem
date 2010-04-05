@@ -11,7 +11,7 @@ import org.jpos.iso.packager.GenericPackager;
 /**
  * 
  * @author HUNGPT
- * Purpose of this test case for happy path case.
+ * Purpose of this test case for add point happy path case.
  */
 public class HappyPathCase extends TestCase {
 

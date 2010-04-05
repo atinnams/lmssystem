@@ -9,6 +9,11 @@ import org.jpos.iso.packager.GenericPackager;
 
 import junit.framework.TestCase;
 
+/**
+ * Purpose of this test case is used to check expire card.
+ * @author HUNGPT
+ *
+ */
 public class ExpireCardCase extends TestCase {
 
 	public ExpireCardCase(String name) {

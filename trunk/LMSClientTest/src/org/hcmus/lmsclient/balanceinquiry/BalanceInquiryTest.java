@@ -1,22 +1,49 @@
 package org.hcmus.lmsclient.balanceinquiry;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
 import junit.framework.TestCase;
 
+import org.hcmus.lmsclient.util.DataProvider;
 import org.jpos.iso.ISOChannel;
 import org.jpos.iso.ISOMsg;
 import org.jpos.iso.ISOPackager;
 import org.jpos.iso.channel.ASCIIChannel;
 import org.jpos.iso.packager.GenericPackager;
 
+/**
+ * Purpose of this test case is use to check Balance Inquiry Happy path case.
+ * @author HUNGPT
+ *
+ */
 public class BalanceInquiryTest extends TestCase {
 
 	public BalanceInquiryTest(String name) {
 		super(name);
 	}
 	
+	protected void setUp() throws Exception {
+		super.setUp();
+		Connection con = DataProvider.getConnection();
+		String sql = "update JPOS_Customer set JPOS_CurrentPoint=50 where JPOS_IDCustomer=41";
+		PreparedStatement st = con.prepareStatement(sql);
+		st.executeUpdate();
+		
+		String sql1 = "update JPOS_Card set JPOS_IsActivate = '1' where JPOS_CardId = '8765432112345678' ";
+		st = con.prepareStatement(sql1);
+		st.executeUpdate();
+		
+		con.close();
+	}
+
+	protected void tearDown() throws Exception {
+		super.tearDown();
+	}
+	
 	public void testBalanceInquiry(){
 		try {
-			// set package iso87binary.xml
+			// set package iso87binary.XML
 			ISOPackager p = new GenericPackager("cfg/iso87binary.xml");
 
 			// create and set field for message
