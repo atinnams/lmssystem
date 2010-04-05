@@ -73,4 +73,23 @@ end
 go
 
 
+if object_id('sp_card_activate') is not null
+	drop proc sp_card_activate
+go
+
+create procedure sp_card_activate(@cardid varchar(16))
+as
+begin
+	update JPOS_Card set JPOS_IsActivate = '1' where JPOS_CardId = @cardid;
+end
+
+/*--test
+
+exec sp_card_activate '8765432112345678';
+select * from JPOS_card;
+update JPOS_Card set JPOS_IsActivate = '0' where JPOS_CardId = '8765432112345678';
+
+*/
+
+
 
