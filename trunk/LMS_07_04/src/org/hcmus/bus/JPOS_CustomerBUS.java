@@ -71,4 +71,35 @@ public class JPOS_CustomerBUS {
 		IJPOS_Customer myCustomer = factory.getJPOS_Customer();
 		return myCustomer.getCurrentPoint(cardId, con);
 	}
+	
+	/**
+	 * Check point of customer to exchange gift.
+	 * @param cardNumber Identify of card
+	 * @param giftType Gift type which want to exchange
+	 * @param con Connection of SQL server.
+	 * @return 1 is okay and 0 is not.
+	 */
+	public static int checkRedemptionPoint(String cardNumber,int giftType,Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+		return myCustomer.checkRedemptionPoint(cardNumber, giftType, con);
+	}
+	
+	/**
+	 * Redemption business
+	 * @param cardNumber Identify of card
+	 * @param taskid Task identify
+	 * @param giftType Type of gift
+	 * @param mid Merchant identify
+	 * @param tid Terminal Identify
+	 * @param poscc Point of Service Condition Code
+	 * @param con Connection
+	 * @return Result of Redemption business
+	 */
+	public static int redemption(String cardNumber, int taskid, int giftType,
+			String mid, String tid, String poscc, Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+		return myCustomer.redemption(cardNumber, taskid, giftType, mid, tid, poscc, con);
+	}
 }
