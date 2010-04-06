@@ -30,7 +30,8 @@ public class MainTest extends TestCase {
 		//add activation suite
 		mainTest.addTest(ActivationTestSuite.suite());
 		
-		// TODO Add other test suite here
+		//add redemption suite
+		mainTest.addTest(RedemptionTestSuite.suite());
 		
 		return mainTest;
 	}
