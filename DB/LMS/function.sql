@@ -96,6 +96,8 @@ select @result = dbo.fn_check_poscc('04');
 select @result; --expected to 0;
 */ 
 
+--===========================================================================
+
 if object_id('fn_balance_inquiry') is not null
 	drop function fn_balance_inquiry
 go
@@ -118,6 +120,8 @@ select @result;
 select * from JPOS_Customer;
 */
 
+--===========================================================================
+
 if object_id('fn_check_activated') is not null
 	drop function fn_check_activated
 go
@@ -136,6 +140,65 @@ select @result = dbo.fn_check_activated('1234567812345678');
 select @result;
 
 select @result = dbo.fn_check_activated('1234567887654321');
+select @result;
+
+*/
+
+--===========================================================================
+
+if object_id('fn_get_gift_point') is not null
+	drop function fn_get_gift_point
+go
+
+create function fn_get_gift_point(@giftType int)
+returns int
+as
+begin
+	return (select JPOS_PointForGift from JPOS_Gift where JPOS_IDGift = @giftType);
+end
+
+/*
+--test
+select * from JPOS_Gift;
+declare @result int;
+select @result = dbo.fn_get_gift_point(10);
+select @result;
+
+*/
+
+--===========================================================================
+
+if object_id('fn_check_redemption_point') is not null
+	drop function fn_check_redemption_point
+go
+
+create function fn_check_redemption_point(@cardid varchar(16),@giftType int)
+returns int
+as
+begin
+	declare @tmp_point int;
+	declare @gift_point int;
+	set @tmp_point = (	select jCustomer.JPOS_CurrentPoint 
+						from JPOS_Customer jCustomer,JPOS_Card jCard 
+						where jCustomer.JPOS_CardId = jCard.JPOS_CardId
+						and jCard.JPOS_CardId = @cardid);
+	set @gift_point = dbo.fn_get_gift_point(@giftType);
+	if( @gift_point is NULL)
+		return 0;
+	if( @tmp_point >= @gift_point)
+		return 1;
+	return 0;
+end
+
+/*
+--test
+declare @result int;
+update JPOS_Customer set JPOS_CurrentPoint = '80' where JPOS_IDCustomer = '38';
+select @result = dbo.fn_check_redemption_point('1234567812345678',1);
+select @result;
+
+update JPOS_Customer set JPOS_CurrentPoint = '450' where JPOS_IDCustomer = '38';
+select @result = dbo.fn_check_redemption_point('1234567812345678',10);
 select @result;
 
 */
