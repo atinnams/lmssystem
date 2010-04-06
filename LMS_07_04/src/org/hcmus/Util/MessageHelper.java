@@ -24,7 +24,7 @@ public class MessageHelper {
 
 			// checksum for point
 			if (result != Integer.parseInt(strPoint)) {
-				System.out.println("strPoint: " + strPoint);
+				//System.out.println("strPoint: " + strPoint);
 				return -1;
 			}
 
@@ -113,6 +113,22 @@ public class MessageHelper {
 			String strPoint = (String)msg.getValue(4);
 			ExchangeHelper ex = new ExchangeHelper();
 			result = Integer.parseInt(strPoint) / ex.getRate();
+		} catch (ISOException e) {
+			e.printStackTrace();
+			result = -1;
+		} catch(NumberFormatException ex) {
+			ex.printStackTrace();
+			result = -1;
+		}
+		
+		return result;
+	}
+	
+	public static int getGiftType(ISOMsg msg){
+		int result = 0;
+		try {
+			String strPoint = (String)msg.getValue(4);
+			result = Integer.parseInt(strPoint);
 		} catch (ISOException e) {
 			e.printStackTrace();
 			result = -1;

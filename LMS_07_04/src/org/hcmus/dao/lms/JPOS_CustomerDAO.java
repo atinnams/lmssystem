@@ -87,7 +87,6 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 				result = cstmt.getInt("Result");
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			result = -1;
 		}
@@ -107,6 +106,55 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 				cstmt.setString(2, cardId);
 				cstmt.execute();
 				result = cstmt.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result = -1;
+		}
+		
+		return result;
+	}
+	
+	@Override
+	public int checkRedemptionPoint(String cardNumber,int giftType,Connection con){
+		int result = -1;
+		try {
+			if(con != null) {
+				CallableStatement cstmt = null;
+				cstmt = (CallableStatement) con
+						.prepareCall("{ ? = call dbo.fn_check_redemption_point(?,?)}");
+				cstmt.registerOutParameter(1,java.sql.Types.INTEGER );
+				cstmt.setString(2, cardNumber);
+				cstmt.setInt(3, giftType);
+				cstmt.execute();
+				result = cstmt.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result = -1;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int redemption(String cardNumber, int taskid, int giftType,
+			String mid, String tid, String poscc, Connection con) {
+		int result = -1;
+		try {
+			if(con != null) {
+				CallableStatement cstmt = null;
+				cstmt = (CallableStatement) con
+						.prepareCall("{call dbo.sp_redemption(?,?,?,?,?,?,?)}");
+				cstmt.setString(1, cardNumber);
+				cstmt.setInt(2, taskid);
+				cstmt.setInt(3, giftType);
+				cstmt.setString(4, mid);
+				cstmt.setString(5, tid);
+				cstmt.setString(6,poscc);
+				cstmt.registerOutParameter(7,java.sql.Types.INTEGER );
+				cstmt.execute();
+				result = cstmt.getInt(7);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();

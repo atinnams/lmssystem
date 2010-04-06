@@ -19,6 +19,7 @@ public class Constant {
 	public final static String ACTIVATED_CARD = "CARD WAS ACTIVATED";
 	public final static String FORWARD_FAIL = "FORWARD_FAIL";
 	public final static String NO_ACTIVATED_CARD = "CARD WASN'T ACTIVATED ";
+	public final static String NOT_ENOUGH_POINT = "NOT_ENOUGH_POINT";
 	
 	public final static String ERROR_FLOW = "000000" ;
 	public final static String ADD_POINT_PROCESS = "407000";

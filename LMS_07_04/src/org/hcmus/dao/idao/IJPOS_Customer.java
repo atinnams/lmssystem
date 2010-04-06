@@ -52,4 +52,27 @@ public interface IJPOS_Customer {
 	 * @return Current point
 	 */
 	public int getCurrentPoint(String cardId,Connection con);
+	
+	/**
+	 * Check point of customer to exchange gift.
+	 * @param cardNumber Identify of card
+	 * @param giftType Gift type which want to exchange
+	 * @param con Connection of SQL server.
+	 * @return
+	 */
+	public int checkRedemptionPoint(String cardNumber,int giftType,Connection con);
+	
+	/**
+	 * Redemption business
+	 * @param cardNumber Identify of card
+	 * @param taskid Task identify
+	 * @param giftType Type of gift
+	 * @param mid Merchant identify
+	 * @param tid Terminal Identify
+	 * @param poscc Point of Service Condition Code
+	 * @param con Connection
+	 * @return Result of Redemption business
+	 */
+	public int redemption(String cardNumber,int taskid, int giftType,String mid,String tid,String poscc,Connection con);
+	
 }
