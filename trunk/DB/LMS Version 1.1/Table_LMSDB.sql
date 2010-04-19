@@ -5,6 +5,8 @@
 * Review By: Dat Tran
 * Approve : ...
 */
+Create database LMSDB
+go
 
 use LMSDB
 go
@@ -218,4 +220,20 @@ create table JPOS_Status
 	JPOS_StatusID int not null,
 	JPOS_StatusName varchar(50),
 	primary key(JPOS_statusID)
+)
+
+if object_id('JPOS_Rule') is not null
+	drop table JPOS_Rule
+go
+
+create table JPOS_Rule
+(
+	JPOS_RuleID int not null,
+	JPOS_StatusName varchar(50),
+	JPOS_EventID int not null,
+	JPOS_DateStart	datetime null,
+	JPOS_DateEnd	datetime null,
+	JPOS_Description	varchar(200),
+	JPOS_RuleString		nchar(200),
+	primary key(JPOS_RuleID)
 )

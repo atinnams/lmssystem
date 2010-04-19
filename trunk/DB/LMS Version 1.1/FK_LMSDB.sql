@@ -43,3 +43,7 @@ go
 alter table JPOS_Event
 add constraint FK_JPOS_Event_JPOS_Task foreign key(JPOS_TaskID) references JPOS_Task(JPOS_TaskID)
 go
+
+alter table JPOS_Rule
+add constraint FK_JPOS_Rule_JPOS_Event foreign key (JPOS_EventID) references JPOS_Event(JPOS_EventID)
+go 
