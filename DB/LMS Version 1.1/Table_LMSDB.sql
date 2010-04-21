@@ -5,7 +5,10 @@
 * Review By: Dat Tran
 * Approve : ...
 */
-Create database LMSDB
+drop database LMSDB
+go
+
+create database LMSDB
 go
 
 use LMSDB
@@ -149,6 +152,20 @@ create table JPOS_Log
 )
 go
 
+if object_id('JPOS_Log_Event') is not null
+	drop table JPOS_Log_Event
+go
+
+create table JPOS_Log_Event
+(
+	JPOS_LogID int not null, 			--refernces to JPOS_Log
+	JPOS_EventID int not null,
+	JPOS_PointGain int,
+	JPOS_PointLoss int,
+	primary key(JPOS_LogID,JPOS_EventID)
+)
+go
+
 -----------------------------------------------------------------------------------------------------
 
 if object_id('JPOS_Task') is not null
@@ -172,10 +189,12 @@ go
 create table JPOS_Event
 (
 	JPOS_EventID int not null,
+	JPOS_EventName nvarchar(100),
 	JPOS_DateStart datetime not null,
 	JPOS_DateEnd datetime not null,
 	JPOS_EventMessage nvarchar(200),
 	JPOS_TaskID int not null,    --references to Task table
+	JPOS_RuleID int not null, --references to Rule table
 	primary key(JPOS_EventID)
 )
 go
@@ -229,11 +248,8 @@ go
 create table JPOS_Rule
 (
 	JPOS_RuleID int not null,
-	JPOS_StatusName varchar(50),
-	JPOS_EventID int not null,
-	JPOS_DateStart	datetime null,
-	JPOS_DateEnd	datetime null,
+	JPOS_Money float not null,
+	JPOS_Point int not null,
 	JPOS_Description	varchar(200),
-	JPOS_RuleString		nchar(200),
 	primary key(JPOS_RuleID)
 )
