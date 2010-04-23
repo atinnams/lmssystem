@@ -37,4 +37,10 @@ public class MessageHelper_TEST extends TestCase {
 		String strPoint = MessageHelper.pointToStringField63(0,0,150,0,0);
 		assertEquals("000000000000000000000000000150000000000000000000000000000150",strPoint);
 	}
+	
+	public void testFormat(){
+		String format = MessageHelper.format("10", 4);
+		System.out.println(format);
+		assertEquals("0010", format);
+	}
 }
