@@ -2,8 +2,11 @@ package org.hcmus.Util;
 
 import org.jpos.iso.ISOException;
 import org.jpos.iso.ISOMsg;
+import org.jpos.util.NameRegistrar;
+import org.jpos.util.NameRegistrar.NotFoundException;
 
 public class MessageHelper {
+	
 	public static int getTotalPoint(ISOMsg msg) {
 		int result = 0;
 		String strPoint = "";
@@ -24,7 +27,6 @@ public class MessageHelper {
 
 			// checksum for point
 			if (result != Integer.parseInt(strPoint)) {
-				//System.out.println("strPoint: " + strPoint);
 				return -1;
 			}
 
@@ -94,6 +96,21 @@ public class MessageHelper {
 			return buffer.toString();
 		}
 	}
+	
+	public static String format(String s,int num) {
+		int length = s.length();
+		if (length >= num) {
+			return s.substring(0,num);
+		} else {
+			StringBuffer buffer = new StringBuffer();
+			for (int i = length; i < num; i++) {
+				buffer.append('0');
+			}
+			buffer.append(s);
+			return buffer.toString();
+		}
+	}
+	
 
 	public static String pointToStringField63(int rangePoint,int promotionPoint,int frequencyPoint,int birthdayPoint,int joinPoint) {
 		String result = "";
@@ -111,8 +128,29 @@ public class MessageHelper {
 		int result = 0;
 		try {
 			String strPoint = (String)msg.getValue(4);
-			ExchangeHelper ex = new ExchangeHelper();
-			result = Integer.parseInt(strPoint) / ex.getRate();
+			NormalRule normalRule = (NormalRule)NameRegistrar.get("normal.rule");
+			String amount = normalRule.getAmount();
+			String point = normalRule.getPoint();
+			result = (Integer.parseInt(strPoint) / Integer.parseInt(amount)) * Integer.parseInt(point) ;
+		} catch (ISOException e) {
+			e.printStackTrace();
+			result = -1;
+		} catch(NumberFormatException ex) {
+			ex.printStackTrace();
+			result = -1;
+		} catch (NotFoundException e) {
+			e.printStackTrace();
+			result = -1;
+		}
+		
+		return result;
+	}
+	
+	public static int getAmount(ISOMsg msg){
+		int result = 0;
+		try {
+			String strAmount = (String)msg.getValue(4);
+			result = Integer.parseInt(strAmount);
 		} catch (ISOException e) {
 			e.printStackTrace();
 			result = -1;
@@ -137,6 +175,13 @@ public class MessageHelper {
 			result = -1;
 		}
 		
+		return result;
+	}
+	
+	public static String makeTLV(String tag,String value){
+		String result = "";
+		int length = value.length();
+		result = tag + ConvertHelper.decToHex(length) + ConvertHelper.asciiToHex(value);
 		return result;
 	}
 }
