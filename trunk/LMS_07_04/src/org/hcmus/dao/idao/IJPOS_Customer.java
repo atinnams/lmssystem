@@ -30,11 +30,22 @@ public interface IJPOS_Customer {
 	 * @param con Connection.
 	 * @return result of add point business.
 	 */
-	public int addPoint(JPOS_CustomerDTO customer,int taskid, int point,String mid,String tid,String poscc,Connection con);
+	public int addNormalPoint(String cardNumber,int taskid, int point,String mid,String tid,String poscc,Connection con);
+	
+	/**
+	 * Get event point and log it in log event table
+	 * @param cardNumber Card number to add point
+	 * @param money money to calculate point
+	 * @param logId Log identify of Log table
+	 * @param con Connection to LMSDB( Loyalty Manage System Database)
+	 * @return point event
+	 */
+	public int addEventPoint(String cardNumber,float money,int logId,Connection con);
+	
 	
 	/**
 	 * Subtract point of customer to database.
-	 * @param customer customer information of customer.
+	 * @param cardNumber Card Number.
 	 * @param taskid which business id executed.
 	 * @param point point to add.
 	 * @param mid Merchant identify.
@@ -43,7 +54,7 @@ public interface IJPOS_Customer {
 	 * @param con Connection.
 	 * @return result of add point business.
 	 */
-	public int subtractPoint(JPOS_CustomerDTO customer,int taskid, int point,String mid,String tid,String poscc,Connection con);
+	public int subtractPoint(String cardNumber,int taskid, int point,String mid,String tid,String poscc,Connection con);
 	
 	/**
 	 * Get current point of customer with their card id

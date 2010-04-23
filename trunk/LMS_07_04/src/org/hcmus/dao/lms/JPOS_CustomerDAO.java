@@ -16,18 +16,24 @@ import org.hcmus.dao.idao.IJPOS_Customer;
  */
 public class JPOS_CustomerDAO implements IJPOS_Customer {
 
-	
 	@Override
 	public JPOS_CustomerDTO getCustomer(int customerId,Connection con) {
 		JPOS_CustomerDTO customer = new JPOS_CustomerDTO();
-		String SQL = "select * from JPOS_Customer where JPOS_IDCustomer = " +  customerId;
+		String SQL = "select * from JPOS_Customer where JPOS_CustomerID = " +  customerId;
 		Statement st;
 		try {
 			st = con.createStatement();
 			ResultSet rs = st.executeQuery(SQL);
 			if(rs.next()) {
 				customer.setJPOSID_customer(customerId);
-				customer.setJPOS_Barcode(rs.getString("JPOS_CardId"));
+				customer.setFirstName(rs.getString("JPOS_FirstName"));
+				customer.setLastName(rs.getString("JPOS_LastName"));
+				customer.setAddress(rs.getString("JPOS_Address"));
+				customer.setEmail(rs.getString("JPOS_Email"));
+				customer.setDateJoin(rs.getDate("JPOS_DateJoin"));
+				customer.setBirthDay(rs.getDate("JPOS_BirthDay"));
+				customer.setGender(rs.getBoolean("JPOS_Gender"));
+				customer.setFavorite(rs.getNString("JPOS_Favorite"));
 				customer.setJPOS_CurrentPoint(rs.getInt("JPOS_CurrentPoint"));
 			}
 		} catch (SQLException e) {
@@ -38,7 +44,7 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 	}
 
 	@Override
-	public int subtractPoint(JPOS_CustomerDTO customer, int taskid, int point,
+	public int subtractPoint(String cardNumber, int taskid, int point,
 			String mid, String tid, String poscc,Connection con) {
 		int result = -1;
 		try {
@@ -46,7 +52,7 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 				CallableStatement cstmt = null;
 				cstmt = (CallableStatement) con
 						.prepareCall("{call dbo.sp_Sub_Point(?,?,?,?,?,?,?)}");
-				cstmt.setString("CardId", customer.getJPOS_Barcode());
+				cstmt.setString("CardId", cardNumber);
 				cstmt.setInt("TaskID", taskid);
 				cstmt.setInt("Point", point);
 				cstmt.setString("MID", mid);
@@ -66,7 +72,7 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 	}
 
 	@Override
-	public int addPoint(JPOS_CustomerDTO customer, int taskid, int point,
+	public int addNormalPoint(String cardNumber, int taskid, int point,
 			String mid, String tid, String poscc,Connection con) {
 		
 		int result = -1;
@@ -74,8 +80,8 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 			if(con != null) {
 				CallableStatement cstmt = null;
 				cstmt = (CallableStatement) con
-						.prepareCall("{call dbo.sp_Add_Point(?,?,?,?,?,?,?)}");
-				cstmt.setString("CardId", customer.getJPOS_Barcode());
+						.prepareCall("{call dbo.sp_add_n_log_point(?,?,?,?,?,?,?)}");
+				cstmt.setString("CardId",cardNumber);
 				cstmt.setInt("TaskID", taskid);
 				cstmt.setInt("Point", point);
 				cstmt.setString("MID", mid);
@@ -155,6 +161,30 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 				cstmt.registerOutParameter(7,java.sql.Types.INTEGER );
 				cstmt.execute();
 				result = cstmt.getInt(7);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result = -1;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int addEventPoint(String cardNumber,float money, int logId,Connection con) {
+		
+		int result = -1;
+		try {
+			if(con != null) {
+				CallableStatement cstmt = null;
+				cstmt = (CallableStatement) con
+						.prepareCall("{call dbo.sp_get_n_log_event_point(?,?,?,?)}");
+				cstmt.setString("CardId", cardNumber);
+				cstmt.setFloat("money", money);
+				cstmt.setInt("LogId", logId);
+				cstmt.registerOutParameter(4,java.sql.Types.INTEGER );
+				cstmt.execute();
+				result = cstmt.getInt(4);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
