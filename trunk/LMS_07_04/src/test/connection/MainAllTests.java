@@ -1,9 +1,9 @@
 package test.connection;
 
-import test.bus.JPOS_CardBUS_TEST;
-import test.bus.JPOS_CustomerBUS_TEST;
-import test.bus.JPOS_MerchantBUS_TEST;
-import test.bus.JPOS_PoSCCBUS_TEST;
+import test.dao.JPOS_CardDAO_TEST;
+import test.dao.JPOS_CustomerDAO_TEST;
+import test.dao.JPOS_MerchantDAO_TEST;
+import test.dao.JPOS_PoSCCBUS_TEST;
 import test.util.MessageHelper_TEST;
 import junit.framework.Test;
 import junit.framework.TestCase;
@@ -19,13 +19,13 @@ public class MainAllTests extends TestCase {
 		TestSuite mainTest = new TestSuite();
 		
 		//Add all test method of JPOS_CardBUS_Test
-		mainTest.addTestSuite(JPOS_CardBUS_TEST.class);
+		mainTest.addTestSuite(JPOS_CardDAO_TEST.class);
 		
 		//Add all test method of JPOS_CustomerBUS_Test
-		mainTest.addTestSuite(JPOS_CustomerBUS_TEST.class);
+		mainTest.addTestSuite(JPOS_CustomerDAO_TEST.class);
 		
 		//Add all test method of JPOS_MerchantBUS_Test
-		mainTest.addTestSuite(JPOS_MerchantBUS_TEST.class);
+		mainTest.addTestSuite(JPOS_MerchantDAO_TEST.class);
 		
 		//Add all test method of JPOS_PoSCCBUS_Test
 		mainTest.addTestSuite(JPOS_PoSCCBUS_TEST.class);
