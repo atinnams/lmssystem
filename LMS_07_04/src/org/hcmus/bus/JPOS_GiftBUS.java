@@ -1,6 +1,7 @@
 package org.hcmus.bus;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import org.hcmus.dao.factory.LMSDAOFactory;
 import org.hcmus.dao.idao.IJPOS_Gift;
@@ -22,5 +23,16 @@ public class JPOS_GiftBUS {
 		LMSDAOFactory factory = LMSDAOFactory.getInstances();
 		IJPOS_Gift myGift = factory.getJPOS_Gift();
 		return myGift.getGiftPoint(giftType, con);
+	}
+	
+	/**
+	 * Get all gifts from the point of card number.
+	 * @param cardId Card Number
+	 * @return All gifts.
+	 */
+	public static ArrayList<JPOS_GiftDTO> getGifts(String cardId,Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Gift myGift = factory.getJPOS_Gift();
+		return myGift.getGifts(cardId, con);
 	}
 }

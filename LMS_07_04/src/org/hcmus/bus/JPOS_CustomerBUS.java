@@ -23,11 +23,25 @@ public class JPOS_CustomerBUS {
 	 * @param con Connection.
 	 * @return result of add point business.
 	 */
-	public static int addPoint(JPOS_CustomerDTO customer,int taskid, int point,
+	public static int addNormalPoint(String cardNumber,int taskid, int point,
 			String mid,String tid,String poscc,Connection con) {
 		LMSDAOFactory factory = LMSDAOFactory.getInstances();
 		IJPOS_Customer myCustomer = factory.getJPOS_Customer();
-		return myCustomer.addPoint(customer, taskid, point, mid,tid,poscc,con);
+		return myCustomer.addNormalPoint(cardNumber, taskid, point, mid,tid,poscc,con);
+	}
+	
+	/**
+	 * Get event point and log it in log event table
+	 * @param card number to add point
+	 * @param money money to calculate point
+	 * @param logId Log identify of Log table
+	 * @param con Connection to LMSDB( Loyalty Manage System Database)
+	 * @return point event
+	 */
+	public static int addEventPoint(String cardNumber,float money,int logId,Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+		return myCustomer.addEventPoint(cardNumber,money, logId, con);
 	}
 	
 	/**
@@ -41,11 +55,11 @@ public class JPOS_CustomerBUS {
 	 * @param con Connection.
 	 * @return result of add point business.
 	 */
-	public static int subtractPoint(JPOS_CustomerDTO customer,int taskid, int point,
+	public static int subtractPoint(String cardNumber,int taskid, int point,
 			String mid,String tid,String poscc,Connection con) {
 		LMSDAOFactory factory = LMSDAOFactory.getInstances();
 		IJPOS_Customer myCustomer = factory.getJPOS_Customer();
-		return myCustomer.subtractPoint(customer, taskid, point, mid,tid,poscc,con);
+		return myCustomer.subtractPoint(cardNumber, taskid, point, mid,tid,poscc,con);
 	}
 	
 	/**
