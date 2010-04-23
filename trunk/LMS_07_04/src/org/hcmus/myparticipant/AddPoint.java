@@ -6,23 +6,25 @@ import java.sql.Connection;
 import org.hcmus.Util.Constant;
 import org.hcmus.Util.MessageHelper;
 import org.hcmus.bus.JPOS_CustomerBUS;
-import org.hcmus.bus.JPOS_CustomerDTO;
 import org.jpos.iso.ISOMsg;
 import org.jpos.transaction.Context;
 import org.jpos.transaction.TransactionParticipant;
 
 /**
  * Update point to database server.
+ * 
  * @author HUNGPT
- *
+ * 
  */
 public class AddPoint implements TransactionParticipant {
 
 	@Override
-	public void abort(long id, Serializable serializeable) { }
+	public void abort(long id, Serializable serializeable) {
+	}
 
 	@Override
-	public void commit(long id, Serializable serializeable) { }
+	public void commit(long id, Serializable serializeable) {
+	}
 
 	@Override
 	public int prepare(long id, Serializable serializeable) {
@@ -38,6 +40,9 @@ public class AddPoint implements TransactionParticipant {
 			/** get point from the message **/
 			int point = MessageHelper.getPoint(msg);
 
+			/** get amount from message **/
+			int amount = MessageHelper.getAmount(msg);
+
 			/** get card number **/
 			String cardNumber = MessageHelper.getCardId(msg);
 
@@ -46,39 +51,44 @@ public class AddPoint implements TransactionParticipant {
 
 			/** get TID **/
 			String tid = MessageHelper.getTID(msg);
-
-			/** Get PoSCC **/
-			String poscc = MessageHelper.getPoSCC(msg);
-
-			/** Construct a customer **/
-			JPOS_CustomerDTO customer = new JPOS_CustomerDTO();
-
-			/** Set bar code for customer **/
-			customer.setJPOS_Barcode(cardNumber);
-
+			
+			if(point == -1){
+				ctx.put(Constant.RC, "14");
+				return ABORTED | READONLY | NO_JOIN;
+			}
+			
 			/** Add point business **/
-			int result = JPOS_CustomerBUS.addPoint(customer, 1, point, mid,
-					tid, poscc, con);
+			int logId = JPOS_CustomerBUS.addNormalPoint(cardNumber, 1, point,
+					mid, tid, "01", con);
 
-			/** convert point to response string message **/
-			String strPoint = MessageHelper.pointToStringField63(0, 0, point,
-					0, 0);
+			/** Declare event point **/
+			int eventPoint = 0;
 
-			/** put it to context for response participant **/
+			if (logId <= 0) {
+				ctx.put(Constant.RC, "14");
+				return ABORTED | READONLY | NO_JOIN;
+			} else {
+				/** log into event log and return event point **/
+				eventPoint = JPOS_CustomerBUS.addEventPoint(cardNumber,amount, logId, con);
+			}
+
+			/** put normal + event point to context for response participant **/
+			point += eventPoint;
+
+			int totalPoint = JPOS_CustomerBUS.getCurrentPoint(cardNumber, con);
+
+			String strPoint = MessageHelper.makeTLV("FF51", MessageHelper
+					.format(Integer.toString(point), 4))
+					+ MessageHelper.makeTLV("FF52", MessageHelper.format(
+							Integer.toString(totalPoint), 4));
+
 			ctx.put(Constant.POINT, strPoint);
 
-			// TODO Change it after prepare procedure in DB
-			/*
-			 * if(result == 0) { ctx.put(Constant.RC, "14"); return ABORTED |
-			 * NO_JOIN; }else { result = JPOS_CardBUS.checkExpire(cardNumber);
-			 * if(result == 0) { ctx.put(Constant.RC, "54"); return ABORTED |
-			 * NO_JOIN; } }
-			 */
 			return PREPARED | READONLY | NO_JOIN;
 
 		} else {
 			ctx.put(Constant.RC, "12");
-			return ABORTED | NO_JOIN;
+			return ABORTED | READONLY | NO_JOIN;
 		}
 
 	}

@@ -55,10 +55,9 @@ public class SubtractPoint implements TransactionParticipant {
 			JPOS_CustomerDTO customer = new JPOS_CustomerDTO();
 
 			/** Set bar code for customer **/
-			customer.setJPOS_Barcode(cardNumber);
 
 			/** Subtract point business **/
-			int result = JPOS_CustomerBUS.subtractPoint(customer, 2 , point, mid,
+			int result = JPOS_CustomerBUS.subtractPoint(cardNumber, 2 , point, mid,
 					tid, poscc, con);
 
 			/** convert point to response string message **/

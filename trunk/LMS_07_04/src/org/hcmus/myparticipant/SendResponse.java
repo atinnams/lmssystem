@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import org.hcmus.Util.Constant;
+import org.hcmus.Util.MessageHelper;
 import org.jpos.iso.ISOException;
 import org.jpos.iso.ISOMsg;
 import org.jpos.iso.ISOSource;
+import org.jpos.iso.ISOUtil;
 import org.jpos.iso.ISOFilter.VetoException;
 import org.jpos.transaction.AbortParticipant;
 import org.jpos.transaction.Context;
@@ -64,53 +66,66 @@ public class SendResponse implements AbortParticipant {
 			ISOMsg msg = (ISOMsg) ctx.get(Constant.REQUEST);
 			String rc = (String)ctx.get(Constant.RC);
 			String point = (String)ctx.get(Constant.POINT);
+			String advertisement = (String)ctx.get(Constant.ADVERTISE);
 			if (source != null && source.isConnected() && msg != null) {
-				msg.set(0,"0210");
+				ISOMsg msgResponse = new ISOMsg();
+				msgResponse.set(0,"0210");
+				msgResponse.set(3,(String)msg.getValue(3));
+				msgResponse.set(41,(String)msg.getValue(41));
+				msgResponse.set(42,(String)msg.getValue(42));
 				if(rc == null || "00".equals(rc)) {
-					msg.set(39, "00");
-					msg.set(62,Constant.SUCCESFULL);
-					if(point != null){
-						msg.set(63,point);
-					}
+					msgResponse.set(39, "00");
+					msgResponse.set(48,ISOUtil.hex2byte(point));
+					msgResponse.set(61,ISOUtil.hex2byte(advertisement));
 				}
 				else if(rc != null) {
 					int error = Integer.parseInt(rc);
+					String strError = "";
 					switch(error){
 					case 14 :
-						msg.set(39,"14");
-						msg.set(62,Constant.CARD_NOT_FOUND);
+						msgResponse.set(39,"14");
+						strError = MessageHelper.makeTLV("FF01",Constant.CARD_NOT_FOUND);
+						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
 					case 54 :
-						msg.set(39,"54");
-						msg.set(62,Constant.EXPIRE_CARD);
+						msgResponse.set(39,"54");
+						strError = MessageHelper.makeTLV("FF01",Constant.EXPIRE_CARD);
+						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
 					case 15:
-						msg.set(39,"15");
-						msg.set(62,Constant.INVALID_FIELD);
+						msgResponse.set(39,"15");
+						strError = MessageHelper.makeTLV("FF01",Constant.INVALID_FIELD);
+						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
 					case 3 :
-						msg.set(39,"03");
-						msg.set(62,Constant.MID_OR_TID_NOT_FOUND);
+						msgResponse.set(39,"03");
+						strError = MessageHelper.makeTLV("FF01",Constant.MID_OR_TID_NOT_FOUND);
+						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
 					case 58:
-						msg.set(39,"58");
-						msg.set(62,Constant.POSCC_NOT_FOUND);
+						msgResponse.set(39,"58");
+						strError = MessageHelper.makeTLV("FF01",Constant.POSCC_NOT_FOUND);
+						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
 					case 24:
-						msg.set(39,"24");
-						msg.set(62,Constant.FORWARD_FAIL);
+						msgResponse.set(39,"24");
+						strError = MessageHelper.makeTLV("FF01",Constant.FORWARD_FAIL);
+						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
 					case 93 :
-						msg.set(39,"93");
-						msg.set(62,Constant.NO_ACTIVATED_CARD);
+						msgResponse.set(39,"93");
+						strError = MessageHelper.makeTLV("FF01",Constant.NO_ACTIVATED_CARD);
+						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
 					default :
-						msg.set(39,"12");
-						msg.set(62,Constant.OTHER_ERROR);
+						msgResponse.set(39,"12");
+						strError = MessageHelper.makeTLV("FF01",Constant.OTHER_ERROR);
+						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
 					}
 				}
-				source.send(msg);
+				
+				source.send(msgResponse);
 			}
 		} catch (VetoException e) {
 			e.printStackTrace();
