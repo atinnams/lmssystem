@@ -49,6 +49,8 @@ public class DataProvider {
 			/** Get connection **/
 			con = DriverManager.getConnection(connectionUrl, "sa", "matkhau");
 			
+			dbConfig = null; //make a change to GC deallocate dbConfig reference
+			
 		} catch (SQLException ex) {
 			ex.printStackTrace();
 			return null;

@@ -15,7 +15,7 @@ public class JPOS_MerchantDAO implements IJPOS_Merchant {
 			if(con != null) {
 				CallableStatement cstmt = null;
 				cstmt = (CallableStatement) con
-						.prepareCall("{ ? = call dbo.fn_check_merchant(?,?)}");
+						.prepareCall("{ ? = call dbo.fn_check_merchant_n_terminal(?,?)}");
 				cstmt.registerOutParameter(1,java.sql.Types.INTEGER );
 				cstmt.setString(2, mid);
 				cstmt.setString(3, tid);
