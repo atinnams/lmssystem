@@ -7,11 +7,14 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
-
+<%@page import="org.hcmus.dao.lms.*,java.sql.Connection,java.sql.DriverManager,java.sql.SQLException" %>
+<%
+    Connection myConn = DataProvider.getConnection(this.getServletConfig());
+%>
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-    <title>CliKPro Template</title>
+    <title>LMS System index page</title>
     
     <script type="text/javascript">
     <!--
@@ -86,12 +89,12 @@
                             	<td><span class="text1">Username:</span></td>
                                 <td><input type="text" value="" name="txtUseName" maxlength="30" size="20" /></td>
                                 <td align="left"><input type="button" value="Log In" name="Login"/></td>
-                            <tr>
+                            </tr>
                             
                             <tr>
                             	<td><span class="text1">Password:</span></td>
                                 <td><input type="password" value="" name="txtPassword" maxlength="30" size="20" /></td>
-                            <tr>
+                            </tr>
                            
                         </table>
                     </form>
