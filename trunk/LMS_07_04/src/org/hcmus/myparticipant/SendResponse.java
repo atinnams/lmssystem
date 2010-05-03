@@ -64,10 +64,19 @@ public class SendResponse implements AbortParticipant {
 
 		try {
 			ISOMsg msg = (ISOMsg) ctx.get(Constant.REQUEST);
+			
+			//Get response code 
 			String rc = (String)ctx.get(Constant.RC);
+			
+			//Get point
 			String point = (String)ctx.get(Constant.POINT);
+			
+			//Get advertisement
 			String advertisement = (String)ctx.get(Constant.ADVERTISE);
+			
 			if (source != null && source.isConnected() && msg != null) {
+				
+				//Create new message response
 				ISOMsg msgResponse = new ISOMsg();
 				msgResponse.set(0,"0210");
 				msgResponse.set(3,(String)msg.getValue(3));
@@ -115,6 +124,11 @@ public class SendResponse implements AbortParticipant {
 					case 93 :
 						msgResponse.set(39,"93");
 						strError = MessageHelper.makeTLV("FF01",Constant.NO_ACTIVATED_CARD);
+						msgResponse.set(61,ISOUtil.hex2byte(strError));
+						break;
+					case 95 :
+						msgResponse.set(39,"95");
+						strError = MessageHelper.makeTLV("FF01",Constant.NOT_ENOUGH_POINT);
 						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
 					default :

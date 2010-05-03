@@ -6,27 +6,29 @@ import java.sql.Connection;
 import org.hcmus.Util.Constant;
 import org.hcmus.Util.MessageHelper;
 import org.hcmus.bus.JPOS_CustomerBUS;
-import org.hcmus.bus.JPOS_CustomerDTO;
 import org.jpos.iso.ISOMsg;
 import org.jpos.transaction.Context;
 import org.jpos.transaction.TransactionParticipant;
 
 /**
  * Subtract point to database server.
+ * 
  * @author HUNGPT
- *
+ * 
  */
 public class SubtractPoint implements TransactionParticipant {
 
 	@Override
-	public void abort(long arg0, Serializable arg1) { }
+	public void abort(long arg0, Serializable arg1) {
+	}
 
 	@Override
-	public void commit(long arg0, Serializable arg1) { }
+	public void commit(long arg0, Serializable arg1) {
+	}
 
 	@Override
 	public int prepare(long id, Serializable serializable) {
-		
+
 		Context ctx = (Context) serializable;
 		ISOMsg msg = (ISOMsg) ctx.get(Constant.REQUEST);
 		Connection con = (Connection) ctx.get(Constant.CONN);
@@ -48,32 +50,26 @@ public class SubtractPoint implements TransactionParticipant {
 			/** get TID **/
 			String tid = MessageHelper.getTID(msg);
 
-			/** Get PoSCC **/
-			String poscc = MessageHelper.getPoSCC(msg);
-
-			/** Construct a customer **/
-			JPOS_CustomerDTO customer = new JPOS_CustomerDTO();
-
-			/** Set bar code for customer **/
-
 			/** Subtract point business **/
-			int result = JPOS_CustomerBUS.subtractPoint(cardNumber, 2 , point, mid,
-					tid, poscc, con);
+			int result = JPOS_CustomerBUS.subtractPoint(cardNumber, 2, point,
+					mid, tid, "01", con);
 
-			/** convert point to response string message **/
-			String strPoint = MessageHelper.pointToStringField63(0, 0, point,
-					0, 0);
+			if (result == 0) {
+				ctx.put(Constant.RC, "12");
+				return ABORTED | READONLY | NO_JOIN;
+			} else {
+				int totalPoint = JPOS_CustomerBUS.getCurrentPoint(cardNumber,
+						con);
 
-			/** put it to context for response participant **/
-			ctx.put(Constant.POINT, strPoint);
+				String strPoint = MessageHelper.makeTLV("FF51", MessageHelper
+						.format(Integer.toString(point), 4))
+						+ MessageHelper.makeTLV("FF52", MessageHelper.format(
+								Integer.toString(totalPoint), 4));
 
-			// TODO Change it after prepare procedure in DB
-			/*
-			 * if(result == 0) { ctx.put(Constant.RC, "14"); return ABORTED |
-			 * NO_JOIN; }else { result = JPOS_CardBUS.checkExpire(cardNumber);
-			 * if(result == 0) { ctx.put(Constant.RC, "54"); return ABORTED |
-			 * NO_JOIN; } }
-			 */
+				ctx.put(Constant.POINT, strPoint);
+
+			}
+
 			return PREPARED | READONLY | NO_JOIN;
 
 		} else {

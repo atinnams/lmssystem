@@ -6,7 +6,6 @@ import java.sql.Connection;
 import org.hcmus.Util.Constant;
 import org.hcmus.Util.MessageHelper;
 import org.hcmus.bus.JPOS_CustomerBUS;
-import org.hcmus.bus.JPOS_CustomerDTO;
 import org.hcmus.bus.JPOS_GiftBUS;
 import org.jpos.iso.ISOMsg;
 import org.jpos.transaction.Context;
@@ -34,7 +33,7 @@ public class Redemption implements TransactionParticipant {
 		if (msg != null) {
 
 			/** get gift type from the message **/
-			int giftType = MessageHelper.getGiftType(msg);
+			int giftPoint = MessageHelper.getGiftPoint(msg);
 
 			/** get card number **/
 			String cardNumber = MessageHelper.getCardId(msg);
@@ -45,27 +44,33 @@ public class Redemption implements TransactionParticipant {
 			/** get TID **/
 			String tid = MessageHelper.getTID(msg);
 
-			/** Get PoSCC **/
-			String poscc = MessageHelper.getPoSCC(msg);
-
 			/** Add point business **/
-			int result = JPOS_CustomerBUS.redemption(cardNumber, 3, giftType,
-					mid, tid, poscc, con);
+			int result = JPOS_CustomerBUS.redemption(cardNumber, 3, giftPoint,
+					mid, tid, "01", con);
 
-			int currentPoint = JPOS_CustomerBUS
-					.getCurrentPoint(cardNumber, con);
-			int giftPoint = JPOS_GiftBUS.getGiftPoint(giftType, con);
-			String point = MessageHelper.format(Integer.toString(giftPoint))
-					+ MessageHelper.format(Integer.toString(currentPoint));
-			ctx.put(Constant.POINT, point);
-
-			// TODO Change it after prepare procedure in DB
-			/*
-			 * if(result == 0) { ctx.put(Constant.RC, "14"); return ABORTED |
-			 * NO_JOIN; }else { result = JPOS_CardBUS.checkExpire(cardNumber);
-			 * if(result == 0) { ctx.put(Constant.RC, "54"); return ABORTED |
-			 * NO_JOIN; } }
-			 */
+			if (result == 0) {
+				ctx.put(Constant.RC, "12");
+				return ABORTED | READONLY | NO_JOIN;
+			} 
+			
+			int reservePoint = JPOS_CustomerBUS.getCurrentPoint(cardNumber, con);
+			
+			/** convert point to response string message **/
+			String strPoint = MessageHelper.makeTLV("FF51", MessageHelper
+					.format(Integer.toString(reservePoint), 4));
+			
+			ctx.put(Constant.POINT, strPoint);
+			
+			String giftInfo = JPOS_GiftBUS.getGiftName(giftPoint, con);
+			
+			if(giftInfo.isEmpty()){
+				ctx.put(Constant.RC, "12");
+				return ABORTED | READONLY | NO_JOIN;
+			}
+			
+			giftInfo = MessageHelper.makeTLV("FF51", giftInfo);
+			ctx.put(Constant.ADVERTISE, giftInfo);
+			
 			return PREPARED | READONLY | NO_JOIN;
 
 		} else {
