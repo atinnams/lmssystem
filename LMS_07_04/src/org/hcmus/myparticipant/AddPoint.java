@@ -19,12 +19,10 @@ import org.jpos.transaction.TransactionParticipant;
 public class AddPoint implements TransactionParticipant {
 
 	@Override
-	public void abort(long id, Serializable serializeable) {
-	}
+	public void abort(long id, Serializable serializeable) { }
 
 	@Override
-	public void commit(long id, Serializable serializeable) {
-	}
+	public void commit(long id, Serializable serializeable) { }
 
 	@Override
 	public int prepare(long id, Serializable serializeable) {
@@ -68,7 +66,7 @@ public class AddPoint implements TransactionParticipant {
 				ctx.put(Constant.RC, "14");
 				return ABORTED | READONLY | NO_JOIN;
 			} else {
-				/** log into event log and return event point **/
+				/** write into event log and return event point **/
 				eventPoint = JPOS_CustomerBUS.addEventPoint(cardNumber,amount, logId, con);
 			}
 
