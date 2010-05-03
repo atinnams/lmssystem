@@ -122,7 +122,7 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 	}
 	
 	@Override
-	public int checkRedemptionPoint(String cardNumber,int giftType,Connection con){
+	public int checkRedemptionPoint(String cardNumber,int giftPoint,Connection con){
 		int result = -1;
 		try {
 			if(con != null) {
@@ -131,7 +131,7 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 						.prepareCall("{ ? = call dbo.fn_check_redemption_point(?,?)}");
 				cstmt.registerOutParameter(1,java.sql.Types.INTEGER );
 				cstmt.setString(2, cardNumber);
-				cstmt.setInt(3, giftType);
+				cstmt.setInt(3, giftPoint);
 				cstmt.execute();
 				result = cstmt.getInt(1);
 			}

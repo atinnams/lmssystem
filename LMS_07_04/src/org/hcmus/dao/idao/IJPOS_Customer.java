@@ -67,11 +67,11 @@ public interface IJPOS_Customer {
 	/**
 	 * Check point of customer to exchange gift.
 	 * @param cardNumber Identify of card
-	 * @param giftType Gift type which want to exchange
+	 * @param giftPoint Gift point which want to exchange
 	 * @param con Connection of SQL server.
 	 * @return
 	 */
-	public int checkRedemptionPoint(String cardNumber,int giftType,Connection con);
+	public int checkRedemptionPoint(String cardNumber,int giftPoint,Connection con);
 	
 	/**
 	 * Redemption business

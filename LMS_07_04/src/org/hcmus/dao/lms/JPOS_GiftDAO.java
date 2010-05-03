@@ -13,15 +13,15 @@ import org.hcmus.dao.idao.IJPOS_Gift;
 public class JPOS_GiftDAO implements IJPOS_Gift {
 
 	@Override
-	public int getGiftPoint(int giftType, Connection con) {
+	public int checkGiftPoint(int giftPoint, Connection con) {
 		int result = -1;
 		try {
 			if (con != null) {
 				CallableStatement cstmt = null;
 				cstmt = (CallableStatement) con
-						.prepareCall("{ ? = call dbo.fn_get_gift_point(?)}");
+						.prepareCall("{ ? = call dbo.fn_check_gift_point(?)}");
 				cstmt.registerOutParameter(1, java.sql.Types.INTEGER);
-				cstmt.setInt(2, giftType);
+				cstmt.setInt(2, giftPoint);
 				cstmt.execute();
 				result = cstmt.getInt(1);
 			}
@@ -61,6 +61,27 @@ public class JPOS_GiftDAO implements IJPOS_Gift {
 		}
 		
 		return lstGifts;
+	}
+
+	@Override
+	public String getGiftName(int giftPoint,Connection con) {
+		
+		String result = "";
+		try {
+			if (con != null) {
+				CallableStatement cstmt = null;
+				cstmt = (CallableStatement) con
+						.prepareCall("{ ? = call dbo.fn_get_gift_name(?)}");
+				cstmt.registerOutParameter(1, java.sql.Types.NVARCHAR);
+				cstmt.setInt(2, giftPoint);
+				cstmt.execute();
+				result = cstmt.getNString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result = "";
+		}
+		return result;
 	}
 
 }
