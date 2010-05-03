@@ -6,7 +6,6 @@ import java.sql.Statement;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
-import org.hcmus.bus.JPOS_CustomerBUS;
 import org.hcmus.bus.JPOS_CustomerDTO;
 import org.hcmus.dao.lms.JPOS_CustomerDAO;
 
@@ -51,10 +50,27 @@ public class JPOS_CustomerDAO_TEST extends TestCase {
 		}
 	}
 	
-	/*
+	
 	public void testSubPoint() {
-		JPOS_CustomerBUS.subtractPoint("1234567812345678",1, 100, "000000000000001","00000001","01",con);
-		JPOS_CustomerDTO customerAssert = JPOS_CustomerBUS.getCustomer(38,con);
+		JPOS_CustomerDAO customerDAO = new JPOS_CustomerDAO();
+		int result = customerDAO.subtractPoint("1234567812345678",2, 100, "000000000000001","00000001","01",con);
+		JPOS_CustomerDTO customerAssert = customerDAO.getCustomer(1,con);
 		Assert.assertEquals(customerAssert.getJPOS_CurrentPoint(), 50);
-	}*/
+		if(result == 0){
+			fail();
+		}
+	}
+	
+	public void testGiftPoint(){
+		JPOS_CustomerDAO customerDAO = new JPOS_CustomerDAO();
+		int result = customerDAO.checkRedemptionPoint("1234567812345678", 200, con);
+		Assert.assertEquals(0,result);
+		
+		result = customerDAO.checkRedemptionPoint("1234567812345678", 10, con);
+		Assert.assertEquals(1,result);
+		
+		if(result == 0){
+			fail();
+		}
+	}
 }
