@@ -23,6 +23,15 @@ public class JPOS_GiftDAO_TEST extends TestCase {
 	public void tearDown() {
 		con = null;
 	}
+	
+	public void testCheckGiftPoint(){
+		JPOS_GiftDAO giftDAO = new JPOS_GiftDAO();
+		int result = giftDAO.checkGiftPoint(10, con);
+		assertEquals("1", Integer.toString(result));
+		
+		result = giftDAO.checkGiftPoint(12, con);
+		assertEquals("0", Integer.toString(result));
+	}
 
 	public void testGetGifts() {
 		JPOS_GiftDAO giftDAO = new JPOS_GiftDAO();
@@ -38,6 +47,15 @@ public class JPOS_GiftDAO_TEST extends TestCase {
 				System.out.println(gift.getPointForGift());
 			}
 		}
+	}
+	
+	public void testGetGiftName(){
+		JPOS_GiftDAO giftDAO = new JPOS_GiftDAO();
+		String giftName = giftDAO.getGiftName(10, con);
+		if(giftName.isEmpty()){
+			fail();
+		}
+		System.out.println(giftName);
 	}
 
 }

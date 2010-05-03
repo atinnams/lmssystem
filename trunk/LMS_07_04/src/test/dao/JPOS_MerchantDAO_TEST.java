@@ -4,8 +4,6 @@ import java.sql.Connection;
 
 import junit.framework.TestCase;
 
-import org.hcmus.bus.JPOS_MerchantBUS;
-import org.hcmus.dao.lms.DataProvider;
 import org.hcmus.dao.lms.JPOS_MerchantDAO;
 
 public class JPOS_MerchantDAO_TEST extends TestCase {
