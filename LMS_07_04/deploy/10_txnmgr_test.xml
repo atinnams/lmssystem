@@ -34,14 +34,14 @@
  
  <group name="SubtractPoint">
 	 <participant class="org.hcmus.myparticipant.CheckField" logger="Q2" >
- 		<property name="fields" value="3,4,11,12,13,25,35,41,42" /> 
+ 		<property name="fields" value="3,4,35,41,42" /> 
  	 </participant>
  
 	 <participant class="org.hcmus.myparticipant.Open" logger="Q2"></participant>
 	 <participant class="org.hcmus.myparticipant.CheckCard" logger="Q2" > </participant>
 	 <participant class="org.hcmus.myparticipant.CheckMerchant" logger="Q2" > </participant>
-	 <participant class="org.hcmus.myparticipant.CheckPoSCC" logger="Q2" > </participant>
 	 <participant class="org.hcmus.myparticipant.SubtractPoint" logger="Q2" > </participant>
+	 <participant class="org.hcmus.myparticipant.MakeAdvertisementMessage" logger="Q2"></participant>
 	 <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
 	 <participant class="org.hcmus.myparticipant.Close" logger="Q2"></participant>
  </group> 
@@ -53,26 +53,25 @@
  
  <group name="BalanceInquiry">
  	 <participant class="org.hcmus.myparticipant.CheckField" logger="Q2" >
- 		<property name="fields" value="3,11,12,13,25,35,41,42" /> 
+ 		<property name="fields" value="3,35,41,42" /> 
  	 </participant>
  
 	 <participant class="org.hcmus.myparticipant.Open" logger="Q2"></participant>
 	 <participant class="org.hcmus.myparticipant.CheckCard" logger="Q2" > </participant>
 	 <participant class="org.hcmus.myparticipant.CheckMerchant" logger="Q2" > </participant>
-	 <participant class="org.hcmus.myparticipant.CheckPoSCC" logger="Q2" > </participant>
 	 <participant class="org.hcmus.myparticipant.BalanceInquiry" logger="Q2" > </participant>
+	 <participant class="org.hcmus.myparticipant.MakeAdvertisementMessage" logger="Q2"></participant>
 	 <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
 	 <participant class="org.hcmus.myparticipant.Close" logger="Q2"></participant>
  </group>
   
  <group name="Activation">
  	 <participant class="org.hcmus.myparticipant.CheckField" logger="Q2" >
- 		<property name="fields" value="3,11,12,13,25,35,41,42" /> 
+ 		<property name="fields" value="3,35,41,42" /> 
  	 </participant>
  
 	 <participant class="org.hcmus.myparticipant.Open" logger="Q2"></participant>
 	 <participant class="org.hcmus.myparticipant.CheckMerchant" logger="Q2" > </participant>
-	 <participant class="org.hcmus.myparticipant.CheckPoSCC" logger="Q2" > </participant>
 	 <participant class="org.hcmus.myparticipant.CheckActivatedCard" logger="Q2" > </participant>
 	 <participant class="org.hcmus.myparticipant.ActivatedCard" logger="Q2" > </participant>
 	 <participant class="org.hcmus.myparticipant.SendActivationResponse" logger="Q2"></participant>
@@ -82,16 +81,15 @@
   
  <group name="Redemption">
  	<participant class="org.hcmus.myparticipant.CheckField" logger="Q2" >
- 		<property name="fields" value="3,4,11,12,13,25,35,41,42" /> 
+ 		<property name="fields" value="3,4,35,41,42" /> 
  	</participant>
  
 	 <participant class="org.hcmus.myparticipant.Open" logger="Q2"></participant>
 	 <participant class="org.hcmus.myparticipant.CheckCard" logger="Q2" > </participant>
 	 <participant class="org.hcmus.myparticipant.CheckMerchant" logger="Q2" > </participant>
-	 <participant class="org.hcmus.myparticipant.CheckPoSCC" logger="Q2" > </participant>
 	 <participant class="org.hcmus.myparticipant.CheckGiftPoint" logger="Q2" > </participant>
 	 <participant class="org.hcmus.myparticipant.Redemption" logger="Q2" > </participant>
-	 <participant class="org.hcmus.myparticipant.SendRedemptionResponse" logger="Q2"></participant>
+	 <participant class="org.hcmus.myparticipant.SendResponse" logger="Q2"></participant>
 	 <participant class="org.hcmus.myparticipant.Close" logger="Q2"></participant>
  </group> 
  
