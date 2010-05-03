@@ -119,10 +119,7 @@ go
 if object_id('sp_Sub_Point') is not null
 	drop proc sp_Sub_Point;
 go
-/* 
-Modify by Khuyen Nguyen 
-Day Modified : 24/4/2010
-*/
+
 create procedure sp_Sub_Point(@CardId varchar(16),@TaskID int,@Point int,@MID varchar(15),@TID varchar(8),@PoSCC varchar(2),@Result int output)
 as
 begin	
@@ -174,15 +171,12 @@ go
 if object_id('sp_redemption') is not null
 	drop proc sp_redemption
 go
-/* 
-Modify by Khuyen Nguyen 
-Day Modified : 24/4/2010
-*/
-create proc sp_redemption(@CardId varchar(16),@TaskID int,@giftType int,@MID varchar(15),@TID varchar(8),@PoSCC varchar(2),@Result int output)
+
+create proc sp_redemption(@CardId varchar(16),@TaskID int,@giftPoint int,@MID varchar(15),@TID varchar(8),@PoSCC varchar(2),@Result int output)
 as
 begin
 	declare @Customer int;
-	declare @giftPoint int;
+	declare @giftType int;
 	declare @id_log int;
 	begin transaction;	
 	select @Customer = jCustomer.JPOS_CustomerID from JPOS_Customer jCustomer,JPOS_Card jCard where jCard.JPOS_CardId = @CardId and jCard.JPOS_CustomerID = jCustomer.JPOS_CustomerID;
@@ -192,9 +186,7 @@ begin
 			rollback transaction;
 		end
 	
-	set @giftPoint = dbo.fn_get_gift_point(@giftType);
 	update JPOS_Customer set JPOS_CurrentPoint = JPOS_CurrentPoint - @giftPoint where JPOS_CustomerID = @Customer
-	if  (@@rowcount = 0)
 	if  (@@rowcount = 0)
 	begin
 		set @Result = 0;
@@ -212,6 +204,7 @@ begin
 	
 	set @id_log = @@identity
 	
+	set @giftType = dbo.fn_get_gift_id(@giftPoint);
 	insert into JPOS_Log_Exchange(JPOS_LogID,JPOS_Gift) values(@id_log,@giftType)
 	if  (@@rowcount = 0)
 	begin

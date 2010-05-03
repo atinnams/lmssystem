@@ -1,4 +1,4 @@
-use LMSDB
+use LMSDB;
 
 if object_id('fn_check_card') is not null
 	drop function fn_check_card
@@ -148,32 +148,71 @@ select @result;
 
 --===========================================================================
 
-if object_id('fn_get_gift_point') is not null
-	drop function fn_get_gift_point
+if object_id('fn_check_gift_point') is not null
+	drop function fn_check_gift_point
 go
 
-create function fn_get_gift_point(@giftType int)
+create function fn_check_gift_point(@giftPoint int)
 returns int
 as
 begin
-	return (select JPOS_PointForGift from JPOS_Gift where JPOS_GiftID = @giftType);
+	return (select count(*) from JPOS_Gift where JPOS_PointForGift = @giftPoint);
 end
 go
 /*
 --test
 select * from JPOS_Gift;
 declare @result int;
-select @result = dbo.fn_get_gift_point(1);
+select @result = dbo.fn_check_gift_point(10);
 select @result;
 */
 
+--===========================================================================
+
+if object_id('fn_get_gift_id') is not null
+	drop function fn_get_gift_id
+go
+
+create function fn_get_gift_id(@giftPoint int)
+returns int
+as
+begin
+	return (select JPOS_GiftID from JPOS_Gift where JPOS_PointForGift = @giftPoint);
+end
+
+/*--test
+declare @result int;
+select @result = dbo.fn_get_gift_id(15);
+select @result as result
+*/
+--===========================================================================
+
+--===========================================================================
+
+if object_id('fn_get_gift_name') is not null
+	drop function fn_get_gift_name
+go
+
+create function fn_get_gift_name(@giftPoint int)
+returns nvarchar(200)
+as
+begin
+	return (select JPOS_GiftName from JPOS_Gift where JPOS_PointForGift = @giftPoint);
+end
+
+/*--test
+declare @result nvarchar(200);
+select @result = dbo.fn_get_gift_name(15);
+select @result as result
+select * from JPOS_Gift
+*/
 --===========================================================================
 
 if object_id('fn_check_redemption_point') is not null
 	drop function fn_check_redemption_point
 go
 
-create function fn_check_redemption_point(@cardid varchar(16),@giftType int)
+create function fn_check_redemption_point(@cardid varchar(16),@giftPoint int)
 returns int
 as
 begin
@@ -183,25 +222,24 @@ begin
 						from JPOS_Customer jCustomer,JPOS_Card jCard
 						where jCustomer.JPOS_CustomerID = jCard.JPOS_CustomerID
 						and jCard.JPOS_CardId = @cardid);
-	set @gift_point = dbo.fn_get_gift_point(@giftType);
-	if( @gift_point is NULL)
+	if( @giftPoint is NULL)
 		return 0;
-	if( @tmp_point >= @gift_point)
+	if( @tmp_point >= @giftPoint)
 		return 1;
 	return 0;
 end
 go
 /*
 --test
+update JPOS_Customer set JPOS_CurrentPoint = '80' where JPOS_CustomerID = '1';
 select * from JPOS_Card;
 select * from JPOS_Customer;
 declare @result int;
-update JPOS_Customer set JPOS_CurrentPoint = '80' where JPOS_CustomerID = '1';
-select @result = dbo.fn_check_redemption_point('1234567812345678',1);
+select @result = dbo.fn_check_redemption_point('1234567812345678',10);
 select @result;
 
-update JPOS_Customer set JPOS_CurrentPoint = '450' where JPOS_CustomerID = '1';
-select @result = dbo.fn_check_redemption_point('1234567812345678',10);
+declare @result int;
+select @result = dbo.fn_check_redemption_point('1234567812345678',100);
 select @result;
 
 */
