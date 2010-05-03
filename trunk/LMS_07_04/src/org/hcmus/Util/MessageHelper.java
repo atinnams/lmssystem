@@ -162,7 +162,7 @@ public class MessageHelper {
 		return result;
 	}
 	
-	public static int getGiftType(ISOMsg msg){
+	public static int getGiftPoint(ISOMsg msg){
 		int result = 0;
 		try {
 			String strPoint = (String)msg.getValue(4);
@@ -174,7 +174,6 @@ public class MessageHelper {
 			ex.printStackTrace();
 			result = -1;
 		}
-		
 		return result;
 	}
 	
