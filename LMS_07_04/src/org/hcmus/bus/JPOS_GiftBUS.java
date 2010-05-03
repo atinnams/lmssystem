@@ -14,15 +14,15 @@ import org.hcmus.dao.idao.IJPOS_Gift;
 public class JPOS_GiftBUS {
 	
 	/**
-	 * Get point of gift to exchange
-	 * @param giftType Type of Gift
+	 * Check point of gift to exchange
+	 * @param giftPoint Point of Gift
 	 * @param con Connection
-	 * @return Point of Gift
+	 * @return Where gift corresponds with specific point or not
 	 */
-	public static int getGiftPoint(int giftType, Connection con) {
+	public static int checkGiftPoint(int giftPoint, Connection con) {
 		LMSDAOFactory factory = LMSDAOFactory.getInstances();
 		IJPOS_Gift myGift = factory.getJPOS_Gift();
-		return myGift.getGiftPoint(giftType, con);
+		return myGift.checkGiftPoint(giftPoint, con);
 	}
 	
 	/**
@@ -34,5 +34,16 @@ public class JPOS_GiftBUS {
 		LMSDAOFactory factory = LMSDAOFactory.getInstances();
 		IJPOS_Gift myGift = factory.getJPOS_Gift();
 		return myGift.getGifts(cardId, con);
+	}
+	
+	/**
+	 * Get gift name from gift point
+	 * @param giftPoint Point of gift
+	 * @return Gift Name
+	 */
+	public static String getGiftName(int giftPoint,Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Gift myGift = factory.getJPOS_Gift();
+		return myGift.getGiftName(giftPoint, con);
 	}
 }
