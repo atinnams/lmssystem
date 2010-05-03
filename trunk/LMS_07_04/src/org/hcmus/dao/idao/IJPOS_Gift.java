@@ -13,12 +13,12 @@ import org.hcmus.bus.JPOS_GiftDTO;
 public interface IJPOS_Gift {
 	
 	/**
-	 * Get point of gift to exchange
-	 * @param giftType Type of Gift
+	 * Check point of gift to exchange
+	 * @param giftPoint Point of Gift
 	 * @param con Connection
-	 * @return Point of Gift
+	 * @return Where have a gift corresponding with specific point 
 	 */
-	public int getGiftPoint(int giftType,Connection con);
+	public int checkGiftPoint(int giftPoint,Connection con);
 	
 	/**
 	 * Get all gifts from the point of card number.
@@ -26,4 +26,11 @@ public interface IJPOS_Gift {
 	 * @return All gifts.
 	 */
 	public ArrayList<JPOS_GiftDTO> getGifts(String cardId,Connection con);
+	
+	/**
+	 * Get gift name from gift point
+	 * @param giftPoint Point of gift
+	 * @return Gift Name
+	 */
+	public String getGiftName(int giftPoint,Connection con);
 }
