@@ -4,12 +4,38 @@
     Author     : NKLapTop
 --%>
 
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page contentType="text/html" pageEncoding="UTF-8" language="java"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
-<%@page import="org.hcmus.dao.lms.*,java.sql.Connection,java.sql.DriverManager,java.sql.SQLException" %>
+<%@page import="org.hcmus.dao.lms.*,org.hcmus.bus.*" %>
 <%
-            Connection myConn = DataProvider.getConnection(this.getServletConfig());
+    int iTaskID = -1;
+    if (request.getParameter("TaskID") != null)
+    {
+        String strTask = request.getParameter("TaskID").toString();
+        iTaskID = Integer.parseInt(strTask);
+    }
+    switch (iTaskID){
+        case 0:
+            String strUsername =  request.getParameter("txtUsername");
+            String strPassword =  request.getParameter("txtPassword");
+            JPOS_AdminDTO result = Login(strUsername, strPassword);
+            %>
+            <%session.setAttribute("Admin", result); %>            
+            <%
+            break;
+        case 1:
+            %>
+            <%session.removeAttribute("Admin"); %>            
+            <%
+            break;
+        default:
+            {               
+                break;
+            }
+
+
+    }
 %>
 <html>
     <head>
@@ -83,21 +109,45 @@
 
                     <tr>
                         <td colspan="5" rowspan="3" background="images/menu-blank.jpg">
-                            <form>
+                            <% if (session.getAttribute("Admin")== null)
+                                {
+                                %>
+                            <form action="index.jsp" method="post">
                                 <table>
                                     <tr>
-                                        <td><span class="LoginText">Username:</span></td>
-                                        <td><input type="text" value="" name="txtUseName" maxlength="30" size="20" /></td>
-                                        <td align="left"><input type="button" value="Log In" name="Login"/></td>
+                                        <td ><span class="LoginText">Username:</span></td>
+                                        <td><input type="text" value="" name="txtUsername" maxlength="30" size="20" /></td>
+                                        <td align="left"><input type="Submit" value="Log In" name="Login" style="font-size:13px;"/></td>
                                     </tr>
 
                                     <tr>
                                         <td><span class="LoginText">Password:</span></td>
-                                        <td><input type="password" value="" name="txtPassword" maxlength="30" size="20" /></td>
+                                        <td><input type="password" value="" name="txtPassword" maxlength="30" size="20" /><input type="hidden" name="TaskID" value="0"/></td>
                                     </tr>
 
                                 </table>
                             </form>
+                                <%
+                                }
+                                else
+                                { JPOS_AdminDTO result = (JPOS_AdminDTO)session.getAttribute("Admin");
+                                %>
+                                <table style="font-size:14px;font-family:sans-serif">
+                                     <tr>
+                                        <td colspan="3"><span style="font-size:14px;">Tài khoản : <%=result.getUsername().toString()%></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3"><span style="font-size:14px;">Chào mừng  : <%=result.getFirstName()%></span></td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2"><span style="font-size:14px;">Ngày đăng nhập gần nhất : <%=result.getLastLogin().toString()%></span> </td>
+                                    </tr>
+                                   
+                                    <tr><td colspan="3" align="right" style="font-size:14px;"><a href="index.jsp?TaskID=1">Log out</a></td></tr>
+                                </table>                            
+                                <%
+                                }
+                            %>
                         </td>
                         <td> <img src="images/spacer.gif" alt="" height="31" width="1"></td>
                     </tr>
@@ -112,61 +162,39 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.html">Home</a> &#8250; <a href="index.html">Subpage</a>
+                                <a href="index.jsp">Home</a> &#8250; <a href="index.jsp">Subpage</a>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="9" class="main">
-                            
+
 
                             <div >
                                 <div class="content">
-
-                                    <h1>Porttitor posuere</h1>
-                                    <div class="descr">Jun 13, 2006 by Vulputate</div>
-
-                                    <p>In hac habitasse platea dictumst. Duis porttitor. Sed vulputate elementum nisl. Vivamus et mi at arcu mattis iaculis. Nullam posuere tristique tortor. In bibendum. Aenean ornare, <a href="index.html">nunc eget pretium</a> porttitor, sem est pretium leo, non euismod nulla dui non diam. Pellentesque dictum faucibus leo. Vestibulum ac ante. Sed in est.</p>
-
-                                    <blockquote><p>Sed sodales nisl sit amet augue. Donec ultrices, augue ullamcorper posuere laoreet, turpis massa tristique justo, sed egestas metus magna sed purus.</p></blockquote>
-
-                                    <h2>Sollicitudin</h2>
-
-                                    <p>Aliquam risus justo, mollis in, laoreet a, consectetuer nec, risus. Nunc blandit sodales lacus. Nam luctus semper mi. In eu diam.</p>
-
-                                    <p>Fusce porta pede nec eros. Maecenas ipsum sem, interdum non, aliquam vitae, interdum nec, metus. Maecenas ornare lobortis risus. Etiam placerat varius mauris. Maecenas viverra. Sed feugiat. Donec mattis <a href="index.html">quam aliquam</a> risus. Nulla non felis sollicitudin urna blandit egestas. Integer et libero varius pede tristique ultricies. Cras nisl. Proin quis massa semper felis euismod ultricies.
-                                    </p>
-
-                                    <h1>Adipiscing</h1>
-                                    <div class="descr">Jun 11, 2006 by Laoreet</div>
-
-                                    <p>Aliquam risus justo, mollis in, laoreet a, consectetuer nec, risus. Nunc blandit sodales lacus. Nam luctus semper mi.</p>
-
-                                    <ul>
-                                        <li>Tristique</li>
-                                        <li>Aenean</li>
-                                        <li>Pretium</li>
-                                    </ul>
-
-                                    <p>In hac habitasse platea dictumst. Duis porttitor. Sed vulputate elementum nisl. Vivamus et mi at arcu mattis iaculis. Nullam posuere tristique tortor. In bibendum. Aenean ornare, nunc eget pretium porttitor, sem est pretium leo, non euismod nulla dui non diam. Pellentesque dictum faucibus leo. Vestibulum ac ante. Sed in est.</p>
-
-                                    <h1>Interdum</h1>
-                                    <div class="descr">May 24, 2006 by Lectus</div>
-
-                                    <p>Praesent nisi sem, bibendum in, ultrices sit amet, euismod sit amet, dui. Donec varius tincidunt nisi. Ut ut sapien. Integer porta. Fusce nibh. Curabitur pellentesque, lectus at <a href="index.html">volutpat interdum</a></p>
-
-                                    <h3>Sem justo</h3>
-
-                                    <p>Placerat elit, eget feugiat est leo tempor quam. Ut quis neque convallis magna consequat molestie. Nullam semper massa eget ligula. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque a nibh quis nunc volutpat aliquam</p>
-
-                                    <code>margin-bottom: 12px;
-                                        font: normal 1.1em "Lucida Sans Unicode",serif;
-                                        background: url(img/quote.gif) no-repeat;
-                                        padding-left: 28px;
-                                        color: #555;</code>
-
-                                    <p>Eget feugiat est leo tempor quam. Ut quis neque convallis magna consequat molestie.</p>
-
+                                    
+<%       
+    switch (iTaskID){
+        case 0:           
+            %>            
+            <%@include file="page/MainContentPage.jsp" %>
+            <%
+            break;
+        case 1:
+            %>            
+            <%@include file="page/MainContentPage.jsp" %>
+            <%
+            break;
+        default:            
+            %>
+            <%@include file="page/MainContentPage.jsp" %>
+            <%
+            break;
+            
+            
+        
+    }
+%>
                                 </div>
 
                                 <%@include file="include/Navigation.jsp" %>
@@ -179,7 +207,9 @@
 
                     <tr>
                         <td colspan="9" style="padding-left: 50px; line-height: 16px; text-align:center; color:#000" align="centre" background="images/b_links.jpg" height="80" valign="middle" width="775">
-                            Copyright ©2010 HCMUS. All right reserver.
+                            <center><img src="images/art_footer.gif"></center>
+                            Copyright ©2010 HCMUS. All right reserver.<br>
+                            Khoa Công Nghệ Thông Tin - ĐH KHTN TP.HCM.<br>                            
                         </td>
                         <td> <img src="images/spacer.gif" alt="" height="80" width="1"></td>
                     </tr>
@@ -203,5 +233,16 @@
 
     </body>
 </html>
+<%!   
+private JPOS_AdminDTO Login(String strUsername, String strPassword) {
+    if (strUsername == "" || strPassword == "") {
+        return null;
+    }
+    return JPOS_AdminBUS.Login(strUsername, strPassword, DataProvider.getConnection(this.getServletConfig()));
+}
+%>
+
+
+
 
 
