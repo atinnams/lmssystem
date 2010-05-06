@@ -215,5 +215,32 @@ begin
 	set @Result = 1;
 	commit transaction;
 end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Login') is not null
+	drop proc sp_Login
+go
+create procedure sp_Login(@Username nvarchar(50),@Password nvarchar(50),@Result int Output)
+as
+begin
+	select * from JPOS_Admin where JPOS_Username = @Username and JPOS_Password = @Password
+	if  (@@rowcount = 0)
+	begin
+		set @Result = 0;
+		rollback transaction;
+	end
+	
+	update JPOS_Admin set 
+	JPOS_LoginCount = JPOS_LoginCount + 1,
+	JPOS_LastLogin = getdate()
+	where JPOS_Username = @Username and JPOS_Password = @Password
+	
+	if  (@@rowcount = 0)
+	begin
+		set @Result = 0;
+		rollback transaction;
+	end
 
-
+	set @Result = 1;
+	commit transaction;
+end

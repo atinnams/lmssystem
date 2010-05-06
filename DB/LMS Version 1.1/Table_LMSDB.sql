@@ -57,8 +57,11 @@ create table JPOS_Admin
 	JPOS_Password nvarchar(50) not null,
 	JPOS_FirstName nvarchar(50) not null,
 	JPOS_LastName nvarchar(50) not null,
-	JPOS_DateJoin datetime,
+	JPOS_DateJoin datetime,	
 	JPOS_Email varchar(100) unique,
+	JPOS_LoginCount int,
+	JPOS_LastLogin datetime,
+	
 	primary key(JPOS_Username)
 )
 
@@ -219,6 +222,7 @@ create table JPOS_Gift
 	JPOS_GiftID		int not null,
 	JPOS_GiftName	nvarchar(200) not null,
 	JPOS_PointForGift	int not null,
+	JPOS_Status		bit not null,
 	primary key (JPOS_GiftID)
 )
 go
