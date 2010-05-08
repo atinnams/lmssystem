@@ -1,4 +1,4 @@
-<%-- 
+﻿<%-- 
     Document   : Navigation
     Created on : May 5, 2010, 8:29:14 PM
     Author     : NKLapTop
@@ -8,10 +8,8 @@
 
     <h2>Khách hàng</h2>
     <ul>
-        <li><a href="index.jsp?TaskID=2">Thông tin khách hàng</a></li>
-        <li><a href="index.jsp?TaskID=3">Truy vấn số dư</a></li>
-        <li><a href="index.jsp?TaskID=4">Thông tin giao dịch</a></li>
-        <li><a href="index.jsp?TaskID=5">convallis</a></li>
+        <li><a href="index.jsp?TaskID=2">Thông tin khách hàng</a></li>        
+        <li><a href="index.jsp?TaskID=4">Thông tin giao dịch</a></li>        
     </ul>
     <% if (session.getAttribute("Admin") != null) {
     %>
@@ -25,10 +23,10 @@
 
         <h2>Thống kê</h2>
         <ul>
-            <li><a href="index.jsp">Thống kê khách hàng</a></li>
-            <li><a href="index.jsp">Thống kê giao dịch</a></li>
-            <li><a href="index.jsp">tincidunt</a></li>
-            <li><a href="index.jsp">consequat molestie</a></li>
+            <li><a href="index.jsp?TaskID=10">Thống kê khách hàng</a></li>
+            <li><a href="index.jsp?TaskID=11">Thống kê giao dịch</a></li>
+            <li><a href="index.jsp?TaskID=12">Thống kê thẻ</a></li>
+            <li><a href="index.jsp?TaskID=13">Thống kê thiết bị</a></li>
         </ul>
     <%
     }

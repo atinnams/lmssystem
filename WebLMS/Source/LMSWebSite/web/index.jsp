@@ -33,11 +33,11 @@ private DTO_JPOS_Admin Login(String strUsername, String strPassword) {
             String strPassword = request.getParameter("txtPassword");
             DTO_JPOS_Admin DTO_admin = Login(strUsername, strPassword);
             session.setAttribute("Admin",DTO_admin);
-            %> <%@include file="page/IndexPage.jsp" %>  <%
+            %> <%@include file="views/IndexPage.jsp" %>  <%
             break;
         case 1:
             session.removeAttribute("Admin");
-            %> <%@include file="page/IndexPage.jsp" %>  <%
+            %> <%@include file="views/IndexPage.jsp" %>  <%
             break;
         case 2 :
         case 3 :
@@ -53,10 +53,12 @@ private DTO_JPOS_Admin Login(String strUsername, String strPassword) {
             break;
         case 10 :
         case 11 :
+        case 12 :
+        case 13 :
             %> <jsp:forward page="controller/report.jsp"></jsp:forward> <%
             break;
         default :
-            %> <%@include file="page/IndexPage.jsp" %>  <%
+            %> <%@include file="views/IndexPage.jsp" %>  <%
             break;
     }
 %>

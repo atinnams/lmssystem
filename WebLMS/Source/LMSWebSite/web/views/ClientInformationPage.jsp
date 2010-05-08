@@ -1,11 +1,13 @@
 <%-- 
-    Document   : MainPage
-    Created on : May 5, 2010, 11:06:33 PM
+    Document   : ClientPage
+    Created on : May 8, 2010, 5:00:53 PM
     Author     : NKLapTop
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%@page import="DTO.*" %>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+   "http://www.w3.org/TR/html4/loose.dtd">
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -78,8 +80,8 @@
 
                     <tr>
                         <td colspan="5" rowspan="3" background="images/menu-blank.jpg">
-                            <% if (session.getAttribute("Admin") == null) {
-                            %>
+<% if (session.getAttribute("Admin") == null) {
+%>
                             <form action="index.jsp" method="post">
                                 <table>
                                     <tr>
@@ -95,25 +97,25 @@
 
                                 </table>
                             </form>
-                            <% } else {
-                                DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
-                            %>
-                            <table style="font-size:14px;font-family:sans-serif">
+<% } else {
+        DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
+%>
+                            <table width="280px">
                                 <tr>
-                                    <td colspan="3"><span style="font-size:14px;">Tài khoản : <%=result.getUsername().toString()%></span></td>
+                                    <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white" >&raquo;&nbsp;Tài khoản : <%=result.getUsername().toString()%></span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3"><span style="font-size:14px;">Chào mừng  : <%=result.getFirstName()%></span></td>
+                                    <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white">&raquo;&nbsp;Chào mừng  : <%=result.getFirstName()%></span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"><span style="font-size:14px;">Ngày đăng nhập gần nhất : <%=result.getLastLogin().toString()%></span> </td>
+                                    <td colspan="2"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white">&raquo;&nbsp;Ngày đăng nhập gần nhất : <%=result.getLastLogin().toString()%></span> </td>
                                 </tr>
 
-                                <tr><td colspan="3" align="right" style="font-size:14px;"><a href="index.jsp?TaskID=1">Log out</a></td></tr>
+                                <tr><td colspan="3" align="right" style="font-size:14px;"><a href="index.jsp?TaskID=1" style="color:Red;">Log out</a></td></tr>
                             </table>
-                            <%
-        }
-                            %>
+<%
+    }
+%>
                         </td>
                         <td> <img src="images/spacer.gif" alt="" height="31" width="1"></td>
                     </tr>
@@ -128,59 +130,81 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Home</a> &#8250; <a href="index.jsp">Subpage</a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle %></a>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="9" class="main">
-
-
                             <div >
-                                <div class="content">
-                                    <h1>Porttitor posuere</h1>
-                                    <div class="descr">Jun 13, 2006 by Vulputate</div>
+                                <div class="content" <%=strStyle%>>
+                                    <h1><%=strWebTitle %></h1>
+                                    <center><h2>Thông tin tìm kiếm</h2></center>
+                                    <form>
+                                        <input type="hidden" name="TaskID" value="2">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <table>
+                                                         <tr>
+                                                            <td> Mã khách hàng : </td>
+                                                            <td><input type="text" name="txtCustomerID"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Họ khách hàng : </td>
+                                                            <td><input type="text" name="txtLastName"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Tên khách hàng : </td>
+                                                            <td><input type="text" name="txtFirstName"></td>
+                                                        </tr>
+                                                         <tr>
+                                                            <td> Giới tính : </td>
+                                                            <td>
+                                                                <select name="txtGender">
+                                                                    <option value="1">Nam</option>
+                                                                    <option value="0">Nữ</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Số điểm hiện tại : </td>
+                                                            <td><input type="text" name="txtCurrentPoint"></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <tr>
+                                                            <td> Địa chỉ : </td>
+                                                            <td><input type="text" name="txtAddress"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Email : </td>
+                                                            <td><input type="text" name="txtEmail"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Ngày sinh : </td>
+                                                            <td><input type="text" name="txtBirthday"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Ngày tham gia : </td>
+                                                            <td><input type="text" name="txtDateJoin"></td>
+                                                        </tr>
 
-                                    <p>In hac habitasse platea dictumst. Duis porttitor. Sed vulputate elementum nisl. Vivamus et mi at arcu mattis iaculis. Nullam posuere tristique tortor. In bibendum. Aenean ornare, <a href="index.jsp">nunc eget pretium</a> porttitor, sem est pretium leo, non euismod nulla dui non diam. Pellentesque dictum faucibus leo. Vestibulum ac ante. Sed in est.</p>
-
-                                    <blockquote><p>Sed sodales nisl sit amet augue. Donec ultrices, augue ullamcorper posuere laoreet, turpis massa tristique justo, sed egestas metus magna sed purus.</p></blockquote>
-
-                                    <h2>Sollicitudin</h2>
-
-                                    <p>Aliquam risus justo, mollis in, laoreet a, consectetuer nec, risus. Nunc blandit sodales lacus. Nam luctus semper mi. In eu diam.</p>
-
-                                    <p>Fusce porta pede nec eros. Maecenas ipsum sem, interdum non, aliquam vitae, interdum nec, metus. Maecenas ornare lobortis risus. Etiam placerat varius mauris. Maecenas viverra. Sed feugiat. Donec mattis <a href="index.jsp">quam aliquam</a> risus. Nulla non felis sollicitudin urna blandit egestas. Integer et libero varius pede tristique ultricies. Cras nisl. Proin quis massa semper felis euismod ultricies.
-                                    </p>
-
-                                    <h1>Adipiscing</h1>
-                                    <div class="descr">Jun 11, 2006 by Laoreet</div>
-
-                                    <p>Aliquam risus justo, mollis in, laoreet a, consectetuer nec, risus. Nunc blandit sodales lacus. Nam luctus semper mi.</p>
-
-                                    <ul>
-                                        <li>Tristique</li>
-                                        <li>Aenean</li>
-                                        <li>Pretium</li>
-                                    </ul>
-
-                                    <p>In hac habitasse platea dictumst. Duis porttitor. Sed vulputate elementum nisl. Vivamus et mi at arcu mattis iaculis. Nullam posuere tristique tortor. In bibendum. Aenean ornare, nunc eget pretium porttitor, sem est pretium leo, non euismod nulla dui non diam. Pellentesque dictum faucibus leo. Vestibulum ac ante. Sed in est.</p>
-
-                                    <h1>Interdum</h1>
-                                    <div class="descr">May 24, 2006 by Lectus</div>
-
-                                    <p>Praesent nisi sem, bibendum in, ultrices sit amet, euismod sit amet, dui. Donec varius tincidunt nisi. Ut ut sapien. Integer porta. Fusce nibh. Curabitur pellentesque, lectus at <a href="index.jsp">volutpat interdum</a></p>
-
-                                    <h3>Sem justo</h3>
-
-                                    <p>Placerat elit, eget feugiat est leo tempor quam. Ut quis neque convallis magna consequat molestie. Nullam semper massa eget ligula. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque a nibh quis nunc volutpat aliquam</p>
-
-                                    <code>margin-bottom: 12px;
-                                        font: normal 1.1em "Lucida Sans Unicode",serif;
-                                        background: url(img/quote.gif) no-repeat;
-                                        padding-left: 28px;
-                                        color: #555;</code>
-
-                                    <p>Eget feugiat est leo tempor quam. Ut quis neque convallis magna consequat molestie.</p>
+                                                        <tr>
+                                                            <td> Sở thích </td>
+                                                            <td><input type="text" name="txtFavorite"></td>
+                                                        </tr>
+                                                       
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" align="center"><input type="submit" name="btnSearch" value="Tìm kiếm"></td>
+                                            </tr>
+                                        </table>                                        
+                                    </form>
                                 </div>
 
                                 <%@include file="../include/Navigation.jsp" %>
@@ -218,5 +242,5 @@
         </center>
 
     </body>
-</html>
+</html
 

@@ -18,6 +18,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Report page</h1>
+        <h1>Report page <%= request.getQueryString() %></h1>
     </body>
 </html>
