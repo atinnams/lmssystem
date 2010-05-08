@@ -1,5 +1,0 @@
-package org.hcmus.bus;
-
-public class JPOS_LogDTO {
-
-}
