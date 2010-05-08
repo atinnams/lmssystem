@@ -7,13 +7,36 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
+<%@page import="DTO.*,BUS.*" %>
+<%
+    String strCustomerID = request.getParameter("txtCustomerID");
+    String strStyle;
+    if (strCustomerID != null && strCustomerID != ""){
+        strStyle = "";
+    }else {
+        strStyle = "style =\"Height : 400px\"";
+    }
+%>
+<%
+    int iTaskID = -1;
+    String strWebTitle = "";
+    String strTask = request.getParameter("TaskID");
+    if (strTask != null)
+        try{
+            iTaskID = Integer.parseInt(strTask);
+        }catch (Exception ex){
+            iTaskID = -1;
+        }
+    switch (iTaskID)
+    {
+        case 2:
+            strWebTitle = "Thông tin khách hàng";
+            %><%@include file="../views/ClientInformationPage.jsp"  %><%
+            break;
+        case 4:
+            strWebTitle = "Thông tin giao dịch";
+            %><%@include file="../views/TransactionInformation.jsp"  %><%
+            break;
+    }
+%>
 
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Client Page</h1>
-    </body>
-</html>

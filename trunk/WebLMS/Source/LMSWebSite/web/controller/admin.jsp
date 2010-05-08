@@ -18,6 +18,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1>Admin Page</h1>
+        <h1>Admin Page <%= request.getQueryString() %></h1>
+        
     </body>
 </html>
