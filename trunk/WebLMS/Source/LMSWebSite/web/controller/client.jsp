@@ -71,6 +71,31 @@
             break;
         case 4:
             strWebTitle = "Thông tin giao dịch";
+             if (strCustomerID != null && strAddress != null && strBirthDay != null && strCurrentPoint != null && strDateJoin != null && strEmail != null && strFavorite != null && strFirstName != null && strGender != null && strLastName != null)
+            {
+                int iCustomerID = -1;
+                int iCurrentPoint = -1;
+                boolean  blGender = false;
+                try
+                {
+                    iCustomerID = Integer.parseInt(strCustomerID);
+                }catch (Exception ex){}
+                try
+                {
+                    iCurrentPoint = Integer.parseInt(strCurrentPoint);
+                }catch (Exception ex){}
+                try
+                {
+                    int iGetGender = Integer.parseInt(strGender);
+                    if (iGetGender == 1) blGender = true;
+                }catch (Exception ex){}
+                resultViews = BUS_JPOS_Customer.Search_Customer(iCustomerID, strFirstName, strLastName, strAddress, strEmail, strDateJoin, strBirthDay, blGender, strFavorite, iCurrentPoint, DAO.DataProvider.getConnection(this.getServletConfig()));
+                if (resultViews != null){
+                    strStyle = "";
+                }
+            }else {
+                    strStyle = "style =\"Height : 400px\"";
+            }
             %><%@include file="../views/TransactionInformation.jsp"  %><%
             break;
     }
