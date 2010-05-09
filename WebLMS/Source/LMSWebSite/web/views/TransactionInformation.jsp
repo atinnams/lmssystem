@@ -1,6 +1,6 @@
-<%-- 
-    Document   : TransactionInformation
-    Created on : May 8, 2010, 5:12:15 PM
+<%--
+    Document   : ClientPage
+    Created on : May 8, 2010, 5:00:53 PM
     Author     : NKLapTop
 --%>
 
@@ -139,7 +139,112 @@
                             <div >
                                 <div class="content" <%=strStyle%>>
                                     <h1><%=strWebTitle %></h1>
+                                     <% if (resultViews ==null) { %>
+                                    <center><h2>Thông tin tìm kiếm</h2></center>
+                                    <form action="index.jsp" method="post">
+                                        <input type="hidden" name="TaskID" value="4">
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <table>
+                                                         <tr>
+                                                            <td> Mã khách hàng : </td>
+                                                            <td><input type="text" name="txtCustomerID"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Họ khách hàng : </td>
+                                                            <td><input type="text" name="txtLastName"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Tên khách hàng : </td>
+                                                            <td><input type="text" name="txtFirstName"></td>
+                                                        </tr>
+                                                         <tr>
+                                                            <td> Giới tính : </td>
+                                                            <td>
+                                                                <select name="txtGender">
+                                                                    <option value="1">Nam</option>
+                                                                    <option value="0">Nữ</option>
+                                                                </select>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Số điểm hiện tại : </td>
+                                                            <td><input type="text" name="txtCurrentPoint"></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
+                                                <td>
+                                                    <table>
+                                                        <tr>
+                                                            <td> Địa chỉ : </td>
+                                                            <td><input type="text" name="txtAddress"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Email : </td>
+                                                            <td><input type="text" name="txtEmail"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Ngày sinh : </td>
+                                                            <td><input type="text" name="txtBirthday"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td> Ngày tham gia : </td>
+                                                            <td><input type="text" name="txtDateJoin"></td>
+                                                        </tr>
 
+                                                        <tr>
+                                                            <td> Sở thích </td>
+                                                            <td><input type="text" name="txtFavorite"></td>
+                                                        </tr>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td colspan="2" align="center"><input type="submit" name="btnSearch" value="Tìm kiếm"></td>
+                                            </tr>
+                                        </table>
+                                    </form>
+                                    <%}%>
+                                    <% if (resultViews!=null)
+                                       {
+                                            if (resultViews.isEmpty())
+                                            {
+                                                %><h2>Không tìm thấy kết quả phù hợp</h2><%
+                                            }else
+                                            {
+                                                int iSize = resultViews.size();
+                                                %>
+                                                <h2><%=iSize %> Kết quả tìm thấy</h2>
+                                                <hr>
+                                                <table cellpadding="0px" cellspacing="0px" width="550px">
+                                                <%
+                                                for (int i=0; i< iSize; i++)
+                                                {
+                                                    DTO.DTO_JPOS_Customer jposCustomer = (DTO.DTO_JPOS_Customer)resultViews.get(i);
+                                                    %><tr><%
+                                                        %>
+                                                        <td>
+                                                            <div>
+                                                                <span>Mã khách hàng : <%=jposCustomer.getJPOS_CustomerID() %></span><br/>
+                                                                <span>Tên khách hàng : <%=jposCustomer.getFirstName() %></span><br/>
+                                                                <span>Số điểm hiện tại : <%=jposCustomer.getJPOS_CurrentPoint() %></span><br/>
+                                                                <span>Emai : <%=jposCustomer.getEmail() %></span><br/>
+                                                                <span>Địa chỉ :<%=jposCustomer.getAddress() %></span><br/>
+                                                                <span><a href="index.jsp?TaskID=4&Detail=<%=jposCustomer.getJPOSID_Customer() %>">Chi tiết giao dịch</a></span>
+                                                            </div>
+                                                            <hr>
+                                                        </td>
+                                                        <%
+                                                    %></tr><%
+
+                                                }
+                                                %></table><%
+                                            }
+                                       }
+                                    %>
+                                    <div style="height:200px"></div>
                                 </div>
 
                                 <%@include file="../include/Navigation.jsp" %>

@@ -232,7 +232,7 @@
                                                                 <span>Số điểm hiện tại : <%=jposCustomer.getJPOS_CurrentPoint() %></span><br/>
                                                                 <span>Emai : <%=jposCustomer.getEmail() %></span><br/>
                                                                 <span>Địa chỉ :<%=jposCustomer.getAddress() %></span><br/>
-                                                                <span><a href="index.jsp?TaskID=2&Detail=<%=jposCustomer.getJPOSID_Customer() %>">Chi tiết</a></span>
+                                                                <span><a href="index.jsp?TaskID=2&Detail=<%=jposCustomer.getJPOSID_Customer() %>">Chi tiết khách hàng</a></span>
                                                             </div>
                                                             <hr>
                                                         </td>
