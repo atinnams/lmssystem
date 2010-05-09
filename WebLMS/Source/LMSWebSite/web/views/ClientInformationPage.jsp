@@ -137,8 +137,9 @@
                     <tr>
                         <td colspan="9" class="main">
                             <div >
-                                <div class="content" <%=strStyle%>>
+                                <div class="content" <%=strStyle%>>                              
                                     <h1><%=strWebTitle %></h1>
+                                     <% if (resultViews ==null) { %>
                                     <center><h2>Thông tin tìm kiếm</h2></center>
                                     <form action="index.jsp" method="post">
                                         <input type="hidden" name="TaskID" value="2">
@@ -205,6 +206,7 @@
                                             </tr>
                                         </table>                                        
                                     </form>
+                                    <%}%>
                                     <% if (resultViews!=null)
                                        {
                                             if (resultViews.isEmpty())
@@ -214,8 +216,9 @@
                                             {
                                                 int iSize = resultViews.size();
                                                 %>
-                                                <h2>Kết quả tìm thấy</h2>
-                                                <table cellpadding="0px" cellspacing="0px" width="550px" border="1px">
+                                                <h2><%=iSize %> Kết quả tìm thấy</h2>
+                                                <hr>
+                                                <table cellpadding="0px" cellspacing="0px" width="550px">
                                                 <%
                                                 for (int i=0; i< iSize; i++)
                                                 {
@@ -229,11 +232,13 @@
                                                                 <span>Số điểm hiện tại : <%=jposCustomer.getJPOS_CurrentPoint() %></span><br/>
                                                                 <span>Emai : <%=jposCustomer.getEmail() %></span><br/>
                                                                 <span>Địa chỉ :<%=jposCustomer.getAddress() %></span><br/>
-                                                                <span><a href="index.jsp?TaskID=2&Detail=<%=jposCustomer.getJPOSID_Customer() %>">detail</a></span>
-                                                            </div>                                                            
+                                                                <span><a href="index.jsp?TaskID=2&Detail=<%=jposCustomer.getJPOSID_Customer() %>">Chi tiết</a></span>
+                                                            </div>
+                                                            <hr>
                                                         </td>
                                                         <%                                                        
                                                     %></tr><%
+
                                                 }
                                                 %></table><%
                                             }
