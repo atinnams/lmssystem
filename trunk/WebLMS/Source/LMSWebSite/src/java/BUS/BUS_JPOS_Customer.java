@@ -5,6 +5,7 @@ import java.sql.Connection;
 
 import DAO.FACTORY.LMSDAOFactory;
 import DAO.iDAO.IJPOS_Customer;
+import java.util.ArrayList;
 
 /**
  * 
@@ -117,4 +118,11 @@ public class BUS_JPOS_Customer {
 		IJPOS_Customer myCustomer = factory.getJPOS_Customer();
 		return myCustomer.redemption(cardNumber, taskid, giftType, mid, tid, poscc, con);
 	}
+
+        public static ArrayList<DTO_JPOS_Customer> Search_Customer(int iCustomerID,String strFirstName,String strLastName,String strAddress,String strEmail,String strDateJoin,String strBirthDay,boolean blGender, String strFavorite,int iCurrentPoint,Connection conn)
+        {
+            LMSDAOFactory factory = LMSDAOFactory.getInstances();
+            IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+            return myCustomer.Search_Customer(iCustomerID, strFirstName, strLastName, strAddress, strEmail, strDateJoin, strBirthDay, blGender, strFavorite, iCurrentPoint, conn);
+        }
 }

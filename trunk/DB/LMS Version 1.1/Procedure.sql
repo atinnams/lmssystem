@@ -244,3 +244,23 @@ begin
 	set @Result = 1;
 	commit transaction;
 end
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Search_Customer') is not null
+	drop proc sp_Search_Customer
+go
+create procedure sp_Search_Customer(@CustomerID int,@FirstName nvarchar(50),@LastName nvarchar(50), @Address nvarchar(200),@Email varchar(100), @DateJoin datetime, @BirthDay datetime, @Gender bit, @Favorite nvarchar,@CurrentPoint int)
+as
+begin
+	select * from JPOS_Customer
+	where 
+	(JPOS_CustomerID = @CustomerID or @CustomerID = -1 ) and
+	(JPOS_FirstName like '%'+@FirstName+'%' or JPOS_FirstName is NULL or @FirstName = '') and
+	(JPOS_LastName like ('%'+@LastName+'%') or JPOS_LastName is NULL or @LastName = '')and
+	(JPOS_Address like '%'+@Address+'%' or JPOS_Address is NULL or @Address = '') and
+	(JPOS_Email like '%'+@Email+'%' or JPOS_Email is NULL or @Email = '') and
+	(JPOS_DateJoin = @DateJoin or JPOS_DateJoin is NULL or @DateJoin = '') and
+	(JPOS_BirthDay = @BirthDay or JPOS_BirthDay is NULL or @BirthDay = '') and
+	(JPOS_Gender = @Gender or JPOS_Gender is NULL or @Gender is NULL) and
+	(JPOS_Favorite like '%'+@Favorite+'%' or JPOS_Favorite is NULL or @Favorite = '') and
+	(JPOS_CurrentPoint = @CurrentPoint or @CurrentPoint = -1)
+end
