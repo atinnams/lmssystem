@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.Serializable;
 
 import org.hcmus.Util.Constant;
+import org.hcmus.Util.LMSLogSource;
 import org.hcmus.Util.MessageHelper;
 import org.jpos.iso.ISOException;
 import org.jpos.iso.ISOMsg;
@@ -15,45 +16,49 @@ import org.jpos.transaction.Context;
 
 /**
  * Send transaction information to client.
+ * 
  * @author HUNGPT
- *
+ * 
  */
 public class SendResponse implements AbortParticipant {
 
 	@Override
-	public void abort(long id, Serializable context) { }
-	
+	public void abort(long id, Serializable context) {
+	}
+
 	@Override
 	public int prepareForAbort(long id, Serializable context) {
-		sendResponse(id, (Context)context);
+		sendResponse(id, (Context) context);
 		return ABORTED | READONLY | NO_JOIN;
 	}
-	
+
 	@Override
 	public void commit(long id, Serializable context) {
-		sendResponse(id, (Context)context);
+		sendResponse(id, (Context) context);
 	}
 
 	@Override
 	public int prepare(long id, Serializable context) {
-		
-		//get context from space
+
+		// get context from space
 		Context ctx = (Context) context;
-		
-		//get source or sender from context
+
+		// get source or sender from context
 		ISOSource source = (ISOSource) ctx.get(Constant.SOURCE);
 		if (source == null || !source.isConnected()) {
 			return ABORTED | READONLY | NO_JOIN;
 		}
-		
-		
+
 		return PREPARED | READONLY;
 	}
-	
+
 	/**
 	 * Send response to client.
-	 * @param id Identify of transaction
-	 * @param ctx Context of transaction
+	 * 
+	 * @param id
+	 *            Identify of transaction
+	 * @param ctx
+	 *            Context of transaction
 	 */
 	private void sendResponse(long id,Context ctx) {
 		
@@ -140,6 +145,29 @@ public class SendResponse implements AbortParticipant {
 				}
 				
 				source.send(msgResponse);
+				
+				LMSLogSource logSource = LMSLogSource.getLogSource("LMS");
+				
+				int task = Integer.parseInt((String)msg.getValue(3));
+				String strTask = "";
+				switch(task){
+				case 407000:
+					strTask = "Add_Point";
+					break;
+				case 417000:
+					strTask = "Subtract_Point";
+					break;
+				case 427000:
+					strTask = "Balance_Inquiry";
+					break;
+				case 447000:
+					strTask = "Redemption";
+					break;
+				}
+				
+				logSource.printHexValue(strTask + "_Receive", ISOUtil.hexString(msg.pack()));
+				logSource.printHexValue(strTask + "_Response", ISOUtil.hexString(msgResponse.pack()));
+				
 			}
 		} catch (VetoException e) {
 			e.printStackTrace();
@@ -150,6 +178,4 @@ public class SendResponse implements AbortParticipant {
 		}
 	}
 
-	
-	
 }
