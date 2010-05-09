@@ -140,7 +140,7 @@
                                 <div class="content" <%=strStyle%>>
                                     <h1><%=strWebTitle %></h1>
                                     <center><h2>Thông tin tìm kiếm</h2></center>
-                                    <form>
+                                    <form action="index.jsp" method="post">
                                         <input type="hidden" name="TaskID" value="2">
                                         <table>
                                             <tr>
@@ -161,7 +161,7 @@
                                                          <tr>
                                                             <td> Giới tính : </td>
                                                             <td>
-                                                                <select name="txtGender">
+                                                                <select name="txtGender">                                                                    
                                                                     <option value="1">Nam</option>
                                                                     <option value="0">Nữ</option>
                                                                 </select>
@@ -205,8 +205,43 @@
                                             </tr>
                                         </table>                                        
                                     </form>
+                                    <% if (resultViews!=null)
+                                       {
+                                            if (resultViews.isEmpty())
+                                            {
+                                                %><h2>Không tìm thấy kết quả phù hợp</h2><%
+                                            }else
+                                            {
+                                                int iSize = resultViews.size();
+                                                %>
+                                                <h2>Kết quả tìm thấy</h2>
+                                                <table cellpadding="0px" cellspacing="0px" width="550px" border="1px">
+                                                <%
+                                                for (int i=0; i< iSize; i++)
+                                                {
+                                                    DTO.DTO_JPOS_Customer jposCustomer = (DTO.DTO_JPOS_Customer)resultViews.get(i);
+                                                    %><tr><%
+                                                        %>
+                                                        <td>
+                                                            <div>
+                                                                <span>Mã khách hàng : <%=jposCustomer.getJPOS_CustomerID() %></span><br/>
+                                                                <span>Tên khách hàng : <%=jposCustomer.getFirstName() %></span><br/>
+                                                                <span>Số điểm hiện tại : <%=jposCustomer.getJPOS_CurrentPoint() %></span><br/>
+                                                                <span>Emai : <%=jposCustomer.getEmail() %></span><br/>
+                                                                <span>Địa chỉ :<%=jposCustomer.getAddress() %></span><br/>
+                                                                <span><a href="index.jsp?TaskID=2&Detail=<%=jposCustomer.getJPOSID_Customer() %>">detail</a></span>
+                                                            </div>                                                            
+                                                        </td>
+                                                        <%                                                        
+                                                    %></tr><%
+                                                }
+                                                %></table><%
+                                            }
+                                       }
+                                    %>
+                                    <div style="height:200px"></div>
                                 </div>
-
+                                
                                 <%@include file="../include/Navigation.jsp" %>
 
                                 <div class="clearer">&nbsp;</div>

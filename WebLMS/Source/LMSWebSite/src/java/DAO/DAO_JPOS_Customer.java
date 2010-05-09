@@ -8,6 +8,7 @@ import java.sql.Statement;
 
 import DTO.DTO_JPOS_Customer;
 import DAO.iDAO.IJPOS_Customer;
+import java.util.ArrayList;
 
 /**
  * JPOS Customer Data Access Player
@@ -193,4 +194,71 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
 		
 		return result;
 	}
+        @Override
+        public ArrayList<DTO_JPOS_Customer> Search_Customer(int iCustomerID,String strFirstName,String strLastName,String strAddress,String strEmail,String strDateJoin,String strBirthDay,boolean blGender, String strFavorite,int iCurrentPoint,Connection conn)
+        {
+            ArrayList ArrayResult = null ;
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_Search_Customer(?,?,?,?,?,?,?,?,?,?)}");
+
+                stmt.setInt(1, iCustomerID);
+                stmt.setString(2, strFirstName);
+                stmt.setString(3, strLastName);
+                stmt.setString(4, strAddress);
+                stmt.setString(5, strEmail);
+                stmt.setString(6, strDateJoin);
+                stmt.setString(7, strBirthDay);
+                stmt.setBoolean(8, blGender);
+                stmt.setString(9, strFavorite);
+                stmt.setInt(10, iCurrentPoint);
+                
+                boolean HasRow = stmt.execute();
+                if (HasRow) {
+                    ArrayResult = new ArrayList();            
+                    ResultSet rs = stmt.getResultSet();
+                    while (rs.next()) {
+                        DTO_JPOS_Customer jposCustomer = new DTO_JPOS_Customer();
+                        jposCustomer.setJPOS_CustomerID(rs.getInt("JPOS_CustomerID"));
+                        jposCustomer.setFirstName(rs.getString("JPOS_FirstName"));
+                        jposCustomer.setLastName(rs.getString("JPOS_LastName"));
+                        jposCustomer.setAddress(rs.getString("JPOS_Address"));
+                        jposCustomer.setEmail(rs.getString("JPOS_Email"));
+                        try {                            
+                            jposCustomer.setDateJoin(rs.getDate("JPOS_DateJoin"));
+                        } catch (Exception e) {
+                            jposCustomer.setDateJoin(null);
+                        }
+                        try {
+                            jposCustomer.setBirthDay(rs.getDate("JPOS_BirthDay"));
+                        } catch (Exception e) {
+                            jposCustomer.setBirthDay(null);
+                        }
+                        jposCustomer.setGender(rs.getBoolean("JPOS_Gender"));
+                        jposCustomer.setFavorite(rs.getString("JPOS_Favorite"));
+                        jposCustomer.setJPOS_CurrentPoint(rs.getInt("JPOS_CurrentPoint"));                        
+                        ArrayResult.add(jposCustomer);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                ArrayResult = null;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                return ArrayResult;
+            }
+        }
 }

@@ -3,6 +3,7 @@ package DAO.iDAO;
 import java.sql.Connection;
 
 import DTO.DTO_JPOS_Customer;
+import java.util.ArrayList;
 
 /**
  * 
@@ -85,5 +86,8 @@ public interface IJPOS_Customer {
 	 * @return Result of Redemption business
 	 */
 	public int redemption(String cardNumber,int taskid, int giftType,String mid,String tid,String poscc,Connection con);
-	
+
+
+        public ArrayList<DTO_JPOS_Customer> Search_Customer(int CustomerID,String FirstName,String LastName,String Address,String Email,String DateJoin,String BirthDay,boolean Gender, String Favorite,int CurrentPoint,Connection con);
+        
 }
