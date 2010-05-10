@@ -19,14 +19,10 @@
     String strBirthDay = request.getParameter("txtBirthday");
     String strDateJoin = request.getParameter("txtDateJoin");
     String strFavorite = request.getParameter("txtFavorite");
-
+    String strDetail = request.getParameter("Detail");
+    DTO_JPOS_Customer custInfor = null;
     ArrayList resultViews = null ;
-    String strStyle;
-    if (strCustomerID != null && strCustomerID != ""){
-        strStyle = "";
-    }else {
-        strStyle = "style =\"Height : 400px\"";
-    }
+    String strStyle = "";    
 %>
 <%
     int iTaskID = -1;
@@ -42,37 +38,58 @@
     {
         case 2:
             strWebTitle = "Thông tin khách hàng";
-            if (strCustomerID != null && strAddress != null && strBirthDay != null && strCurrentPoint != null && strDateJoin != null && strEmail != null && strFavorite != null && strFirstName != null && strGender != null && strLastName != null)
+            if (strDetail != null)
             {
-                int iCustomerID = -1;
-                int iCurrentPoint = -1;
-                boolean  blGender = false;
-                try
-                {
-                    iCustomerID = Integer.parseInt(strCustomerID);                                        
+                int iCustID = 0;
+                try{
+                    iCustID = Integer.parseInt(strDetail);
                 }catch (Exception ex){}
-                try
-                {
-                    iCurrentPoint = Integer.parseInt(strCurrentPoint);
-                }catch (Exception ex){}
-                try
-                {
-                    int iGetGender = Integer.parseInt(strGender);
-                    if (iGetGender == 1) blGender = true;                    
-                }catch (Exception ex){}
-                resultViews = BUS_JPOS_Customer.Search_Customer(iCustomerID, strFirstName, strLastName, strAddress, strEmail, strDateJoin, strBirthDay, blGender, strFavorite, iCurrentPoint, DAO.DataProvider.getConnection(this.getServletConfig()));                
-                if (resultViews != null){
-                    strStyle = "";
-                }
-            }else {
-                    strStyle = "style =\"Height : 400px\"";
+                custInfor = BUS_JPOS_Customer.GetCustomerInfor(iCustID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                %><%@include file="../views/CustomerDetail.jsp"  %><%
             }
-            %><%@include file="../views/ClientInformationPage.jsp"  %><%
+            else
+            {
+                if (strCustomerID != null && strAddress != null && strBirthDay != null && strCurrentPoint != null && strDateJoin != null && strEmail != null && strFavorite != null && strFirstName != null && strGender != null && strLastName != null)
+                {
+                    int iCustomerID = -1;
+                    int iCurrentPoint = -1;
+                    boolean  blGender = false;
+                    try
+                    {
+                        iCustomerID = Integer.parseInt(strCustomerID);
+                    }catch (Exception ex){}
+                    try
+                    {
+                        iCurrentPoint = Integer.parseInt(strCurrentPoint);
+                    }catch (Exception ex){}
+                    try
+                    {
+                        int iGetGender = Integer.parseInt(strGender);
+                        if (iGetGender == 1) blGender = true;
+                    }catch (Exception ex){}
+                    resultViews = BUS_JPOS_Customer.Search_Customer(iCustomerID, strFirstName, strLastName, strAddress, strEmail, strDateJoin, strBirthDay, blGender, strFavorite, iCurrentPoint, DAO.DataProvider.getConnection(this.getServletConfig()));
+                }else {
+                }
+                %><%@include file="../views/ClientInformationPage.jsp"  %><%
+            }
             break;
         case 4:
             strWebTitle = "Thông tin giao dịch";
-             if (strCustomerID != null && strAddress != null && strBirthDay != null && strCurrentPoint != null && strDateJoin != null && strEmail != null && strFavorite != null && strFirstName != null && strGender != null && strLastName != null)
+            if (strDetail != null)
             {
+                int iCustID = 0;
+                try{
+                    iCustID = Integer.parseInt(strDetail);
+                }catch (Exception ex){}
+                custInfor = BUS_JPOS_Customer.GetCustomerInfor(iCustID, DAO.DataProvider.getConnection(this.getServletConfig()));
+
+
+                resultViews = BUS_JPOS_Customer.Transaction_Detail(iCustID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                %><%@include file="../views/TransactionDetail.jsp"  %><%
+            }
+            else {
+                if (strCustomerID != null && strAddress != null && strBirthDay != null && strCurrentPoint != null && strDateJoin != null && strEmail != null && strFavorite != null && strFirstName != null && strGender != null && strLastName != null)
+                {
                 int iCustomerID = -1;
                 int iCurrentPoint = -1;
                 boolean  blGender = false;
@@ -89,14 +106,11 @@
                     int iGetGender = Integer.parseInt(strGender);
                     if (iGetGender == 1) blGender = true;
                 }catch (Exception ex){}
-                resultViews = BUS_JPOS_Customer.Search_Customer(iCustomerID, strFirstName, strLastName, strAddress, strEmail, strDateJoin, strBirthDay, blGender, strFavorite, iCurrentPoint, DAO.DataProvider.getConnection(this.getServletConfig()));
-                if (resultViews != null){
-                    strStyle = "";
+                resultViews = BUS_JPOS_Customer.Search_Customer(iCustomerID, strFirstName, strLastName, strAddress, strEmail, strDateJoin, strBirthDay, blGender, strFavorite, iCurrentPoint, DAO.DataProvider.getConnection(this.getServletConfig()));                
                 }
-            }else {
-                    strStyle = "style =\"Height : 400px\"";
+                %><%@include file="../views/TransactionInformation.jsp"  %><%
             }
-            %><%@include file="../views/TransactionInformation.jsp"  %><%
+            
             break;
     }
 %>

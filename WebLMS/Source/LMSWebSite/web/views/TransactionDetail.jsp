@@ -1,5 +1,5 @@
-<%-- 
-    Document   : ClientPage
+<%--
+    Document   : Transaction Detail
     Created on : May 8, 2010, 5:00:53 PM
     Author     : NKLapTop
 --%>
@@ -137,116 +137,61 @@
                     <tr>
                         <td colspan="9" class="main">
                             <div >
-                                <div class="content" <%=strStyle%>>                              
-                                    <h1><%=strWebTitle %></h1>
-                                     <% if (resultViews ==null) { %>
-                                    <center><h2>Thông tin tìm kiếm</h2></center>
-                                    <form action="index.jsp" method="post">
-                                        <input type="hidden" name="TaskID" value="2">
-                                        <table>
-                                            <tr>
-                                                <td>
-                                                    <table>
-                                                         <tr>
-                                                            <td> Mã khách hàng : </td>
-                                                            <td><input type="text" name="txtCustomerID"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td> Họ khách hàng : </td>
-                                                            <td><input type="text" name="txtLastName"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td> Tên khách hàng : </td>
-                                                            <td><input type="text" name="txtFirstName"></td>
-                                                        </tr>
-                                                         <tr>
-                                                            <td> Giới tính : </td>
-                                                            <td>
-                                                                <select name="txtGender">                                                                    
-                                                                    <option value="1">Nam</option>
-                                                                    <option value="0">Nữ</option>
-                                                                </select>
-                                                            </td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td> Số điểm hiện tại : </td>
-                                                            <td><input type="text" name="txtCurrentPoint"></td>
-                                                        </tr>
-                                                    </table>
-                                                </td>
-                                                <td>
-                                                    <table>
-                                                        <tr>
-                                                            <td> Địa chỉ : </td>
-                                                            <td><input type="text" name="txtAddress"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td> Email : </td>
-                                                            <td><input type="text" name="txtEmail"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td> Ngày sinh : </td>
-                                                            <td><input type="text" name="txtBirthday"></td>
-                                                        </tr>
-                                                        <tr>
-                                                            <td> Ngày tham gia : </td>
-                                                            <td><input type="text" name="txtDateJoin"></td>
-                                                        </tr>
-
-                                                        <tr>
-                                                            <td> Sở thích </td>
-                                                            <td><input type="text" name="txtFavorite"></td>
-                                                        </tr>
-                                                       
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td colspan="2" align="center"><input type="submit" name="btnSearch" value="Tìm kiếm"></td>
-                                            </tr>
-                                        </table>                                        
-                                    </form>
-                                    <%}%>
+                                <div class="content" <%=strStyle%>>
+                                    <h1><%=strWebTitle %></h1>                                     
                                     <% if (resultViews!=null)
-                                       {
+                                       {    %>
+                                            <h2>Mã khách hàng : <%=iCustID %></h2>
+                                                <h3>Tên khách hàng : <%=custInfor.getLastName() + " " + custInfor.getFirstName() %></h3>
+                                                <h3>Địa chỉ : <%=custInfor.getAddress() %></h3>
+                                                <h3>Email : <%=custInfor.getEmail() %></h3>
+                                            <hr>
+                                            <%
                                             if (resultViews.isEmpty())
                                             {
-                                                %><h2>Không tìm thấy kết quả phù hợp</h2><%
+                                                %><h2>Không tìm thấy kết quả giao dịch</h2><%
                                             }else
                                             {
                                                 int iSize = resultViews.size();
-                                                %>
-                                                <h2><%=iSize %> Kết quả tìm thấy</h2>
-                                                <hr>
-                                                <table cellpadding="0px" cellspacing="0px" width="550px">
+                                                %>                                                
+                                                <table cellpadding="0px" cellspacing="0px" width="550px" border="1px" >
+                                                    <tr bgcolor="Blue" style="color:white" align="center">
+                                                        <th>Mã giao dịch</th>
+                                                        <th>Ngày giao dịch</th>
+                                                        <th>Loại giao dịch</th>
+                                                        <th>Point Gain</th>
+                                                        <th>Point Loss</th>
+                                                        <th>PoSCC</th>
+                                                        <th>Địa chỉ</th>
+                                                        <th>Quà</th>
+                                                    </tr>
                                                 <%
                                                 for (int i=0; i< iSize; i++)
                                                 {
-                                                    DTO.DTO_JPOS_Customer jposCustomer = (DTO.DTO_JPOS_Customer)resultViews.get(i);
-                                                    %><tr><%
-                                                        %>
-                                                        <td>
-                                                            <div>
-                                                                <span>Mã khách hàng : <%=jposCustomer.getJPOS_CustomerID() %></span><br/>
-                                                                <span>Tên khách hàng : <%=jposCustomer.getFirstName() %></span><br/>
-                                                                <span>Số điểm hiện tại : <%=jposCustomer.getJPOS_CurrentPoint() %></span><br/>
-                                                                <span>Emai : <%=jposCustomer.getEmail() %></span><br/>
-                                                                <span>Địa chỉ :<%=jposCustomer.getAddress() %></span><br/>
-                                                                <span><a href="index.jsp?TaskID=2&Detail=<%=jposCustomer.getJPOSID_Customer() %>">Chi tiết khách hàng</a></span>
-                                                            </div>
-                                                            <hr>
-                                                        </td>
-                                                        <%                                                        
+                                                    DTO.DTO_Report report = (DTO.DTO_Report)resultViews.get(i);
+                                                    %><tr align="center"><%
+                                                        %><td><%=report.getLogID() %></td><%
+                                                        %><td><%=report.getDate().toString() %></td><%
+                                                        %><td><%=report.getTask() %></td><%
+                                                        %><td><%=report.getPointGain() %></td><%
+                                                        %><td><%=report.getPointLoss() %></td><%
+                                                        %><td><%=report.getPoSCCName() %></td><%
+                                                        %><td><%=report.getMerchantAddress() %></td><%
+                                                        %><td><%=report.getGiftName() %></td><%
                                                     %></tr><%
 
                                                 }
                                                 %></table><%
                                             }
                                        }
+                                       else
+                                       {
+                                            %><h1>Không tìm thấy dữ liệu phù hợp</h1><%
+                                       }
                                     %>
                                     <div style="height:400px"></div>
                                 </div>
-                                
+
                                 <%@include file="../include/Navigation.jsp" %>
 
                                 <div class="clearer">&nbsp;</div>
@@ -283,4 +228,5 @@
 
     </body>
 </html
+
 
