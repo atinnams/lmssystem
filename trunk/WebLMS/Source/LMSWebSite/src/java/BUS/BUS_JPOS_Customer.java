@@ -125,4 +125,16 @@ public class BUS_JPOS_Customer {
             IJPOS_Customer myCustomer = factory.getJPOS_Customer();
             return myCustomer.Search_Customer(iCustomerID, strFirstName, strLastName, strAddress, strEmail, strDateJoin, strBirthDay, blGender, strFavorite, iCurrentPoint, conn);
         }
+        public static ArrayList<DTO.DTO_Report> Transaction_Detail(int iCustomerID,Connection conn)
+        {
+            LMSDAOFactory factory = LMSDAOFactory.getInstances();
+            IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+            return myCustomer.Transaction_Detail(iCustomerID, conn);
+        }
+        public static DTO_JPOS_Customer GetCustomerInfor(int iCustomerID,Connection conn)
+        {
+            LMSDAOFactory factory = LMSDAOFactory.getInstances();
+            IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+            return myCustomer.GetCustomerInfor(iCustomerID, conn);
+        }
 }

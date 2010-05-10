@@ -2,7 +2,8 @@ package DAO.iDAO;
 
 import java.sql.Connection;
 
-import DTO.DTO_JPOS_Customer;
+
+import DTO.*;
 import java.util.ArrayList;
 
 /**
@@ -89,5 +90,7 @@ public interface IJPOS_Customer {
 
 
         public ArrayList<DTO_JPOS_Customer> Search_Customer(int CustomerID,String FirstName,String LastName,String Address,String Email,String DateJoin,String BirthDay,boolean Gender, String Favorite,int CurrentPoint,Connection con);
+        public ArrayList<DTO_Report> Transaction_Detail(int iCustomerID,Connection conn) ;
+        public DTO_JPOS_Customer GetCustomerInfor(int iCustomerID,Connection conn) ;
         
 }

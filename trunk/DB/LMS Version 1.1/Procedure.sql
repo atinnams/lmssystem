@@ -264,3 +264,33 @@ begin
 	(JPOS_Favorite like '%'+@Favorite+'%' or JPOS_Favorite is NULL or @Favorite = '') and
 	(JPOS_CurrentPoint = @CurrentPoint or @CurrentPoint = -1)
 end
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Transaction_Detail') is not null
+	drop proc sp_Transaction_Detail
+go
+create procedure sp_Transaction_Detail(@CustomerID int)
+as
+begin
+	Select JPOS_Log.JPOS_LogID,JPOS_Log.JPOS_Date,JPOS_Task.JPOS_TaskName,JPOS_Log.JPOS_CardID,JPOS_Customer.JPOS_CustomerID,JPOS_LOG.JPOS_PointGain,JPOS_LOG.JPOS_PointLoss,JPOS_PoSCC.JPOS_PoSCC_Name,JPOS_Terminal.JPOS_TID,JPOS_Merchant.JPOS_MerchantName,JPOS_Merchant.JPOS_Address,JPOS_Gift.JPOS_GiftName
+	from 
+	JPOS_Log left join JPOS_Log_Exchange on JPOS_Log.JPOS_LogID = JPOS_Log_Exchange.JPOS_LogID
+	join jpos_card on JPOS_Log.JPOS_CardID = JPOS_Card.JPOS_CardID
+	join JPOS_Customer on JPOS_Card.JPOS_CustomerID = JPOS_Customer.JPOS_CustomerID 
+	left join JPOS_Gift on JPOS_Log_Exchange.JPOS_Gift = JPOS_Gift.JPOS_GiftID
+	join JPOS_Task on JPOS_Log.JPOS_Task = JPOS_Task.JPOS_TaskID	
+	join JPOS_Terminal on JPOS_Log.JPOS_TID = JPOS_Terminal.JPOS_TID and JPOS_Log.JPOS_MID = JPOS_Terminal.JPOS_MID
+	join JPOS_Merchant on JPOS_Merchant.JPOS_MID = JPOS_Log.JPOS_MID
+	join JPOS_PoSCC on JPOS_Log.JPOS_PoSCC_ID = JPOS_PoSCC.JPOS_PoSCC_ID
+	where JPOS_Customer.JPOS_CustomerID = @CustomerID	
+end
+
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Customer_Infor') is not null
+	drop proc sp_Customer_Infor
+go
+create procedure sp_Customer_Infor(@CustomerID int)
+as
+begin
+	select * from JPOS_Customer	
+	where JPOS_CustomerID = @CustomerID	
+end

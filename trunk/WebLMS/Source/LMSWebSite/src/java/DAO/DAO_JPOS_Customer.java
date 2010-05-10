@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import DTO.DTO_JPOS_Customer;
+import DTO.*;
 import DAO.iDAO.IJPOS_Customer;
 import java.util.ArrayList;
 
@@ -259,6 +259,111 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
                 }
 
                 return ArrayResult;
+            }
+        }
+        
+        @Override
+        public ArrayList<DTO_Report> Transaction_Detail(int iCustomerID,Connection conn)
+        {
+            ArrayList ArrayResult = null ;
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_Transaction_Detail(?)}");
+
+                stmt.setInt(1, iCustomerID);                
+
+                boolean HasRow = stmt.execute();
+                if (HasRow) {
+                    ArrayResult = new ArrayList();
+                    ResultSet rs = stmt.getResultSet();
+                    while (rs.next()) {
+                        DTO_Report report = new DTO_Report();                                                
+
+                        report.setCardID(rs.getString("JPOS_CardID"));
+                        report.setCustomerID(rs.getInt("JPOS_CustomerID"));
+                        report.setDate(rs.getDate("JPOS_Date"));
+                        report.setGiftName(rs.getString("JPOS_GiftName"));
+                        report.setLogID(rs.getInt("JPOS_LogID"));
+                        report.setMerchantAddress(rs.getString("JPOS_Address"));
+                        report.setMerchantName(rs.getString("JPOS_MerchantName"));
+                        report.setPoSCCName(rs.getString("JPOS_PoSCC_Name"));
+                        report.setPointGain(rs.getInt("JPOS_PointGain"));
+                        report.setPointLoss(rs.getInt("JPOS_PointLoss"));
+                        report.setTID(rs.getString("JPOS_TID"));
+                        report.setTask(rs.getString("JPOS_TaskName"));
+                        
+                        ArrayResult.add(report);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                ArrayResult = null;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                return ArrayResult;
+            }
+        }
+        @Override
+        public DTO_JPOS_Customer GetCustomerInfor(int iCustomerID,Connection conn)
+        {
+            DTO_JPOS_Customer customer = null;
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_Customer_Infor(?)}");
+
+                stmt.setInt(1, iCustomerID);
+
+                boolean HasRow = stmt.execute();
+                if (HasRow) {
+                    customer = new DTO_JPOS_Customer();
+                    ResultSet rs = stmt.getResultSet();
+                    while (rs.next()) {                        
+
+                        customer.setAddress(rs.getString("JPOS_Address"));
+                        customer.setBirthDay(rs.getDate("JPOS_BirthDay"));
+                        customer.setDateJoin(rs.getDate("JPOS_DateJoin"));
+                        customer.setEmail(rs.getString("JPOS_Email"));
+                        customer.setFavorite(rs.getString("JPOS_Favorite"));
+                        customer.setFirstName(rs.getString("JPOS_FirstName"));
+                        customer.setGender(rs.getBoolean("JPOS_Gender"));
+                        customer.setLastName(rs.getString("JPOS_LastName"));
+                        customer.setJPOS_CustomerID(rs.getInt("JPOS_CustomerID"));
+                        customer.setJPOS_CurrentPoint(rs.getInt("JPOS_CurrentPoint"));
+                       
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                customer = null;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                return customer;
             }
         }
 }
