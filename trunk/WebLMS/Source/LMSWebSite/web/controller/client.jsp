@@ -45,6 +45,7 @@
                     iCustID = Integer.parseInt(strDetail);
                 }catch (Exception ex){}
                 custInfor = BUS_JPOS_Customer.GetCustomerInfor(iCustID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                
                 %><%@include file="../views/CustomerDetail.jsp"  %><%
             }
             else
@@ -70,7 +71,7 @@
                     resultViews = BUS_JPOS_Customer.Search_Customer(iCustomerID, strFirstName, strLastName, strAddress, strEmail, strDateJoin, strBirthDay, blGender, strFavorite, iCurrentPoint, DAO.DataProvider.getConnection(this.getServletConfig()));
                 }else {
                 }
-                %><%@include file="../views/ClientInformationPage.jsp"  %><%
+                %><%@include file="../views/CustomerInformation.jsp"  %><%
             }
             break;
         case 4:
@@ -82,7 +83,7 @@
                     iCustID = Integer.parseInt(strDetail);
                 }catch (Exception ex){}
                 custInfor = BUS_JPOS_Customer.GetCustomerInfor(iCustID, DAO.DataProvider.getConnection(this.getServletConfig()));
-
+                
 
                 resultViews = BUS_JPOS_Customer.Transaction_Detail(iCustID, DAO.DataProvider.getConnection(this.getServletConfig()));
                 %><%@include file="../views/TransactionDetail.jsp"  %><%

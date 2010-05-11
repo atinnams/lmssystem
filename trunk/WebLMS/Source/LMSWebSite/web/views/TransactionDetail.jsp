@@ -159,8 +159,8 @@
                                                         <th>Mã giao dịch</th>
                                                         <th>Ngày giao dịch</th>
                                                         <th>Loại giao dịch</th>
-                                                        <th>Point Gain</th>
-                                                        <th>Point Loss</th>
+                                                        <th>Điểm cộng</th>
+                                                        <th>Điểm trừ</th>
                                                         <th>PoSCC</th>
                                                         <th>Địa chỉ</th>
                                                         <th>Quà</th>
