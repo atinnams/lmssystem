@@ -1,6 +1,6 @@
-<%--
-    Document   : Transaction Detail
-    Created on : May 8, 2010, 5:00:53 PM
+<%-- 
+    Document   : ReportTerminal
+    Created on : May 12, 2010, 8:29:48 PM
     Author     : NKLapTop
 --%>
 
@@ -8,6 +8,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
 
+<%@page import="java.util.*,java.text.*" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -135,69 +136,63 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="9" class="main">
+                        <td colspan="9">
                             <div >
-                                <div class="content" <%=strStyle%>>
-                                    <h1><%=strWebTitle %></h1>                                     
-                                    <% if (resultViews!=null)
-                                       {    %>
-                                            <h2>Mã khách hàng : <%=iCustID %></h2>
-                                                <h3>Tên khách hàng : <%=custInfor.getLastName() + " " + custInfor.getFirstName() %></h3>
-                                                <h3>Địa chỉ : <%=custInfor.getAddress() %></h3>
-                                                <h3>Email : <%=custInfor.getEmail() %></h3>
-                                            <hr>
+                                <center><h1>Thống kê thiết bị</h1></center>
+                                <br>
+                                <%
+                                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                    java.util.Date date = new java.util.Date();
+                                    DTO.DTO_JPOS_Admin admin = (DTO.DTO_JPOS_Admin)session.getAttribute("Admin");
+                                %>
+                                <h3>Ngày thống kê : <%=dateFormat.format(date) %></h3>
+                                <h3>Người thống kê : <%=admin.getLastName() + " " + admin.getFirstName() %></h3>
+                                <br>
+                                <% if (resultViews == null)
+                                   {
+                                        %>
+                                        <h3 style="padding-left:20px">Không tìm thấy dữ liệu thống kê</h3>
+                                        <div style="height:400px"></div>
+                                        <%
+                                   }
+                                   else
+                                   {
+                                        int iSize = resultViews.size();
+                                        %>
+                                        <table cellpadding="0" cellspacing="0" border="1px"  width="774px" >
+                                            <tr bgcolor="blue" align="center">
+                                                <th>Mã thiết bị</th>
+                                                <th>Mã PIN</th>
+                                                <th>Trạng thái</th>
+                                                <th>Mã kích hoạt</th>
+                                                <th>Đại lý trực thuộc</th>
+                                                <th>Địa chỉ</th>
+                                            </tr>
+                                        <%
+
+                                        for (int i= 0 ; i < iSize; i++ )
+                                        {
+                                            DTO.DTO_JPOS_Terminal terminal = (DTO.DTO_JPOS_Terminal)resultViews.get(i);
+                                            
+
+                                            %>
+
+                                            <tr align="center">
+                                                <td><%=terminal.getTID() %></td>
+                                                <td><%=terminal.getPIN() %></td>
+                                                <td><%=terminal.getStatusName() %></td>
+                                                <td><%=terminal.getActiveCode() %></td>
+                                                <td><%=terminal.getMerchantName() %></td>
+                                                <td><%=terminal.getMerchantAddress() %></td>
+                                            </tr>
                                             <%
-                                            if (resultViews.isEmpty())
-                                            {
-                                                %><h2>Không tìm thấy kết quả giao dịch</h2><%
-                                            }else
-                                            {
-                                                int iSize = resultViews.size();
-                                                %>                                                
-                                                <table cellpadding="0px" cellspacing="0px" width="550px" border="1px" >
-                                                    <tr bgcolor="Blue" style="color:white" align="center">
-                                                        <th>Mã giao dịch</th>
-                                                        <th>Ngày giao dịch</th>
-                                                        <th>Loại giao dịch</th>
-                                                        <th>Điểm cộng</th>
-                                                        <th>Điểm trừ</th>
-                                                        <th>PoSCC</th>
-                                                        <th>Địa chỉ giao dịch</th>
-                                                        <th>Quà tặng</th>
-                                                    </tr>
-                                                <%
-                                                for (int i=0; i< iSize; i++)
-                                                {
-                                                    DTO.DTO_Report report = (DTO.DTO_Report)resultViews.get(i);
-                                                    String strGift = "";
-                                                    if (report.getGiftName() != null)
-                                                        strGift = report.getGiftName();
-                                                    %><tr align="center"><%
-                                                        %><td><%=report.getLogID() %></td><%
-                                                        %><td><%=report.getDate().toString() %></td><%
-                                                        %><td><%=report.getTask() %></td><%
-                                                        %><td><%=report.getPointGain() %></td><%
-                                                        %><td><%=report.getPointLoss() %></td><%
-                                                        %><td><%=report.getPoSCCName() %></td><%
-                                                        %><td><%=report.getMerchantAddress() %></td><%
-                                                        %><td><%=strGift %></td><%
-                                                    %></tr><%
+                                        }
+                                        %></table><%
+                                        %><div style="height:200px"></div><%
 
-                                                }
-                                                %></table><%
-                                            }
-                                       }
-                                       else
-                                       {
-                                            %><h1>Không tìm thấy dữ liệu phù hợp</h1><%
-                                       }
-                                    %>
-                                    <div style="height:400px"></div>
-                                </div>
+                                   }
+                                %>
 
-                                <%@include file="../include/Navigation.jsp" %>
-
-                                <div class="clearer">&nbsp;</div>
 
                             </div>
                         </td>
@@ -231,5 +226,6 @@
 
     </body>
 </html
+
 
 

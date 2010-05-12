@@ -137,4 +137,10 @@ public class BUS_JPOS_Customer {
             IJPOS_Customer myCustomer = factory.getJPOS_Customer();
             return myCustomer.GetCustomerInfor(iCustomerID, conn);
         }
+        public static ArrayList<DTO_JPOS_Customer> GetCustomerList(Connection conn)
+        {
+            LMSDAOFactory factory = LMSDAOFactory.getInstances();
+            IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+            return myCustomer.GetCustomerList(conn);
+        }
 }

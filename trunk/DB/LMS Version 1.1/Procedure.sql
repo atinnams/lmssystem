@@ -282,6 +282,7 @@ begin
 	join JPOS_Merchant on JPOS_Merchant.JPOS_MID = JPOS_Log.JPOS_MID
 	join JPOS_PoSCC on JPOS_Log.JPOS_PoSCC_ID = JPOS_PoSCC.JPOS_PoSCC_ID
 	where JPOS_Customer.JPOS_CustomerID = @CustomerID	
+	order by JPOS_Log.JPOS_Date DESC
 end
 
 -------------------------------------------------------------------------------------------------------------------------------
@@ -293,4 +294,51 @@ as
 begin
 	select * from JPOS_Customer	
 	where JPOS_CustomerID = @CustomerID	
+end
+
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Customer_Report') is not null
+	drop proc sp_Customer_Report
+go
+create procedure sp_Customer_Report
+as
+begin
+	select * from JPOS_Customer		
+end
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Card_Report') is not null
+	drop proc sp_Card_Report
+go
+create procedure sp_Card_Report
+as
+begin
+	select * from JPOS_Card left join JPOS_Status on JPOS_Card.JPOS_Status = JPOS_Status.JPOS_StatusID
+end 
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Terminal_Report') is not null
+	drop proc sp_Terminal_Report
+go
+create procedure sp_Terminal_Report
+as
+begin
+	select JPOS_TID,JPOS_PIN,JPOS_Status,JPOS_StatusName,JPOS_ActivateCode,JPOS_RetryLimit,JPOS_Terminal.JPOS_MID,JPOS_MerchantName,JPOS_Address from JPOS_Terminal left join JPOS_Merchant on JPOS_Terminal.JPOS_MID = JPOS_Merchant.JPOS_MID left join JPOS_Status on JPOS_Terminal.JPOS_Status = JPOS_Status.JPOS_StatusID
+end 
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Transaction_Report') is not null
+	drop proc sp_Transaction_Report
+go
+create procedure sp_Transaction_Report
+as
+begin
+	Select JPOS_Log.JPOS_LogID,JPOS_Log.JPOS_Date,JPOS_Task.JPOS_TaskName,JPOS_Log.JPOS_CardID,JPOS_Customer.JPOS_CustomerID,JPOS_LOG.JPOS_PointGain,JPOS_LOG.JPOS_PointLoss,JPOS_PoSCC.JPOS_PoSCC_Name,JPOS_Terminal.JPOS_TID,JPOS_Merchant.JPOS_MerchantName,JPOS_Merchant.JPOS_Address,JPOS_Gift.JPOS_GiftName
+	from 
+	JPOS_Log left join JPOS_Log_Exchange on JPOS_Log.JPOS_LogID = JPOS_Log_Exchange.JPOS_LogID
+	join jpos_card on JPOS_Log.JPOS_CardID = JPOS_Card.JPOS_CardID
+	join JPOS_Customer on JPOS_Card.JPOS_CustomerID = JPOS_Customer.JPOS_CustomerID 
+	left join JPOS_Gift on JPOS_Log_Exchange.JPOS_Gift = JPOS_Gift.JPOS_GiftID
+	join JPOS_Task on JPOS_Log.JPOS_Task = JPOS_Task.JPOS_TaskID	
+	join JPOS_Terminal on JPOS_Log.JPOS_TID = JPOS_Terminal.JPOS_TID and JPOS_Log.JPOS_MID = JPOS_Terminal.JPOS_MID
+	join JPOS_Merchant on JPOS_Merchant.JPOS_MID = JPOS_Log.JPOS_MID
+	join JPOS_PoSCC on JPOS_Log.JPOS_PoSCC_ID = JPOS_PoSCC.JPOS_PoSCC_ID
+	order by JPOS_Log.JPOS_Date DESC
 end
