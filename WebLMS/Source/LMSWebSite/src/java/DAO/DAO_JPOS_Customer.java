@@ -366,4 +366,55 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
                 return customer;
             }
         }
+        @Override
+        public ArrayList<DTO_JPOS_Customer> GetCustomerList(Connection conn)
+        {
+            ArrayList ArrayResult = null ;
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_Customer_Report()}");
+               
+
+                boolean HasRow = stmt.execute();
+                if (HasRow) {
+                    ArrayResult = new ArrayList();
+                    ResultSet rs = stmt.getResultSet();
+                    while (rs.next()) {
+                        DTO_JPOS_Customer customer = new DTO_JPOS_Customer();
+
+                        customer.setAddress(rs.getString("JPOS_Address"));
+                        customer.setBirthDay(rs.getDate("JPOS_BirthDay"));
+                        customer.setDateJoin(rs.getDate("JPOS_DateJoin"));
+                        customer.setEmail(rs.getString("JPOS_Email"));
+                        customer.setFavorite(rs.getString("JPOS_Favorite"));
+                        customer.setFirstName(rs.getString("JPOS_FirstName"));
+                        customer.setGender(rs.getBoolean("JPOS_Gender"));
+                        customer.setLastName(rs.getString("JPOS_LastName"));
+                        customer.setJPOS_CustomerID(rs.getInt("JPOS_CustomerID"));
+                        customer.setJPOS_CurrentPoint(rs.getInt("JPOS_CurrentPoint"));
+
+                        ArrayResult.add(customer);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                ArrayResult = null;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                return ArrayResult;
+            }
+        }
 }

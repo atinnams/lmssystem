@@ -1,6 +1,6 @@
 package DTO;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * 
@@ -18,6 +18,10 @@ public class DTO_JPOS_Card {
 
 	// Either activation or not
 	private int jPOS_IsActivate;
+        private String _Status;
+        private String _ActiveCode;
+        private int _CustomerOwnerID;
+        
 
 	/*************** Properties *******************/
 
@@ -44,5 +48,47 @@ public class DTO_JPOS_Card {
 	public void setJPOS_IsActivate(int isActivate) {
 		jPOS_IsActivate = isActivate;
 	}
+
+    /**
+     * @return the _Status
+     */
+    public String getStatus() {
+        return _Status;
+    }
+
+    /**
+     * @param Status the _Status to set
+     */
+    public void setStatus(String Status) {
+        this._Status = Status;
+    }
+
+    /**
+     * @return the _ActiveCode
+     */
+    public String getActiveCode() {
+        return _ActiveCode;
+    }
+
+    /**
+     * @param ActiveCode the _ActiveCode to set
+     */
+    public void setActiveCode(String ActiveCode) {
+        this._ActiveCode = ActiveCode;
+    }
+
+    /**
+     * @return the _CustomerOwnerID
+     */
+    public int getCustomerOwnerID() {
+        return _CustomerOwnerID;
+    }
+
+    /**
+     * @param CustomerOwnerID the _CustomerOwnerID to set
+     */
+    public void setCustomerOwnerID(int CustomerOwnerID) {
+        this._CustomerOwnerID = CustomerOwnerID;
+    }
 
 }

@@ -9,20 +9,22 @@ public class DTO_JPOS_Merchant {
 	/**************** Attribute *********************/
 	
 	//Merchant Identify.
-	private String jPOS_MIT;
+	private String _jPOS_MID;
 	
 	//Terminal Identify.
 	private String jPOS_TID;
 	
 	//Merchant name.
 	private String jPOS_MerchantName;
+        private String _Status;
+ 
 	
 	/******************************Properties *********************/
-	public String getJPOS_MIT() {
-		return jPOS_MIT;
+	public String getjPOS_MID() {
+		return _jPOS_MID;
 	}
-	public void setJPOS_MIT(String jpos_mit) {
-		jPOS_MIT = jpos_mit;
+	public void setjPOS_MID(String jPOS_MID) {
+		_jPOS_MID = jPOS_MID;
 	}
 	
 	public String getJPOS_TID() {
@@ -39,5 +41,5 @@ public class DTO_JPOS_Merchant {
 	
 	public void setJPOS_MerchantName(String merchantName) {
 		jPOS_MerchantName = merchantName;
-	}
+	}    
 }

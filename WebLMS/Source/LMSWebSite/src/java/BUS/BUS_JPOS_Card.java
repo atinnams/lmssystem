@@ -4,6 +4,8 @@ import java.sql.Connection;
 
 import DAO.FACTORY.LMSDAOFactory;
 import DAO.iDAO.IJPOS_Card;
+import DTO.DTO_JPOS_Card;
+import java.util.ArrayList;
 
 /**
  * 
@@ -58,4 +60,10 @@ public class BUS_JPOS_Card {
 		IJPOS_Card myCard = factory.getJPOS_Card();
 		myCard.activateCard(cardId, con);
 	}
+        public static ArrayList<DTO_JPOS_Card> getListCard(Connection conn){
+            	LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Card myCard = factory.getJPOS_Card();
+		return myCard.getListCard(conn);
+        }
+
 }

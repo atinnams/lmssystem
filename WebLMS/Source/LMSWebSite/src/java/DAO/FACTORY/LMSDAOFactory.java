@@ -10,6 +10,7 @@ import DAO.iDAO.IJPOS_Log_Exchange;
 import DAO.iDAO.IJPOS_Merchant;
 import DAO.iDAO.IJPOS_PoSCC;
 import DAO.iDAO.IJPOS_Task;
+import DAO.iDAO.IJPOS_Terminal;
 
 
 
@@ -45,7 +46,9 @@ public abstract class LMSDAOFactory {
 	public abstract IJPOS_Task getJPOS_Task();
 
         public abstract IJPOS_Admin getJPOS_Admin();
-	
+
+        public abstract IJPOS_Terminal getJPOS_Terminal();
+        
 	/**
 	 * Get instance of class indicate for specific database..
 	 * @return instance of class indicate for specific database.

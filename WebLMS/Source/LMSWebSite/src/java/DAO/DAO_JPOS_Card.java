@@ -5,6 +5,10 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import DAO.iDAO.IJPOS_Card;
+import java.util.*;
+import DTO.*;
+import java.sql.ResultSet;
+
 
 /**
  * 
@@ -93,4 +97,50 @@ public class DAO_JPOS_Card implements IJPOS_Card {
 			e.printStackTrace();
 		} 
 	}
+        @Override
+        public ArrayList<DTO_JPOS_Card> getListCard(Connection conn)
+        {
+            ArrayList ArrayResult = null ;
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_Card_Report()}");
+
+
+                boolean HasRow = stmt.execute();
+                if (HasRow) {
+                    ArrayResult = new ArrayList();
+                    ResultSet rs = stmt.getResultSet();
+                    while (rs.next()) {
+                        DTO_JPOS_Card card = new DTO_JPOS_Card();
+
+                        card.setJPOS_CardId(rs.getString("JPOS_CardId"));
+                        card.setJPOS_ExpireDay(rs.getDate("JPOS_ExpireDay"));
+                        card.setStatus(rs.getString("JPOS_StatusName"));
+                        card.setCustomerOwnerID(rs.getInt("JPOS_CustomerID"));
+                        card.setActiveCode(rs.getString("JPOS_ActivateCode"));
+
+                        ArrayResult.add(card);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                ArrayResult = null;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                return ArrayResult;
+            }
+        }
 }

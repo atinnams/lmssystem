@@ -7,17 +7,53 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
+<%@page import="DTO.*,BUS.*,java.util.ArrayList" %>
 <%
    if (session.getAttribute("Admin") == null) {
-    response.sendRedirect("index.jsp");
+        response.sendRedirect("index.jsp");
+   }
+   else
+   {
+%>
+<%
+    String strTask = request.getParameter("TaskID");
+    String strWebTitle = "";
+    int iTaskID = Integer.parseInt(strTask);
+    ArrayList resultViews = null;
+
+%>
+<%    
+    switch (iTaskID){
+        case 10:
+            {
+                strWebTitle = "Thống kê khách hàng";
+                resultViews = BUS.BUS_JPOS_Customer.GetCustomerList(DAO.DataProvider.getConnection(this.getServletConfig()));
+                %><%@include file="../views/ReportCustomer.jsp" %><%
+            }
+            break;
+        case 11:
+            {
+                strWebTitle = "Thống kê giao dịch";
+                resultViews = BUS.BUS_JPOS_Log.getReportLog(DAO.DataProvider.getConnection(this.getServletConfig()));
+                %><%@include file="../views/ReportTransaction.jsp" %><%
+            }
+            break;
+        case 12:
+            {
+                strWebTitle = "Thống kê thẻ";
+                resultViews = BUS.BUS_JPOS_Card.getListCard(DAO.DataProvider.getConnection(this.getServletConfig()));
+                %><%@include file="../views/ReportCard.jsp" %><%
+            }
+            break;
+        case 13:
+            {
+                strWebTitle = "Thống kê thiết bị";
+                resultViews = BUS.BUS_JPOS_Terminal.getListTerminal(DAO.DataProvider.getConnection(this.getServletConfig()));
+                %><%@include file="../views/ReportTerminal.jsp" %><%
+            }
+            break;
+    }    
+%>
+<%
    }
 %>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>JSP Page</title>
-    </head>
-    <body>
-        <h1>Report page <%= request.getQueryString() %></h1>
-    </body>
-</html>

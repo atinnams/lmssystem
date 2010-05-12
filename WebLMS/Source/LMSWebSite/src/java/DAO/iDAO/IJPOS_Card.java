@@ -1,7 +1,8 @@
 package DAO.iDAO;
 
 import java.sql.Connection;
-
+import java.util.ArrayList;
+import DTO.*;
 /**
  * 
  * @author HUNGPT
@@ -39,5 +40,6 @@ public interface IJPOS_Card {
 	 * @param con Connection which connect to database server.
 	 */
 	public void activateCard(String cardId,Connection con);
+        public ArrayList<DTO_JPOS_Card> getListCard(Connection con);
 	
 }
