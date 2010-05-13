@@ -49,7 +49,7 @@ select @result ; --expected to 0
 */
 --===========================================================================
 
-if object_id('fn_check_merchant') is not null
+if object_id('fn_check_merchant_n_terminal') is not null
 	drop function fn_check_merchant_n_terminal
 go
 
@@ -179,7 +179,7 @@ as
 begin
 	return (select JPOS_GiftID from JPOS_Gift where JPOS_PointForGift = @giftPoint);
 end
-
+go
 /*--test
 declare @result int;
 select @result = dbo.fn_get_gift_id(15);
@@ -199,7 +199,7 @@ as
 begin
 	return (select JPOS_GiftName from JPOS_Gift where JPOS_PointForGift = @giftPoint);
 end
-
+go
 /*--test
 declare @result nvarchar(200);
 select @result = dbo.fn_get_gift_name(15);
