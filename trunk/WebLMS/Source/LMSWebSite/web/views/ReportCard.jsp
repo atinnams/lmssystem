@@ -48,7 +48,7 @@
     <body leftmargin="0" topmargin="0" onLoad="preloadImages();" style="background-color: rgb(255, 255, 255);" marginheight="0" marginwidth="0">
         <center>
             <table class="frame" id="Table_01" border="0" cellpadding="0" cellspacing="0" height="681" width="776">
-                <tbody>
+                <tbody align="left">
                     <tr>
                         <td colspan="9"> <img src="images/main.jpg" alt="" height="100" width="775"></td>
                         <td> <img src="images/spacer.gif" alt="" height="100" width="1"></td>
@@ -88,7 +88,7 @@
                                     <tr>
                                         <td ><span class="LoginText">Username:</span></td>
                                         <td><input type="text" value="" name="txtUsername" maxlength="30" size="20" /></td>
-                                        <td align="left"><input type="Submit" value="Log In" name="Login" style="font-size:13px;"/></td>
+                                        <td align="left"><input type="Submit" value="Log In" name="Login" style="font-size:12px;"/></td>
                                     </tr>
 
                                     <tr>
@@ -138,7 +138,7 @@
                     <tr>
                         <td colspan="9">
                             <div >
-                                <center><h1>Thống kê thẻ</h1></center>
+                                <center><h1>THỐNG KÊ THẺ</h1></center>
                                 <br>
                                 <%
                                     DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
