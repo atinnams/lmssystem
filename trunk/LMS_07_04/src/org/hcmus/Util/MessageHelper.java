@@ -2,6 +2,7 @@ package org.hcmus.Util;
 
 import org.jpos.iso.ISOException;
 import org.jpos.iso.ISOMsg;
+import org.jpos.iso.ISOUtil;
 import org.jpos.util.NameRegistrar;
 import org.jpos.util.NameRegistrar.NotFoundException;
 
@@ -103,15 +104,14 @@ public class MessageHelper {
 			return s.substring(0,num);
 		} else {
 			StringBuffer buffer = new StringBuffer();
+			buffer.append(s);
 			for (int i = length; i < num; i++) {
 				buffer.append('0');
 			}
-			buffer.append(s);
 			return buffer.toString();
 		}
 	}
 	
-
 	public static String pointToStringField63(int rangePoint,int promotionPoint,int frequencyPoint,int birthdayPoint,int joinPoint) {
 		String result = "";
 		int totalPoint = rangePoint + promotionPoint + frequencyPoint + birthdayPoint + joinPoint;
@@ -124,17 +124,27 @@ public class MessageHelper {
 		return result;
 	}
 	
-	public static int getPoint(ISOMsg msg) {
+	public static int getPoint(ISOMsg msg){
+		int result = 0;
+		String field61;
+		try {
+			field61 = ISOUtil.hexString(msg.getComponent(61).getBytes());
+			String money = field61.substring(6, 14);
+			result = MessageHelper.getPoint(money);
+		} catch (ISOException e) {
+			result = -1;
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	public static int getPoint(String strPoint) {
 		int result = 0;
 		try {
-			String strPoint = (String)msg.getValue(4);
 			NormalRule normalRule = (NormalRule)NameRegistrar.get("normal.rule");
 			String amount = normalRule.getAmount();
 			String point = normalRule.getPoint();
 			result = (Integer.parseInt(strPoint) / Integer.parseInt(amount)) * Integer.parseInt(point) ;
-		} catch (ISOException e) {
-			e.printStackTrace();
-			result = -1;
 		} catch(NumberFormatException ex) {
 			ex.printStackTrace();
 			result = -1;
@@ -148,9 +158,16 @@ public class MessageHelper {
 	
 	public static int getAmount(ISOMsg msg){
 		int result = 0;
+		String field48 = "";
 		try {
-			String strAmount = (String)msg.getValue(4);
-			result = Integer.parseInt(strAmount);
+			field48 = ISOUtil.hexString(msg.getComponent(48).getBytes());
+			int index = field48.indexOf("FF21");
+			if(index != -1){
+				String strAmout = field48.substring(index+4, index+10);
+				result = Integer.parseInt(strAmout);
+			}else{
+				return -1;
+			}
 		} catch (ISOException e) {
 			e.printStackTrace();
 			result = -1;
@@ -164,9 +181,17 @@ public class MessageHelper {
 	
 	public static int getGiftPoint(ISOMsg msg){
 		int result = 0;
+		String field48 = "";
 		try {
-			String strPoint = (String)msg.getValue(4);
-			result = Integer.parseInt(strPoint);
+			field48 = ISOUtil.hexString(msg.getComponent(48).getBytes());
+			int index = field48.indexOf("FF21");
+			if(index != -1){
+				String strPoint = field48.substring(index+4, index+10);
+				result = Integer.parseInt(strPoint);
+			}else{
+				return -1;
+			}
+			
 		} catch (ISOException e) {
 			e.printStackTrace();
 			result = -1;
@@ -182,5 +207,20 @@ public class MessageHelper {
 		int length = value.length();
 		result = tag + ConvertHelper.decToHex(length) + ConvertHelper.asciiToHex(value);
 		return result;
+	}
+	
+	public static String getTransactionName(ISOMsg msg){
+		String field48 = "";
+		try {
+			field48 = ISOUtil.hexString(msg.getComponent(48).getBytes());
+			int index = field48.indexOf("FF21");
+			if(index != -1){
+				return field48.substring(index+4, index+10);
+			}else{
+				return null;
+			}
+		} catch (ISOException e) {
+			return null;
+		}
 	}
 }

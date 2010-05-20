@@ -47,8 +47,10 @@ public class BalanceInquiry implements TransactionParticipant {
 			}
 			
 			/** convert point to response string message **/
-			String strPoint = MessageHelper.makeTLV("FF51", MessageHelper
+			/*String strPoint = MessageHelper.makeTLV("FF51", MessageHelper
 					.format(Integer.toString(result), 4));
+					*/
+			String strPoint = "FF3E161111000000000000000000000000000000" + MessageHelper.format(Integer.toString(result),10);
 					
 			/** put it to context for response participant **/
 			ctx.put(Constant.POINT, strPoint);

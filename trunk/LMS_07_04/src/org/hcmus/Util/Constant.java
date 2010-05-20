@@ -24,9 +24,9 @@ public class Constant {
 	public final static String NO_GIFT = "BAN CHUA DU DIEM DE NHAN QUA.";
 	
 	public final static String ERROR_FLOW = "000000" ;
-	public final static String ADD_POINT_PROCESS = "407000";
+	public final static String ADD_POINT_PROCESS = "027207";
 	public final static String SUBTRACT_POINT_PROCESS = "417000";
-	public final static String BALANCE_INQUIRY_PROCESS = "427000";
+	public final static String BALANCE_INQUIRY_PROCESS = "027567";
 	public final static String REDEMPTION_PROCESS = "447000";
 	public final static String ACTIVATION_PROCESS = "457000";
 	
