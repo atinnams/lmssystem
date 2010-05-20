@@ -74,7 +74,7 @@
       length="6"
       name="SYSTEM TRACE AUDIT NUMBER"
       pad="true"
-      class="org.jpos.iso.IFA_NUMERIC"/>
+      class="org.jpos.iso.IFB_NUMERIC"/>
   <isofield
       id="12"
       length="6"
