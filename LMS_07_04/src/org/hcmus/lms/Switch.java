@@ -3,10 +3,10 @@ package org.hcmus.lms;
 import java.io.Serializable;
 
 import org.hcmus.Util.Constant;
+import org.hcmus.Util.MessageHelper;
 import org.jpos.core.Configurable;
 import org.jpos.core.Configuration;
 import org.jpos.core.ConfigurationException;
-import org.jpos.iso.ISOException;
 import org.jpos.iso.ISOMsg;
 import org.jpos.transaction.Context;
 import org.jpos.transaction.GroupSelector;
@@ -30,25 +30,23 @@ public class Switch implements GroupSelector, Configurable {
 			ISOMsg msg = (ISOMsg) ctx.get(Constant.REQUEST);
 
 			String groups = "";
+
+			String transactionName = MessageHelper.getTransactionName(msg);
+			
 			/** Get group String from fields No3 of message. **/
-			if (!msg.hasField(3)) {
+			if (transactionName == null) {
+				return cfg.get(Constant.ERROR_FLOW);
+			}
+			
+			if (!Constant.ADD_POINT_PROCESS.equals(transactionName)
+					&& !Constant.SUBTRACT_POINT_PROCESS.equals(transactionName)
+					&& !Constant.BALANCE_INQUIRY_PROCESS.equals(transactionName)
+					&& !Constant.REDEMPTION_PROCESS.equals(transactionName)
+					&& !Constant.ACTIVATION_PROCESS.equals(transactionName)) {
 				return cfg.get(Constant.ERROR_FLOW);
 			}
 
-			try {
-				String field3 = (String) msg.getValue(3);
-				if (!Constant.ADD_POINT_PROCESS.equals(field3)
-						&& !Constant.SUBTRACT_POINT_PROCESS.equals(field3)
-						&& !Constant.BALANCE_INQUIRY_PROCESS.equals(field3)
-						&& !Constant.REDEMPTION_PROCESS.equals(field3)
-						&& !Constant.ACTIVATION_PROCESS.equals(field3)) {
-					return cfg.get(Constant.ERROR_FLOW);
-				}
-			} catch (ISOException e) {
-				e.printStackTrace();
-			}
-
-			groups = cfg.get((String) msg.getValue(3));
+			groups = cfg.get(transactionName);
 
 			return groups;
 		} catch (Exception e) {
