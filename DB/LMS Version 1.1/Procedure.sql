@@ -312,7 +312,8 @@ go
 create procedure sp_Card_Report
 as
 begin
-	select * from JPOS_Card left join JPOS_Status on JPOS_Card.JPOS_Status = JPOS_Status.JPOS_StatusID
+	select * from JPOS_Card left join JPOS_Status on JPOS_Card.JPOS_Status = JPOS_Status.JPOS_StatusID 
+	where JPOS_Status.JPOS_TableName = 'JPOS_Card' and JPOS_Status.JPOS_StatusName <> 'Deleted Card'
 end 
 -------------------------------------------------------------------------------------------------------------------------------
 if object_id('sp_Terminal_Report') is not null

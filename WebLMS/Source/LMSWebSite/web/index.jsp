@@ -46,10 +46,16 @@ private DTO_JPOS_Admin Login(String strUsername, String strPassword) {
             %> <jsp:forward page="controller/client.jsp"></jsp:forward> <%
             break;
         case 6 :
+            %> <jsp:forward page="controller/customer.jsp"></jsp:forward> <%
+            break;
         case 7 :
+            %> <jsp:forward page="controller/terminal.jsp"></jsp:forward> <%
+            break;
         case 8 :
+            %> <jsp:forward page="controller/merchant.jsp"></jsp:forward> <%
+            break;
         case 9 :
-            %> <jsp:forward page="controller/admin.jsp"></jsp:forward> <%
+            %> <jsp:forward page="controller/card.jsp"></jsp:forward> <%
             break;
         case 10 :
         case 11 :
