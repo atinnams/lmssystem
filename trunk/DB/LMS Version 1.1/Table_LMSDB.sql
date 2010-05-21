@@ -41,6 +41,7 @@ create table JPOS_Customer
 	JPOS_Gender bit,
 	JPOS_Favorite nvarchar(100),
 	JPOS_CurrentPoint	int not null,
+	JPOS_Status		int not null,
 	primary key (JPOS_CustomerID)
 )
 go
@@ -237,6 +238,7 @@ create table JPOS_Status
 (
 	JPOS_StatusID int not null,
 	JPOS_StatusName varchar(50),
+	JPOS_TableName varchar(50),
 	primary key(JPOS_statusID)
 )
 

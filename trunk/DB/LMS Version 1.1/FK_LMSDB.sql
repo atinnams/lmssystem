@@ -49,3 +49,7 @@ alter table JPOS_Log_Event
 add constraint FK_JPOS_Log_Event_JPOS_Event foreign key (JPOS_EventID) references JPOS_Event(JPOS_EventID),
 	constraint FK_JPOS_Log_Event_JPOS_Log foreign key (JPOS_LogID) references JPOS_Log(JPOS_LogID)
 go
+
+alter table JPOS_Customer
+add constraint FK_JPOS_Customer foreign key (JPOS_Status) references JPOS_Status(JPOS_StatusID)
+go
