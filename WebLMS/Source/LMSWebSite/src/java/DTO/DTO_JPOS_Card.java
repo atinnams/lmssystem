@@ -21,6 +21,8 @@ public class DTO_JPOS_Card {
         private String _Status;
         private String _ActiveCode;
         private int _CustomerOwnerID;
+        private int _StatusCode;
+        
         
 
 	/*************** Properties *******************/
@@ -90,5 +92,20 @@ public class DTO_JPOS_Card {
     public void setCustomerOwnerID(int CustomerOwnerID) {
         this._CustomerOwnerID = CustomerOwnerID;
     }
+
+    /**
+     * @return the _StatusCode
+     */
+    public int getStatusCode() {
+        return _StatusCode;
+    }
+
+    /**
+     * @param StatusCode the _StatusCode to set
+     */
+    public void setStatusCode(int StatusCode) {
+        this._StatusCode = StatusCode;
+    }
+  
 
 }

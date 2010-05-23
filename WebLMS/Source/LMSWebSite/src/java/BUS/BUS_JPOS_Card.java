@@ -65,5 +65,20 @@ public class BUS_JPOS_Card {
 		IJPOS_Card myCard = factory.getJPOS_Card();
 		return myCard.getListCard(conn);
         }
+        public static boolean NewCard(DTO_JPOS_Card card,Connection conn){
+            	LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Card myCard = factory.getJPOS_Card();
+		return myCard.NewCard(card, conn);
+        }
+        public static boolean DeleteCard(String strCardID,Connection conn){
+            	LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Card myCard = factory.getJPOS_Card();
+		return myCard.DeleteCard(strCardID, conn);
+        }
+        public static DTO_JPOS_Card GetCard(String strCardID,Connection conn){
+            	LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Card myCard = factory.getJPOS_Card();
+		return myCard.GetCard(strCardID, conn);
+        }
 
 }

@@ -41,5 +41,8 @@ public interface IJPOS_Card {
 	 */
 	public void activateCard(String cardId,Connection con);
         public ArrayList<DTO_JPOS_Card> getListCard(Connection con);
+        public boolean NewCard(DTO_JPOS_Card card,Connection con);
+        public boolean DeleteCard(String strCardID,Connection con);
+        public DTO_JPOS_Card GetCard(String strCardID,Connection con);
 	
 }
