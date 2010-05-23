@@ -16,6 +16,13 @@
 <%
     ArrayList resultViews = null;
     String strWebTitle= "";
+    String strErrorCardID = "";
+    String strErrorExpireDay = "";
+    String strErrorActiveCode = "";
+    String strErrorAddNew = "";
+    String strURLforward = "index.jsp?TaskID=9";
+    String strErrorDelete = "";
+    boolean blError = false;
 %>
 <%
     String strCardTask = request.getParameter("CardTask");
@@ -30,26 +37,103 @@
     {
         case 1 :            //Form to add new card
             {
-            %><%@include file="../views/CardList.jsp" %><%
+                strWebTitle = "Thêm thẻ mới";
+                %><%@include file="../views/CardAddNew.jsp" %><%
             }
             break;
         case 2 :            //add new card
             {
-                
-            }
+                String strCardID = request.getParameter("txtMaThe");
+                String strExpireDay = request.getParameter("txtNgayHetHan");
+                String strActiveCode = request.getParameter("txtMaKichHoat");
+                java.sql.Date dateExpireDay = null;
+                if (strCardID.length() != 16 )
+                {
+                    strErrorCardID = "Mã thẻ không đúng quy định 16 kí tự";
+                    blError = true;
+                    
+                }                                
+                try
+                {
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                    Date d = sdf.parse(strExpireDay);
+                    dateExpireDay = new java.sql.Date(d.getYear(),d.getMonth(),d.getDay());
+                }
+                catch (Exception ex)
+                {
+                    strErrorExpireDay = "Ngày hết hạn không đúng định dạng dd/MM/YYYY";
+                    blError = true;
+                }
+                if (blError == true)
+                {
+                    strWebTitle = "Thêm thẻ mới";
+                    %><%@include file="../views/CardAddNew.jsp" %><%
+                }
+                else
+                {
+                    DTO_JPOS_Card card = new DTO_JPOS_Card();
+                    card.setActiveCode(strActiveCode);
+                    card.setJPOS_CardId(strCardID);
+                    card.setJPOS_ExpireDay(dateExpireDay);
+                    boolean blResult = BUS.BUS_JPOS_Card.NewCard(card, DAO.DataProvider.getConnection(this.getServletConfig()));
+                    if (blResult = false)
+                    {
+                        strErrorAddNew = "Tạo mới thẻ không thành công";
+                        strWebTitle = "Thêm thẻ mới";
+                        %><%@include file="../views/CardAddNew.jsp" %><%
+                    }
+                    else
+                    {                        
+                        %><%@include file="../views/WaitingProcess.jsp" %><%
+                    }
+                }
+            }                            
             break ;
         case 3 :            //delete card
+            {
+                String strCardID = request.getParameter("CardID");
+                boolean blResult = BUS.BUS_JPOS_Card.DeleteCard(strCardID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                if (blResult = false)
+                {
+                    strErrorDelete = "Xóa thẻ không thành công";
+                    resultViews = BUS.BUS_JPOS_Card.getListCard(DAO.DataProvider.getConnection(this.getServletConfig()));
+                    strWebTitle = "Quản lý thẻ";
+                    %><%@include file="../views/CardList.jsp" %><%
+                }
+                else
+                {
+                    %><%@include file="../views/WaitingProcess.jsp" %><%
+                }
+            }
             break;
-        case 4 :            //modify card view
+        case 4 :            //modify card
+            {
+                
+            }
             break;
         case 5 :            //Search card
             break;
         case 6 :            //View card information
             {
-                %><%@include file="../views/CardInformation.jsp" %><%
+                String strCardID = request.getParameter("CardID");
+                strWebTitle = "Chi tiết thẻ";
+                DTO_JPOS_Card card = BUS.BUS_JPOS_Card.GetCard(strCardID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                %><%@include file="../views/CardDetail.jsp" %><%
             }
             break;
-        case 7 :            //modify card information
+        case 7 :            //modify card information view
+            {
+                String strCardID = request.getParameter("CardID");
+                strWebTitle = "Thay đổi thông tin thẻ";
+                DTO_JPOS_Card card = BUS.BUS_JPOS_Card.GetCard(strCardID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                %><%@include file="../views/CardModify.jsp" %><%
+            }
+            break;
+        case 8 :            //Card distribute
+            {
+            }
+            break;
+        case 9 :
             {
             }
             break;

@@ -244,6 +244,7 @@ begin
 	set @Result = 1;
 	commit transaction;
 end
+go
 -------------------------------------------------------------------------------------------------------------------------------
 if object_id('sp_Search_Customer') is not null
 	drop proc sp_Search_Customer
@@ -264,6 +265,7 @@ begin
 	(JPOS_Favorite like '%'+@Favorite+'%' or JPOS_Favorite is NULL or @Favorite = '') and
 	(JPOS_CurrentPoint = @CurrentPoint or @CurrentPoint = -1)
 end
+go
 -------------------------------------------------------------------------------------------------------------------------------
 if object_id('sp_Transaction_Detail') is not null
 	drop proc sp_Transaction_Detail
@@ -284,7 +286,7 @@ begin
 	where JPOS_Customer.JPOS_CustomerID = @CustomerID	
 	order by JPOS_Log.JPOS_Date DESC
 end
-
+go
 -------------------------------------------------------------------------------------------------------------------------------
 if object_id('sp_Customer_Infor') is not null
 	drop proc sp_Customer_Infor
@@ -295,7 +297,7 @@ begin
 	select * from JPOS_Customer	
 	where JPOS_CustomerID = @CustomerID	
 end
-
+go
 -------------------------------------------------------------------------------------------------------------------------------
 if object_id('sp_Customer_Report') is not null
 	drop proc sp_Customer_Report
@@ -305,6 +307,7 @@ as
 begin
 	select * from JPOS_Customer		
 end
+go
 -------------------------------------------------------------------------------------------------------------------------------
 if object_id('sp_Card_Report') is not null
 	drop proc sp_Card_Report
@@ -315,6 +318,7 @@ begin
 	select * from JPOS_Card left join JPOS_Status on JPOS_Card.JPOS_Status = JPOS_Status.JPOS_StatusID 
 	where JPOS_Status.JPOS_TableName = 'JPOS_Card' and JPOS_Status.JPOS_StatusName <> 'Deleted Card'
 end 
+go
 -------------------------------------------------------------------------------------------------------------------------------
 if object_id('sp_Terminal_Report') is not null
 	drop proc sp_Terminal_Report
@@ -323,7 +327,8 @@ create procedure sp_Terminal_Report
 as
 begin
 	select JPOS_TID,JPOS_PIN,JPOS_Status,JPOS_StatusName,JPOS_ActivateCode,JPOS_RetryLimit,JPOS_Terminal.JPOS_MID,JPOS_MerchantName,JPOS_Address from JPOS_Terminal left join JPOS_Merchant on JPOS_Terminal.JPOS_MID = JPOS_Merchant.JPOS_MID left join JPOS_Status on JPOS_Terminal.JPOS_Status = JPOS_Status.JPOS_StatusID
-end 
+end
+go 
 -------------------------------------------------------------------------------------------------------------------------------
 if object_id('sp_Transaction_Report') is not null
 	drop proc sp_Transaction_Report
@@ -343,3 +348,44 @@ begin
 	join JPOS_PoSCC on JPOS_Log.JPOS_PoSCC_ID = JPOS_PoSCC.JPOS_PoSCC_ID
 	order by JPOS_Log.JPOS_Date DESC
 end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_New_Card') is not null
+	drop proc sp_New_Card
+go
+create procedure sp_New_Card (@CardID varchar(16), @ExpireDay datetime,@ActivateCode varchar(16))
+as
+begin	
+	insert into JPOS_Card(JPOS_CardId,JPOS_ExpireDay,JPOS_Status,JPOS_ActivateCode) values (@CardID,@ExpireDay,'1',@ActivateCode)	
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Delete_Card') is not null
+	drop proc sp_Delete_Card
+go
+create procedure sp_Delete_Card (@CardID varchar(16))
+as
+begin	
+	delete from JPOS_Card where JPOS_CardId = @CardID
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Get_Card') is not null
+	drop proc sp_Get_Card
+go
+create procedure sp_Get_Card (@CardID varchar(16))
+as
+begin	
+	select * from JPOS_Card left join JPOS_Status on JPOS_Status.JPOS_StatusID = JPOS_Card.JPOS_Status where JPOS_CardID = @CardID
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Get_Status') is not null
+	drop proc sp_Get_Status
+go
+create procedure sp_Get_Status (@TableName varchar(50))
+as
+begin	
+	select * from JPOS_Status where JPOS_TableName = @TableName
+end
+go

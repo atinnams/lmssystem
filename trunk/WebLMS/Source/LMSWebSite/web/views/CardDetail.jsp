@@ -1,14 +1,20 @@
-<%-- 
-    Document   : CardList
-    Created on : May 20, 2010, 11:15:19 PM
+<%--
+    Document   : CustomerDetail
+    Created on : May 11, 2010, 12:48:19 AM
     Author     : NKLapTop
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
-
+    "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="java.util.*,java.text.*" %>
+ <%
+    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    java.util.Date date = new java.util.Date();
+    String strExpireDay = "";
+    if (card.getJPOS_ExpireDay() != null)
+        strExpireDay = dateFormat.format(card.getJPOS_ExpireDay());
+%>  
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -81,8 +87,8 @@
 
                     <tr>
                         <td colspan="5" rowspan="3" background="images/menu-blank.jpg">
-<% if (session.getAttribute("Admin") == null) {
-%>
+                            <% if (session.getAttribute("Admin") == null) {
+                            %>
                             <form action="index.jsp" method="post">
                                 <table>
                                     <tr>
@@ -98,9 +104,9 @@
 
                                 </table>
                             </form>
-<% } else {
-        DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
-%>
+                            <% } else {
+                                 DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
+                            %>
                             <table width="280px">
                                 <tr>
                                     <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white" >&raquo;&nbsp;Tài khoản : <%=result.getUsername().toString()%></span></td>
@@ -114,9 +120,9 @@
 
                                 <tr><td colspan="3" align="right" style="font-size:14px;"><a href="index.jsp?TaskID=1" style="color:Red;">Log out</a></td></tr>
                             </table>
-<%
-    }
-%>
+                            <%
+                                        }
+                            %>
                         </td>
                         <td> <img src="images/spacer.gif" alt="" height="31" width="1"></td>
                     </tr>
@@ -131,95 +137,70 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle %></a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="9">
+                        <td colspan="9" class="main">
                             <div >
-                                <center><h1 style="text-transform:uppercase"><%=strWebTitle %></h1></center>
-                                <br>
-                                <%
-                                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                                    java.util.Date date = new java.util.Date();                                    
-                                %>                                
-                                <br>
-                                <div align="Right">
+                                <div class="content">
+                                    <h1 style="text-transform:uppercase"><%=strWebTitle%></h1>                                    
+                                    <div style="height:30px"></div>                                    
+                                    <input type="hidden" name="TaskID" value="9" />
+                                    <input type="hidden" name="CardTask" value="2" />
                                     <table>
                                         <tr>
-                                            <td><a href="index.jsp?TaskID=9&CardTask=1"><img src="images/AddNew.jpg"></a></td>
-                                            <td><a href="index.jsp?TaskID=9&CardTask=1">Thêm thẻ mới</a></td>
+                                            <th align="left"> Mã Thẻ : </th>
+                                            <td><%=card.getJPOS_CardId()%></td>
+                                            
                                         </tr>
-                                    
-                                    </table>
-                                </div>
-                                <% if (resultViews == null)
-                                   {
-                                        %>
-                                        <h3 style="padding-left:20px">Lỗi dữ liệu, vui lòng kiểm tra lại</h3>
-                                        <div style="height:400px"></div>
-                                        <%
-                                   }
-                                   else
-                                   {
-                                        int iSize = resultViews.size();
-                                        %>
-                                        <span style="color:Red"><%=strErrorDelete %> </span>
-                                        <table cellpadding="0" cellspacing="0" border="1px"  width="774px" >
-                                            <tr bgcolor="blue" align="center">
-                                                <th>Mã thẻ</th>
-                                                <th>Ngày hết hạn</th>
-                                                <th>Trạng thái</th>
-                                                <th>Mã kích hoạt</th>
-                                                <th>Mã khách hàng</th>
-                                                <th></th>
-                                            </tr>
-                                            <%
-
-                                            for (int i= 0 ; i < iSize; i++ )
-                                            {
-                                                DTO.DTO_JPOS_Card card = (DTO.DTO_JPOS_Card)resultViews.get(i);
-                                                String strExpireDay = "";
-                                                if (card.getJPOS_ExpireDay() != null)
-                                                    strExpireDay = dateFormat.format(card.getJPOS_ExpireDay());
-                                                int iCustomerID = card.getCustomerOwnerID();
-                                                %>
-
-                                                <tr align="center">
-                                                    <td><%=card.getJPOS_CardId() %></td>
-                                                    <td><%=strExpireDay %></td>
-                                                    <td><%=card.getStatus() %></td>
-                                                    <td><%=card.getActiveCode() %></td>
-                                                    <td>
-                                                        <%
-                                                         if (iCustomerID == 0)
-                                                         {
-                                                            %><a href="index.jsp?TaskID=9&CardTask=8&CardID=<%=card.getJPOS_CardId() %>" title="Thẻ chưa cấp phát, click để cấp thẻ">Thẻ chưa cấp</a></td><%
-                                                         }
-                                                         else
-                                                         {
-                                                            %><a href="index.jsp?TaskID=2&Detail=<%=iCustomerID %>" title="Xem chi tiết"><%=card.getCustomerOwnerID() %></a></td><%
-                                                         }
-
-                                                        %>
-
-                                                    <td>
-                                                        <a href="index.jsp?TaskID=9&CardTask=6&CardID=<%=card.getJPOS_CardId() %>" title="Chi tiết thẻ"><img src="images/detail.jpg"></a>
-                                                        <a href="index.jsp?TaskID=9&CardTask=7&CardID=<%=card.getJPOS_CardId() %>" title="Thay đổi thông tin"><img src="images/modify.jpg"></a>
-                                                        <a href="index.jsp?TaskID=9&CardTask=3&CardID=<%=card.getJPOS_CardId() %>" title="Xóa thẻ"><img src="images/delete.jpg"></a>
-                                                    </td>
-                                                </tr>
+                                        <tr>
+                                            <th align="left"  width="100px"> Ngày hết hạn : </th>
+                                            <td><%=strExpireDay %></td>
+                                            
+                                        </tr>
+                                        <tr>
+                                            <th align="left"> Mã kích hoạt </th>
+                                            <td><%=card.getActiveCode() %></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left"> Trạng thái thẻ </th>
+                                            <td><%=card.getStatus() %></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left" width="170px"> Mã khách hàng sở hữu </th>
+                                            <td>
                                                 <%
-                                            }
-                                        %></table><%
-                                        %>
-                                        
-                                        <div style="height:200px"></div><%
+                                                     if (card.getCustomerOwnerID() == 0)
+                                                     {
+                                                        %><a href="index.jsp?TaskID=9&CardTask=8&CardID=<%=card.getJPOS_CardId() %>" title="Thẻ chưa cấp phát, click để cấp thẻ">Thẻ chưa cấp</a></td><%
+                                                     }
+                                                     else
+                                                     {
+                                                        %><a href="index.jsp?TaskID=2&Detail=<%=card.getCustomerOwnerID() %>" title="Xem chi tiết"><%=card.getCustomerOwnerID() %></a></td><%
+                                                     }
 
-                                   }
-                                %>
+                                                %>
+                                            </td>
+                                        </tr>
+                                         <tr>
+                                            <td>&nbsp;</td>
+                                            <td>&nbsp;</td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td><img src="images/modify.jpg"><a href="index.jsp?TaskID=9&CardTask=7&CardID=<%=card.getJPOS_CardId() %>" title="Thay đổi thông tin">Thay đổi thông tin thẻ</a><td>
+                                        </tr>
+                                    </table>
 
+                                    </form>
+                                    <div style="height:400px"></div>
+                                </div>
+
+                                <%@include file="../include/Navigation.jsp" %>
+
+                                <div class="clearer">&nbsp;</div>
 
                             </div>
                         </td>
@@ -253,6 +234,4 @@
 
     </body>
 </html
-
-
 

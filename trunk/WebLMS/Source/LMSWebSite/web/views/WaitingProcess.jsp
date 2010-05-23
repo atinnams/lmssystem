@@ -1,9 +1,3 @@
-<%-- 
-    Document   : CardList
-    Created on : May 20, 2010, 11:15:19 PM
-    Author     : NKLapTop
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
@@ -12,6 +6,7 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <meta http-equiv="Refresh" content="3 URL = '<%=strURLforward %>'"/>
         <title>LMS System index page</title>
 
         <script type="text/javascript">
@@ -137,90 +132,12 @@
                     </tr>
                     <tr>
                         <td colspan="9">
-                            <div >
-                                <center><h1 style="text-transform:uppercase"><%=strWebTitle %></h1></center>
-                                <br>
-                                <%
-                                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-                                    java.util.Date date = new java.util.Date();                                    
-                                %>                                
-                                <br>
-                                <div align="Right">
-                                    <table>
-                                        <tr>
-                                            <td><a href="index.jsp?TaskID=9&CardTask=1"><img src="images/AddNew.jpg"></a></td>
-                                            <td><a href="index.jsp?TaskID=9&CardTask=1">Thêm thẻ mới</a></td>
-                                        </tr>
-                                    
-                                    </table>
-                                </div>
-                                <% if (resultViews == null)
-                                   {
-                                        %>
-                                        <h3 style="padding-left:20px">Lỗi dữ liệu, vui lòng kiểm tra lại</h3>
-                                        <div style="height:400px"></div>
-                                        <%
-                                   }
-                                   else
-                                   {
-                                        int iSize = resultViews.size();
-                                        %>
-                                        <span style="color:Red"><%=strErrorDelete %> </span>
-                                        <table cellpadding="0" cellspacing="0" border="1px"  width="774px" >
-                                            <tr bgcolor="blue" align="center">
-                                                <th>Mã thẻ</th>
-                                                <th>Ngày hết hạn</th>
-                                                <th>Trạng thái</th>
-                                                <th>Mã kích hoạt</th>
-                                                <th>Mã khách hàng</th>
-                                                <th></th>
-                                            </tr>
-                                            <%
-
-                                            for (int i= 0 ; i < iSize; i++ )
-                                            {
-                                                DTO.DTO_JPOS_Card card = (DTO.DTO_JPOS_Card)resultViews.get(i);
-                                                String strExpireDay = "";
-                                                if (card.getJPOS_ExpireDay() != null)
-                                                    strExpireDay = dateFormat.format(card.getJPOS_ExpireDay());
-                                                int iCustomerID = card.getCustomerOwnerID();
-                                                %>
-
-                                                <tr align="center">
-                                                    <td><%=card.getJPOS_CardId() %></td>
-                                                    <td><%=strExpireDay %></td>
-                                                    <td><%=card.getStatus() %></td>
-                                                    <td><%=card.getActiveCode() %></td>
-                                                    <td>
-                                                        <%
-                                                         if (iCustomerID == 0)
-                                                         {
-                                                            %><a href="index.jsp?TaskID=9&CardTask=8&CardID=<%=card.getJPOS_CardId() %>" title="Thẻ chưa cấp phát, click để cấp thẻ">Thẻ chưa cấp</a></td><%
-                                                         }
-                                                         else
-                                                         {
-                                                            %><a href="index.jsp?TaskID=2&Detail=<%=iCustomerID %>" title="Xem chi tiết"><%=card.getCustomerOwnerID() %></a></td><%
-                                                         }
-
-                                                        %>
-
-                                                    <td>
-                                                        <a href="index.jsp?TaskID=9&CardTask=6&CardID=<%=card.getJPOS_CardId() %>" title="Chi tiết thẻ"><img src="images/detail.jpg"></a>
-                                                        <a href="index.jsp?TaskID=9&CardTask=7&CardID=<%=card.getJPOS_CardId() %>" title="Thay đổi thông tin"><img src="images/modify.jpg"></a>
-                                                        <a href="index.jsp?TaskID=9&CardTask=3&CardID=<%=card.getJPOS_CardId() %>" title="Xóa thẻ"><img src="images/delete.jpg"></a>
-                                                    </td>
-                                                </tr>
-                                                <%
-                                            }
-                                        %></table><%
-                                        %>
-                                        
-                                        <div style="height:200px"></div><%
-
-                                   }
-                                %>
-
-
+                            <div align="center">
+                                <div style="height:50px"></div>
+                                <p>&nbsp;</p>
+                                <p><strong>Yêu cầu của bạn đang được xử lý, vui lòng chở trong giây lát<br /></strong></p>
+                                <img src="images/loading.gif">
+                                <div style="height:200px"></div>
                             </div>
                         </td>
                     </tr>
