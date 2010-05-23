@@ -1,21 +1,7 @@
-<%--
-    Document   : CustomerDetail
-    Created on : May 11, 2010, 12:48:19 AM
-    Author     : NKLapTop
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
-<%@page import="java.util.*,java.text.*,DTO.*" %>
- <%
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    java.util.Date date = new java.util.Date();
-    String strExpireDay = "";
-    if (card.getJPOS_ExpireDay() != null)
-        strExpireDay = dateFormat.format(card.getJPOS_ExpireDay());    
-    ArrayList arrList = BUS.BUS_JPOS_Status.GetStatus("JPOS_Card", DAO.DataProvider.getConnection(this.getServletConfig()));
-%>
+   "http://www.w3.org/TR/html4/loose.dtd">
+<%@page import="java.util.*,java.text.*" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -88,8 +74,8 @@
 
                     <tr>
                         <td colspan="5" rowspan="3" background="images/menu-blank.jpg">
-                            <% if (session.getAttribute("Admin") == null) {
-                            %>
+<% if (session.getAttribute("Admin") == null) {
+%>
                             <form action="index.jsp" method="post">
                                 <table>
                                     <tr>
@@ -105,9 +91,9 @@
 
                                 </table>
                             </form>
-                            <% } else {
-                                 DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
-                            %>
+<% } else {
+        DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
+%>
                             <table width="280px">
                                 <tr>
                                     <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white" >&raquo;&nbsp;Tài khoản : <%=result.getUsername().toString()%></span></td>
@@ -121,9 +107,9 @@
 
                                 <tr><td colspan="3" align="right" style="font-size:14px;"><a href="index.jsp?TaskID=1" style="color:Red;">Log out</a></td></tr>
                             </table>
-                            <%
-                                        }
-                            %>
+<%
+    }
+%>
                         </td>
                         <td> <img src="images/spacer.gif" alt="" height="31" width="1"></td>
                     </tr>
@@ -138,100 +124,81 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle %></a>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="9" class="main">
+                        <td colspan="9">
                             <div >
-                                <div class="content">
-                                    <h1 style="text-transform:uppercase"><%=strWebTitle%></h1>
-                                    <div style="height:30px"></div>
-                                    <form>
-                                    <span style="color:red"><%=strErrorUpdate %> </span>
-                                    <input type="hidden" name="TaskID" value="9" />
-                                    <input type="hidden" name="CardTask" value="4" />
-                                    <table>
-                                        <tr>
-                                            <th align="left"> Mã Thẻ : </th>
-                                            <td><input type="text" value="<%=card.getJPOS_CardId()%>" name="txtMaThe" readonly></td>
- 
-                                        </tr>
-                                        <tr>
-                                            <th align="left"  width="100px"> Ngày hết hạn : </th>
-                                            <td><input type="text" value="<%=strExpireDay %>" name="txtNgayHetHan"</td>
-                                            <td><span style="color:red"><%=strErrorExpireDay %></span></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Mã kích hoạt </th>
-                                            <td><input type="text" value="<%=card.getActiveCode() %>" name="txtMaKichHoat"></td>
-                                            <td><span style="color:red"><%=strErrorActiveCode %></span></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Trạng thái thẻ </th>
-                                            <td>
-                                                <select name="txtTrangThai">
-                                                <%
-                                                for (int i=0;i < arrList.size(); i++ )
-                                                {
-                                                    DTO_JPOS_Status status = (DTO_JPOS_Status)arrList.get(i);
-                                                    if (status.getStatusCode() == card.getStatusCode() )
-                                                    {
-                                                        %><option value="<%=status.getStatusCode() %>" selected><%=status.getStatusName() %></option> <%
-                                                    }
-                                                    else
-                                                    {
-                                                        %><option value="<%=status.getStatusCode() %>"><%=status.getStatusName() %></option> <%
-                                                    }
-                                                }
-                                                %>
-                                                </select>
-                                            </td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left" width="170px"> Mã khách hàng sở hữu </th>
-                                            <td>
-                                                <%
-                                                     if (card.getCustomerOwnerID() == 0)
-                                                     {
-                                                        %>
-                                                        Chưa có sỡ hữu &nbsp;&nbsp;<a href="index.jsp?TaskID=9&CardTask=8&CardID=<%=card.getJPOS_CardId() %>" title="Thẻ chưa cấp phát, click để cấp thẻ">(Cấp thẻ)</a></td>                                                        
-                                                        <%
-                                                     }
-                                                     else
-                                                     {
-                                                        %>
-                                                        <%=card.getCustomerOwnerID() %>&nbsp;&nbsp; <a href="index.jsp?TaskID=9&CardTask=8&CardID=<%=card.getJPOS_CardId() %>" title="Cấp lại thẻ">(Cấp lại)</a>&nbsp;&nbsp;<a href="index.jsp?TaskID=9&CardTask=10&CardID=<%=card.getJPOS_CardId() %>" title="Ngưng cấp thẻ cho khách hàng">(Ngưng cấp)</a></td>
-                                                        <%
-                                                        
-                                                     }
+                                <center><h1 style="text-transform:uppercase"><%=strWebTitle %></h1></center>
+                                <br>
+                                <%
+                                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                    java.util.Date date = new java.util.Date();                                    
+                                %>
+                                 <h2>Mã thẻ cấp : <%=request.getParameter("CardID") %></h2>
+                                <center><span style="color:red"><%=strErrorUpdate %></span></center>
+                                <h2>Chọn khách hàng để cấp thẻ :</h2>
+                                <br>
+                               
+                                <% if (resultViews == null)
+                                   {
+                                        %>
+                                        <h3 style="padding-left:20px">Không tìm thấy dữ liệu thống kê</h3>
+                                        <div style="height:400px"></div>
+                                        <%
+                                   }
+                                   else
+                                   {
+                                        int iSize = resultViews.size();
+                                        %>
+                                        <table cellpadding="0" cellspacing="0" border="1px">
+                                            <tr bgcolor="blue" align="center">
+                                                <th>Mã khách hàng</th>
+                                                <th>Họ khách hàng</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Địa chỉ</th>
+                                                <th>Email</th>
+                                                <th>Giới tính</th>
+                                                <th>Số điểm hiện tại</th>
+                                                <th>Cấp thẻ</th>
+                                            </tr>
+                                        <%
 
-                                                %>
-                                            </td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="submit" value="Lưu"></td>
-                                            <td><a href="index.jsp?TaskID=9"><input type="button" value="Hủy bỏ"></a></td>
-                                            <td></td>
-                                        </tr>
+                                        for (int i= 0 ; i < iSize; i++ )
+                                        {
+                                            DTO.DTO_JPOS_Customer customer = (DTO.DTO_JPOS_Customer)resultViews.get(i);
+                                            String strGender = "Nữ";
+                                            if (customer.isGender())
+                                                strGender = "Nam";
+                                            String strDateJoin = "";
+                                            if (customer.getDateJoin() != null)
+                                                strDateJoin = dateFormat.format(customer.getDateJoin());
+                                            String strBirthDay = "";
+                                            if (customer.getBirthDay() != null)
+                                                strBirthDay = dateFormat.format(customer.getBirthDay());
 
-                                    </table>
+                                            %>
 
-                                    </form>
-                                    <div style="height:400px"></div>
-                                </div>
+                                            <tr align="center">
+                                                <td><%=customer.getJPOS_CustomerID() %></td>
+                                                <td><%=customer.getLastName() %></td>
+                                                <td><%=customer.getFirstName() %></td>
+                                                <td><%=customer.getAddress() %></td>
+                                                <td><%=customer.getEmail() %></td>                                                
+                                                <td><%=strGender %></td>
+                                                <td><%=customer.getJPOS_CurrentPoint() %></td>
+                                                <td><a href="index.jsp?TaskID=9&CardTask=9&CardID=<%=request.getParameter("CardID") %>&CustID=<%=customer.getJPOS_CustomerID()%>"> <img src="images/assign.jpg"> </a></td>
+                                            </tr>
+                                            <%
+                                        }
+                                        %></table><%
+                                        %><div style="height:200px"></div><%
 
-                                <%@include file="../include/Navigation.jsp" %>
+                                   }
+                                %>
 
-                                <div class="clearer">&nbsp;</div>
 
                             </div>
                         </td>
@@ -265,4 +232,5 @@
 
     </body>
 </html
+
 

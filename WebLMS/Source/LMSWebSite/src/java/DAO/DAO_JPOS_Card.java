@@ -248,4 +248,96 @@ public class DAO_JPOS_Card implements IJPOS_Card {
                 return card;
             }
         }
+        @Override
+        public boolean UpdateCard(DTO_JPOS_Card card,Connection conn)
+        {
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_Update_Card(?,?,?,?)}");
+                stmt.setString(1, card.getJPOS_CardId());
+                stmt.setDate(2, card.getJPOS_ExpireDay());
+                stmt.setString(3, card.getActiveCode());
+                stmt.setInt(4, card.getStatusCode());
+
+                stmt.execute();
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                return false;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+            }
+            return true;
+        }
+        @Override
+        public boolean AssignCard(String CardID,int CustomerID,Connection conn)
+        {
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_Assign_Card(?,?)}");
+                stmt.setString(1, CardID);
+                stmt.setInt(2, CustomerID);                
+                stmt.execute();
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                return false;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+            }
+            return true;
+        }
+        @Override
+        public boolean StopAssignCard(String CardID,Connection conn)
+        {
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_Stop_Assign_Card(?)}");
+                stmt.setString(1, CardID);                
+                stmt.execute();
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                return false;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+            }
+            return true;
+        }
 }

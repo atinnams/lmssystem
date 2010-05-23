@@ -389,3 +389,44 @@ begin
 	select * from JPOS_Status where JPOS_TableName = @TableName
 end
 go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Update_Card') is not null
+	drop proc sp_Update_Card
+go
+create procedure sp_Update_Card (@CardID varchar(16), @ExpireDay datetime,@ActivateCode varchar(16),@Status int)
+as
+begin	
+	update JPOS_Card
+	Set 
+	JPOS_ExpireDay = @ExpireDay,
+	JPOS_Status = @Status,
+	JPOS_ActivateCode = @ActivateCode 
+	where JPOS_CardId = @CardID
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Assign_Card') is not null
+	drop proc sp_Assign_Card
+go
+create procedure sp_Assign_Card (@CardID varchar(16), @CustomerID int)
+as
+begin	
+	update JPOS_Card
+	Set 
+	JPOS_CustomerID = @CustomerID
+	where JPOS_CardId = @CardID
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Stop_Assign_Card') is not null
+	drop proc sp_Stop_Assign_Card
+go
+create procedure sp_Stop_Assign_Card (@CardID varchar(16))
+as
+begin	
+	update JPOS_Card
+	Set 
+	JPOS_CustomerID = NULL
+	where JPOS_CardId = @CardID
+end
+go
