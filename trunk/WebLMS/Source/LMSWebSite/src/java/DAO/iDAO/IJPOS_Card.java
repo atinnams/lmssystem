@@ -44,5 +44,7 @@ public interface IJPOS_Card {
         public boolean NewCard(DTO_JPOS_Card card,Connection con);
         public boolean DeleteCard(String strCardID,Connection con);
         public DTO_JPOS_Card GetCard(String strCardID,Connection con);
-	
+	public boolean UpdateCard(DTO_JPOS_Card card,Connection con);
+        public boolean AssignCard(String CardID,int CustomerID,Connection con);
+        public boolean StopAssignCard(String CardID,Connection con);
 }
