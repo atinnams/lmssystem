@@ -76,17 +76,26 @@
                     card.setActiveCode(strActiveCode);
                     card.setJPOS_CardId(strCardID);
                     card.setJPOS_ExpireDay(dateExpireDay);
-                    boolean blResult = BUS.BUS_JPOS_Card.NewCard(card, DAO.DataProvider.getConnection(this.getServletConfig()));
-                    if (blResult == false)
+                    if (BUS.BUS_JPOS_Card.checkCard(strCardID, DAO.DataProvider.getConnection(this.getServletConfig())) == 1)
                     {
-                        strErrorAddNew = "Tạo mới thẻ không thành công";
+                        strErrorAddNew = "Đã tồn tại thẻ này trong CSDL, vui lòng nhập mã thẻ khác";
                         strWebTitle = "Thêm thẻ mới";
                         %><%@include file="../views/CardAddNew.jsp" %><%
                     }
                     else
-                    {                        
-                        %><%@include file="../views/WaitingProcess.jsp" %><%
-                    }
+                    {
+                        boolean blResult = BUS.BUS_JPOS_Card.NewCard(card, DAO.DataProvider.getConnection(this.getServletConfig()));
+                        if (blResult == false)
+                        {
+                            strErrorAddNew = "Tạo mới thẻ không thành công";
+                            strWebTitle = "Thêm thẻ mới";
+                            %><%@include file="../views/CardAddNew.jsp" %><%
+                        }
+                        else
+                        {
+                            %><%@include file="../views/WaitingProcess.jsp" %><%
+                        }
+                     }
                 }
             }                            
             break ;
