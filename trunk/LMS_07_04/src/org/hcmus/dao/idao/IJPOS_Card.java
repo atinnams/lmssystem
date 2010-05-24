@@ -40,4 +40,30 @@ public interface IJPOS_Card {
 	 */
 	public void activateCard(String cardId,Connection con);
 	
+	/**
+	 * Get amount of the card.
+	 * @param cardNumber Card number.
+	 * @param con Connection to database.
+	 * @return amount of card.
+	 */
+	public int getAmountCard(String cardNumber,Connection con);
+	
+	/**
+	 * subtract amount of card
+	 * @param cardNumber Card Number
+	 * @param amount Amount that is subtracted
+	 * @param con Connection that connect to database
+	 * @return
+	 */
+	public int redeem(String cardNumber,int amount,Connection con);
+	
+	/**
+	 * Add amount of card
+	 * @param cardNumber Card Number
+	 * @param amount Amount that is subtracted
+	 * @param con Connection that connect to database
+	 * @return
+	 */
+	public int reloadCard(String cardNumber,int amount,Connection con);
+	
 }

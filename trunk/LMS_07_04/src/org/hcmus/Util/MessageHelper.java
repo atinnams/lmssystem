@@ -8,40 +8,6 @@ import org.jpos.util.NameRegistrar.NotFoundException;
 
 public class MessageHelper {
 	
-	public static int getTotalPoint(ISOMsg msg) {
-		int result = 0;
-		String strPoint = "";
-		try {
-			String field63 = (String) msg.getValue(63);
-			if (field63.isEmpty())
-				return -1;
-			if (field63.length() != 60) {
-				return -1;
-			}
-
-			for (int i = 0; i < 5; i++) {
-				strPoint = field63.substring(i * 10, (i + 1) * 10);
-				result += Integer.parseInt(strPoint);
-			}
-
-			strPoint = field63.substring(51, 60);
-
-			// checksum for point
-			if (result != Integer.parseInt(strPoint)) {
-				return -1;
-			}
-
-		} catch (ISOException e) {
-			e.printStackTrace();
-			return -1;
-		} catch (NumberFormatException ex) {
-			ex.printStackTrace();
-			return -1;
-		}
-
-		return result;
-	}
-
 	public static String getCardId(ISOMsg msg) {
 		String result = "";
 		try {
@@ -104,24 +70,12 @@ public class MessageHelper {
 			return s.substring(0,num);
 		} else {
 			StringBuffer buffer = new StringBuffer();
-			buffer.append(s);
 			for (int i = length; i < num; i++) {
 				buffer.append('0');
 			}
+			buffer.append(s);
 			return buffer.toString();
 		}
-	}
-	
-	public static String pointToStringField63(int rangePoint,int promotionPoint,int frequencyPoint,int birthdayPoint,int joinPoint) {
-		String result = "";
-		int totalPoint = rangePoint + promotionPoint + frequencyPoint + birthdayPoint + joinPoint;
-		result += MessageHelper.format(Integer.toString(rangePoint));
-		result += MessageHelper.format(Integer.toString(promotionPoint));
-		result += MessageHelper.format(Integer.toString(frequencyPoint));
-		result += MessageHelper.format(Integer.toString(birthdayPoint));
-		result += MessageHelper.format(Integer.toString(joinPoint));
-		result += MessageHelper.format(Integer.toString(totalPoint));
-		return result;
 	}
 	
 	public static int getPoint(ISOMsg msg){
@@ -158,16 +112,11 @@ public class MessageHelper {
 	
 	public static int getAmount(ISOMsg msg){
 		int result = 0;
-		String field48 = "";
+		String field61 = "";
 		try {
-			field48 = ISOUtil.hexString(msg.getComponent(48).getBytes());
-			int index = field48.indexOf("FF21");
-			if(index != -1){
-				String strAmout = field48.substring(index+4, index+10);
-				result = Integer.parseInt(strAmout);
-			}else{
-				return -1;
-			}
+			field61 = ISOUtil.hexString(msg.getComponent(61).getBytes());
+			String money = field61.substring(6, 14);
+			result = Integer.parseInt(money);
 		} catch (ISOException e) {
 			e.printStackTrace();
 			result = -1;

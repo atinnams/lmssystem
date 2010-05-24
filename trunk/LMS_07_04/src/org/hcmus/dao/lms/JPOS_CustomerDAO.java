@@ -193,4 +193,6 @@ public class JPOS_CustomerDAO implements IJPOS_Customer {
 		
 		return result;
 	}
+
+	
 }

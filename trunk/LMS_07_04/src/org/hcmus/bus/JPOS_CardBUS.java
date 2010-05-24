@@ -58,4 +58,42 @@ public class JPOS_CardBUS {
 		IJPOS_Card myCard = factory.getJPOS_Card();
 		myCard.activateCard(cardId, con);
 	}
+	
+	/**
+	 * Get amount of the card.
+	 * @param cardNumber Card number.
+	 * @param con Connection to database.
+	 * @return amount of card.
+	 */
+	public static int getAmountCard(String cardNumber,Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Card myCard = factory.getJPOS_Card();
+		return myCard.getAmountCard(cardNumber, con);
+	}
+	
+	/**
+	 * subtract amount of card
+	 * @param cardNumber Card Number
+	 * @param amount Amount that is subtracted
+	 * @param con Connection that connect to database
+	 * @return
+	 */
+	public static int redeem(String cardNumber,int amount,Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Card myCard = factory.getJPOS_Card();
+		return myCard.redeem(cardNumber, amount, con);
+	}
+	
+	/**
+	 * Add amount of card
+	 * @param cardNumber Card Number
+	 * @param amount Amount that is subtracted
+	 * @param con Connection that connect to database
+	 * @return
+	 */
+	public int reloadCard(String cardNumber,int amount,Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Card myCard = factory.getJPOS_Card();
+		return myCard.reloadCard(cardNumber, amount, con);
+	}
 }
