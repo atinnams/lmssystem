@@ -1,6 +1,6 @@
 <%-- 
-    Document   : CardList
-    Created on : May 20, 2010, 11:15:19 PM
+    Document   : CustomerList
+    Created on : May 24, 2010, 10:59:11 PM
     Author     : NKLapTop
 --%>
 
@@ -148,16 +148,16 @@
                                 <div align="Right">
                                     <table>
                                         <tr>
-                                            <td><a href="index.jsp?TaskID=9&CardTask=1"><img src="images/AddNew.jpg"></a></td>
-                                            <td><a href="index.jsp?TaskID=9&CardTask=1">Thêm thẻ mới</a></td>
+                                            <td><a href="index.jsp?TaskID=6&CustTask=1"><img src="images/AddNew.jpg"></a></td>
+                                            <td><a href="index.jsp?TaskID=6&CustTask=1">Thêm khách hàng</a></td>
                                         </tr>
-                                    
+
                                     </table>
                                 </div>
                                 <% if (resultViews == null)
                                    {
                                         %>
-                                        <h3 style="padding-left:20px">Lỗi dữ liệu, vui lòng kiểm tra lại</h3>
+                                        <h3 style="padding-left:20px">Không tìm thấy dữ liệu thống kê</h3>
                                         <div style="height:400px"></div>
                                         <%
                                    }
@@ -165,57 +165,52 @@
                                    {
                                         int iSize = resultViews.size();
                                         %>
-                                        <span style="color:Red"><%=strErrorDelete %> </span>
-                                        <table cellpadding="0" cellspacing="0" border="1px"  width="774px" >
+                                        <table cellpadding="0" cellspacing="0" border="1px">
                                             <tr bgcolor="blue" align="center">
-                                                <th>Mã thẻ</th>
-                                                <th>Ngày hết hạn</th>
-                                                <th>Trạng thái</th>
-                                                <th>Mã kích hoạt</th>
-                                                <th>Mã khách hàng</th>
-                                                <th>Quản lý</th>
+                                                <th width="40px">Mã KH</th>
+                                                <th>Họ khách hàng</th>
+                                                <th>Tên khách hàng</th>
+                                                <th>Địa chỉ</th>
+                                                <th>Email</th>                                                
+                                                <th>Giới tính</th>
+                                                <th width="50px">Số điểm hiện tại</th>
+                                                <th width="70px">Quản lý</th>
+                                            </tr>
+                                        <%
+
+                                        for (int i= 0 ; i < iSize; i++ )
+                                        {
+                                            DTO.DTO_JPOS_Customer customer = (DTO.DTO_JPOS_Customer)resultViews.get(i);
+                                            strGender = "Nữ";
+                                            if (customer.isGender())
+                                                strGender = "Nam";
+                                            strDateJoin = "";
+                                            if (customer.getDateJoin() != null)
+                                                strDateJoin = dateFormat.format(customer.getDateJoin());
+                                            strBirthDay = "";
+                                            if (customer.getBirthDay() != null)
+                                                strBirthDay = dateFormat.format(customer.getBirthDay());
+
+                                            %>
+
+                                            <tr align="center">
+                                                <td><%=customer.getJPOS_CustomerID() %></td>
+                                                <td><%=customer.getLastName() %></td>
+                                                <td><%=customer.getFirstName() %></td>
+                                                <td><%=customer.getAddress() %></td>
+                                                <td><%=customer.getEmail() %></td>                                                
+                                                <td><%=strGender %></td>
+                                                <td><%=customer.getJPOS_CurrentPoint() %></td>
+                                                <td>
+                                                    <a href="index.jsp?TaskID=6&CustTask=6&CustID=<%=customer.getJPOS_CustomerID() %>" title="Chi tiết khách hàng"><img src="images/detail.jpg"></a>
+                                                    <a href="index.jsp?TaskID=6&CustTask=4&CustID=<%=customer.getJPOS_CustomerID() %>" title="Thay đổi thông tin"><img src="images/modify.jpg"></a>
+                                                    <a href="index.jsp?TaskID=6&CustTask=3&CustID=<%=customer.getJPOS_CustomerID() %>" title="Xóa khách hàng"><img src="images/delete.jpg"></a>
+                                                </td>
                                             </tr>
                                             <%
-
-                                            for (int i= 0 ; i < iSize; i++ )
-                                            {
-                                                DTO.DTO_JPOS_Card card = (DTO.DTO_JPOS_Card)resultViews.get(i);
-                                                String strExpireDay = "";
-                                                if (card.getJPOS_ExpireDay() != null)
-                                                    strExpireDay = dateFormat.format(card.getJPOS_ExpireDay());
-                                                int iCustomerID = card.getCustomerOwnerID();
-                                                %>
-
-                                                <tr align="center">
-                                                    <td><%=card.getJPOS_CardId() %></td>
-                                                    <td><%=strExpireDay %></td>
-                                                    <td><%=card.getStatus() %></td>
-                                                    <td><%=card.getActiveCode() %></td>
-                                                    <td>
-                                                        <%
-                                                         if (iCustomerID == 0)
-                                                         {
-                                                            %><a href="index.jsp?TaskID=9&CardTask=8&CardID=<%=card.getJPOS_CardId() %>" title="Thẻ chưa cấp phát, click để cấp thẻ">Thẻ chưa cấp</a></td><%
-                                                         }
-                                                         else
-                                                         {
-                                                            %><a href="index.jsp?TaskID=2&Detail=<%=iCustomerID %>" title="Xem chi tiết"><%=card.getCustomerOwnerID() %></a></td><%
-                                                         }
-
-                                                        %>
-
-                                                    <td>
-                                                        <a href="index.jsp?TaskID=9&CardTask=6&CardID=<%=card.getJPOS_CardId() %>" title="Chi tiết thẻ"><img src="images/detail.jpg"></a>
-                                                        <a href="index.jsp?TaskID=9&CardTask=7&CardID=<%=card.getJPOS_CardId() %>" title="Thay đổi thông tin"><img src="images/modify.jpg"></a>
-                                                        <a href="index.jsp?TaskID=9&CardTask=3&CardID=<%=card.getJPOS_CardId() %>" title="Xóa thẻ"><img src="images/delete.jpg"></a>
-                                                    </td>
-                                                </tr>
-                                                <%
-                                            }
+                                        }
                                         %></table><%
-                                        %>
-                                        
-                                        <div style="height:200px"></div><%
+                                        %><div style="height:200px"></div><%
 
                                    }
                                 %>
@@ -253,6 +248,5 @@
 
     </body>
 </html
-
 
 
