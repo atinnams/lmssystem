@@ -430,3 +430,40 @@ begin
 	where JPOS_CardId = @CardID
 end
 go
+
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_redeem_Card') is not null
+	drop proc sp_redeem_Card
+go
+
+create procedure sp_redeem_Card (@CardID varchar(16),@Amount int,@result int output)
+as
+begin
+	declare @card_amount int;
+	set @card_amount = dbo.fn_get_amount_card(@CardID);
+	if(@card_amount < @Amount)
+	begin
+		set @result = -1;
+		return;
+	end
+	set @card_amount = @card_amount - @Amount;
+	update JPOS_Card Set JPOS_Monetary = @card_amount where JPOS_CardId = @CardID;
+	set @result = 1;
+end
+go
+
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_reload_Card') is not null
+	drop proc sp_reload_Card
+go
+
+create procedure sp_reload_Card (@CardID varchar(16),@Amount int,@result int output)
+as
+begin
+	declare @card_amount int;
+	set @card_amount = dbo.fn_get_amount_card(@CardID);
+	set @card_amount = @card_amount + @Amount;
+	update JPOS_Card Set JPOS_Monetary = @card_amount where JPOS_CardId = @CardID;
+	set @result = 1;
+end
+go
