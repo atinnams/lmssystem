@@ -386,7 +386,7 @@ go
 create procedure sp_Get_Status (@TableName varchar(50))
 as
 begin	
-	select * from JPOS_Status where JPOS_TableName = @TableName
+	select * from JPOS_Status where JPOS_TableName = @TableName and JPOS_StatusName not like '%Delete%'
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------

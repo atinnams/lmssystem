@@ -205,7 +205,21 @@
 
                                     </table>
 
-                                    <%}%>                                   
+                                    <%}%>
+                                    <% if (session.getAttribute("Admin") != null)
+                                        {
+                                           %>
+                                           <div align="center">
+                                               <table>
+                                                   <tr>
+                                                       <td><a href="index.jsp?TaskID=6&CustTask=4&CustID=<%=custInfor.getJPOS_CustomerID() %>" title="Thay đổi thông tin"><img src="images/modify.jpg"></a></td>
+                                                       <td><a href="index.jsp?TaskID=6&CustTask=4&CustID=<%=custInfor.getJPOS_CustomerID() %>" title="Thay đổi thông tin"> Thay đổi thông tin khách hàng</a></td>
+                                                   </tr>
+                                               </table>
+                                           </div>
+                                            <%
+                                        }
+                                    %>                                    
                                     <div style="height:400px"></div>
                                 </div>
 
