@@ -271,3 +271,24 @@ select @Point = dbo.fn_get_rule_point(298000,1);
 select @Point; --expected 2
 
 */
+
+if object_id('fn_get_amount_card') is not null
+	drop function fn_get_amount_card;
+go
+
+create function fn_get_amount_card(@cardId varchar(16))
+returns int
+as
+begin
+	declare @result int ;
+	set @result = (select JPOS_Monetary from JPOS_Card where JPOS_CardId = @cardId  ) ;
+	return @result;
+end
+go
+
+/*
+--test
+declare @result int;
+select @result = dbo.fn_get_amount_card('8704353300000015');
+select @result;
+*/
