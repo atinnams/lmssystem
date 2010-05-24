@@ -18,7 +18,8 @@ create table JPOS_Card
 	JPOS_CardId  varchar(16) not null,
 	JPOS_ExpireDay datetime not null,
 	JPOS_Status int,					--references to Status table
-	JPOS_ActivateCode varchar(16),  
+	JPOS_ActivateCode varchar(16),
+	JPOS_Monetary int,  
 	JPOS_CustomerID int,				--references to Customer table
 	Primary Key(JPOS_CardId)
 )
