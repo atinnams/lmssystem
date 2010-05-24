@@ -78,6 +78,7 @@ public class AddPointSendResponse implements AbortParticipant {
 				ISOMsg msgResponse = new ISOMsg();
 				msgResponse.set(0,"0210");
 				msgResponse.set(3,(String)msg.getValue(3));
+				msgResponse.set(11,(String)msg.getValue(11));
 				msgResponse.set(41,(String)msg.getValue(41));
 				msgResponse.set(42,(String)msg.getValue(42));
 				if(rc == null || "00".equals(rc)) {
@@ -130,6 +131,11 @@ public class AddPointSendResponse implements AbortParticipant {
 						strError = MessageHelper.makeTLV("FF39",Constant.NOT_ENOUGH_POINT);
 						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
+					case 16 :
+						msgResponse.set(39,"16");
+						strError = MessageHelper.makeTLV("FF39",Constant.NOT_ENOUGH_MONEY);
+						msgResponse.set(61,ISOUtil.hex2byte(strError));
+						break;
 					default :
 						msgResponse.set(39,"12");
 						strError = MessageHelper.makeTLV("FF39",Constant.OTHER_ERROR);
@@ -139,28 +145,9 @@ public class AddPointSendResponse implements AbortParticipant {
 				}
 				
 				source.send(msgResponse);
-				
 				LMSLogSource logSource = LMSLogSource.getLogSource("LMS");
-				
-				int task = Integer.parseInt((String)msg.getValue(3));
-				String strTask = "";
-				switch(task){
-				case 027207:
-					strTask = "Add_Point";
-					break;
-				case 417000:
-					strTask = "Subtract_Point";
-					break;
-				case 027567:
-					strTask = "Balance_Inquiry";
-					break;
-				case 447000:
-					strTask = "Redemption";
-					break;
-				}
-				
-				logSource.printHexValue(strTask + "_Receive", ISOUtil.hexString(msg.pack()));
-				logSource.printHexValue(strTask + "_Response", ISOUtil.hexString(msgResponse.pack()));
+				logSource.printHexValue("Redeem_Receive", ISOUtil.hexString(msg.pack()));
+				logSource.printHexValue("Redeem_Response", ISOUtil.hexString(msgResponse.pack()));
 				
 			}
 		} catch (VetoException e) {

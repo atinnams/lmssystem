@@ -68,7 +68,7 @@ public class BalanceSendResponse implements AbortParticipant{
 			String rc = (String)ctx.get(Constant.RC);
 			
 			//Get point
-			String point = (String)ctx.get(Constant.POINT);
+			String amount = (String)ctx.get(Constant.AMOUNT);
 			
 			if (source != null && source.isConnected() && msg != null) {
 				
@@ -76,13 +76,14 @@ public class BalanceSendResponse implements AbortParticipant{
 				ISOMsg msgResponse = new ISOMsg();
 				msgResponse.set(0,"0210");
 				msgResponse.set(3,(String)msg.getValue(3));
+				msgResponse.set(11,(String)msg.getValue(11));
 				msgResponse.set(41,(String)msg.getValue(41));
 				msgResponse.set(42,(String)msg.getValue(42));
 				if(rc == null || "00".equals(rc)) {
 					msgResponse.set(39, "00");
 					String field48Value = ISOUtil.hexString(msg.getComponent(48).getBytes());
 					msgResponse.set(48,ISOUtil.hex2byte(field48Value));
-					msgResponse.set(61,ISOUtil.hex2byte(point));
+					msgResponse.set(61,ISOUtil.hex2byte(amount));
 				}
 				else if(rc != null) {
 					int error = Integer.parseInt(rc);
@@ -140,25 +141,8 @@ public class BalanceSendResponse implements AbortParticipant{
 				
 				LMSLogSource logSource = LMSLogSource.getLogSource("LMS");
 				
-				int task = Integer.parseInt((String)msg.getValue(3));
-				String strTask = "";
-				switch(task){
-				case 407000:
-					strTask = "Add_Point";
-					break;
-				case 417000:
-					strTask = "Subtract_Point";
-					break;
-				case 888888:
-					strTask = "Balance_Inquiry";
-					break;
-				case 447000:
-					strTask = "Redemption";
-					break;
-				}
-				
-				logSource.printHexValue(strTask + "_Receive", ISOUtil.hexString(msg.pack()));
-				logSource.printHexValue(strTask + "_Response", ISOUtil.hexString(msgResponse.pack()));
+				logSource.printHexValue("Balance_Receive", ISOUtil.hexString(msg.pack()));
+				logSource.printHexValue("Balance_Response", ISOUtil.hexString(msgResponse.pack()));
 				
 			}
 		} catch (VetoException e) {

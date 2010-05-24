@@ -5,7 +5,7 @@ import java.sql.Connection;
 
 import org.hcmus.Util.Constant;
 import org.hcmus.Util.MessageHelper;
-import org.hcmus.bus.JPOS_CustomerBUS;
+import org.hcmus.bus.JPOS_CardBUS;
 import org.jpos.iso.ISOMsg;
 import org.jpos.transaction.Context;
 import org.jpos.transaction.TransactionParticipant;
@@ -38,7 +38,7 @@ public class BalanceInquiry implements TransactionParticipant {
 			String cardNumber = MessageHelper.getCardId(msg);
 
 			/** Balance inquiry business **/
-			int result = JPOS_CustomerBUS.getCurrentPoint(cardNumber, con);
+			int result = JPOS_CardBUS.getAmountCard(cardNumber, con);
 			
 			/** if not successful  **/
 			if(result == -1){
@@ -47,13 +47,10 @@ public class BalanceInquiry implements TransactionParticipant {
 			}
 			
 			/** convert point to response string message **/
-			/*String strPoint = MessageHelper.makeTLV("FF51", MessageHelper
-					.format(Integer.toString(result), 4));
-					*/
-			String strPoint = "FF3E161111000000000000000000000000000000" + MessageHelper.format(Integer.toString(result),10);
+			String strAmount = "FF3E161111000000000000000000000000000000" + MessageHelper.format(Integer.toString(result),8) + "00"; 
 					
 			/** put it to context for response participant **/
-			ctx.put(Constant.POINT, strPoint);
+			ctx.put(Constant.AMOUNT, strAmount);
 			
 			return PREPARED | READONLY | NO_JOIN;
 

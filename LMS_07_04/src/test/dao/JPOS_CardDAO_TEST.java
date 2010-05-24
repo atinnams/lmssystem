@@ -38,4 +38,34 @@ public class JPOS_CardDAO_TEST extends TestCase {
 		int resultZero = cardDAO.checkExpire("1234567812345678",con);
 		assertEquals("Expected to 0 but actual " + Integer.toString(result),0, resultZero);
 	}
+	
+	public void testGetAmountCard(){
+		JPOS_CardDAO cardDAO = new JPOS_CardDAO();
+		int result = cardDAO.getAmountCard("8704353300000015", con);
+		if(result == -1){
+			fail();
+		}else{
+			System.out.println(result);
+		}
+	}
+	
+	public void testRedeem(){
+		JPOS_CardDAO cardDAO = new JPOS_CardDAO();
+		int result = cardDAO.redeem("8704353300000015",20000, con);
+		if(result == -1){
+			fail();
+		}else{
+			System.out.println(result);
+		}
+	}
+	
+	public void testReLoad(){
+		JPOS_CardDAO cardDAO = new JPOS_CardDAO();
+		int result = cardDAO.reloadCard("9704215000000046",20000, con);
+		if(result == -1){
+			fail();
+		}else{
+			System.out.println(result);
+		}
+	}
 }

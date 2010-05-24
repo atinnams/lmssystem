@@ -23,20 +23,11 @@ public class MessageHelper_TEST extends TestCase {
 		super.tearDown();
 	}
 
-	public void testGetTotalPoint() {
-		int point = MessageHelper.getTotalPoint(msg);
-		assertEquals("Expected is 150 but actual is" + Integer.toString(point),150,point);
-	}
-
 	public void testGetCardId() {
 		String cardid = MessageHelper.getCardId(msg);
 		assertEquals("Expected is 150 but actual is" + cardid,"1234567812345678",cardid);
 	}
 
-	public void testPointToStringField63() {
-		String strPoint = MessageHelper.pointToStringField63(0,0,150,0,0);
-		assertEquals("000000000000000000000000000150000000000000000000000000000150",strPoint);
-	}
 	
 	public void testFormat(){
 		String format = MessageHelper.format("10", 4);

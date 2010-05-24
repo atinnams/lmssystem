@@ -5,6 +5,7 @@ import java.sql.Connection;
 
 import org.hcmus.Util.Constant;
 import org.hcmus.Util.MessageHelper;
+import org.hcmus.bus.JPOS_CardBUS;
 import org.hcmus.bus.JPOS_CustomerBUS;
 import org.jpos.iso.ISOMsg;
 import org.jpos.transaction.Context;
@@ -55,6 +56,12 @@ public class AddPoint implements TransactionParticipant {
 				return ABORTED | READONLY | NO_JOIN;
 			}
 			
+			int redeem = JPOS_CardBUS.redeem(cardNumber, amount, con);
+			if(redeem == -1){
+				ctx.put(Constant.RC, "16");
+				return ABORTED | READONLY | NO_JOIN;
+			}
+			
 			/** Add point business **/
 			int logId = JPOS_CustomerBUS.addNormalPoint(cardNumber, 1, point,
 					mid, tid, "01", con);
@@ -74,11 +81,13 @@ public class AddPoint implements TransactionParticipant {
 			point += eventPoint;
 
 			int totalPoint = JPOS_CustomerBUS.getCurrentPoint(cardNumber, con);
-
-			String strPoint = MessageHelper.makeTLV("FF51", MessageHelper
-					.format(Integer.toString(point), 4))
-					+ MessageHelper.makeTLV("FF52", MessageHelper.format(
-							Integer.toString(totalPoint), 4));
+			int balance_amount = JPOS_CardBUS.getAmountCard(cardNumber, con);
+			
+			String strPoint = "FF3E161111000000000000000000000000000000" 
+				+ MessageHelper.format(Integer.toString(balance_amount), 8) + "00" 
+				+ "FF41161111000000000000000000000000000000" 
+				+ MessageHelper.format(Integer.toString(amount), 8) + "00"
+				+ "FF5805" + MessageHelper.format(Integer.toString(totalPoint), 8) + "00"; 
 
 			ctx.put(Constant.POINT, strPoint);
 

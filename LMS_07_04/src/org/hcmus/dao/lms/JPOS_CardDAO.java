@@ -93,4 +93,69 @@ public class JPOS_CardDAO implements IJPOS_Card {
 			e.printStackTrace();
 		} 
 	}
+	
+	@Override
+	public int getAmountCard(String cardNumber, Connection con) {
+		int result = -1;
+		try {
+			if(con != null) {
+				CallableStatement cstmt = null;
+				cstmt = (CallableStatement) con
+						.prepareCall("{ ? = call dbo.fn_get_amount_card(?)}");
+				cstmt.registerOutParameter(1,java.sql.Types.INTEGER );
+				cstmt.setString(2, cardNumber);
+				cstmt.execute();
+				result = cstmt.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result = -1;
+		}
+		
+		return result;	
+	}
+
+	@Override
+	public int redeem(String cardNumber, int amount, Connection con) {
+		int result = -1;
+		try {
+			if(con != null) {
+				CallableStatement cstmt = null;
+				cstmt = (CallableStatement) con
+						.prepareCall("{ call dbo.sp_redeem_Card(?,?,?)}");
+				cstmt.registerOutParameter(3,java.sql.Types.INTEGER );
+				cstmt.setString(1, cardNumber);
+				cstmt.setInt(2, amount);
+				cstmt.execute();
+				result = cstmt.getInt(3);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result = -1;
+		}
+		
+		return result;
+	}
+
+	@Override
+	public int reloadCard(String cardNumber, int amount, Connection con) {
+		int result = -1;
+		try {
+			if(con != null) {
+				CallableStatement cstmt = null;
+				cstmt = (CallableStatement) con
+						.prepareCall("{ call dbo.sp_reload_Card(?,?,?)}");
+				cstmt.registerOutParameter(3,java.sql.Types.INTEGER );
+				cstmt.setString(1, cardNumber);
+				cstmt.setInt(2, amount);
+				cstmt.execute();
+				result = cstmt.getInt(3);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			result = -1;
+		}
+		
+		return result;
+	}
 }
