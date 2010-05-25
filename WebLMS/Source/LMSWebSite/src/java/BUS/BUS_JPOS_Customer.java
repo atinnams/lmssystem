@@ -143,4 +143,10 @@ public class BUS_JPOS_Customer {
             IJPOS_Customer myCustomer = factory.getJPOS_Customer();
             return myCustomer.GetCustomerList(conn);
         }
+        public static int GenerateCustomerID(Connection conn)
+        {
+            LMSDAOFactory factory = LMSDAOFactory.getInstances();
+            IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+            return myCustomer.GenerateCustomerID(conn);
+        }
 }
