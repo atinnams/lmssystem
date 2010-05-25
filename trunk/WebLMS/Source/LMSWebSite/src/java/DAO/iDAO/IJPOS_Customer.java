@@ -93,5 +93,6 @@ public interface IJPOS_Customer {
         public ArrayList<DTO_Report> Transaction_Detail(int iCustomerID,Connection conn) ;
         public DTO_JPOS_Customer GetCustomerInfor(int iCustomerID,Connection conn) ;
         public ArrayList<DTO_JPOS_Customer> GetCustomerList(Connection conn);
+        public int GenerateCustomerID(Connection conn);
                 
 }

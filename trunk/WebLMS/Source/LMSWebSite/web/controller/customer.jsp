@@ -53,7 +53,12 @@
         }
     switch (iCustTask)
     {
-        case 1 :                //show form add customer           
+        case 1 :                //show form add customer
+            {
+                strWebTitle = "Thêm mới khách hàng";
+                int iGenCustID = BUS.BUS_JPOS_Customer.GenerateCustomerID(DAO.DataProvider.getConnection(this.getServletConfig()));
+                %><%@include file="../views/CustomerAddNew.jsp"  %><%
+            }
             break;
         case 2 :                //Add new customer
             break;

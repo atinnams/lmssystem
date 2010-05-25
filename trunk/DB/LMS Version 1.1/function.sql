@@ -292,3 +292,22 @@ declare @result int;
 select @result = dbo.fn_get_amount_card('8704353300000015');
 select @result;
 */
+
+if object_id('fn_Generate_CustomerID') is not null
+	drop function fn_Generate_CustomerID
+go
+
+create function fn_Generate_CustomerID()
+returns int
+as
+begin
+	declare @result int ;
+	set @result = (select Max(JPOS_CustomerID)  from JPOS_Customer);
+	return @result+1;
+end
+go
+/*
+declare @result int;
+set @result = dbo.fn_get_amount_card('8704353300000015');
+select @result;
+*/

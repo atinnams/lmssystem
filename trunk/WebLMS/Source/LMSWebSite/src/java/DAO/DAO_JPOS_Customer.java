@@ -417,4 +417,25 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
                 return ArrayResult;
             }
         }
+        @Override
+        public int GenerateCustomerID(Connection conn)
+        {
+            int result = -1;
+            try {
+                    if(conn != null) {
+                            CallableStatement cstmt = null;
+                            cstmt = (CallableStatement) conn
+                                            .prepareCall("{ ? = call dbo.fn_Generate_CustomerID()}");
+                            cstmt.registerOutParameter(1,java.sql.Types.INTEGER );                            
+                            cstmt.execute();
+
+                            result = cstmt.getInt(1);
+                    }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+                    result = -1;
+            }
+
+            return result;
+        }
 }
