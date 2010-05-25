@@ -308,6 +308,6 @@ end
 go
 /*
 declare @result int;
-set @result = dbo.fn_get_amount_card('8704353300000015');
+set @result = dbo.fn_Generate_CustomerID();
 select @result;
 */
