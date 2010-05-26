@@ -342,6 +342,8 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
                         customer.setLastName(rs.getString("JPOS_LastName"));
                         customer.setJPOS_CustomerID(rs.getInt("JPOS_CustomerID"));
                         customer.setJPOS_CurrentPoint(rs.getInt("JPOS_CurrentPoint"));
+                        customer.setStatusName(rs.getString("JPOS_StatusName"));
+                        customer.setStatusCode(rs.getInt("JPOS_Status"));
                        
                     }
                 }
@@ -437,5 +439,118 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
             }
 
             return result;
+        }
+        @Override
+        public boolean AddCustomer(DTO_JPOS_Customer customer, Connection conn)
+        {
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_New_Customer(?,?,?,?,?,?,?,?,?)}");
+
+                stmt.setInt(1, customer.getJPOS_CustomerID());
+                stmt.setString(2, customer.getFirstName());
+                stmt.setString(3, customer.getLastName());
+                stmt.setString(4, customer.getAddress());
+                stmt.setString(5, customer.getEmail());
+                stmt.setString(6, customer.getBirthDay().toString());
+                stmt.setBoolean(7, customer.isGender());
+                stmt.setString(8, customer.getFavorite());
+                stmt.setInt(9, customer.getJPOS_CurrentPoint());
+
+                stmt.execute();
+
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                return false;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                return true;
+            }
+        }
+        
+        @Override
+        public boolean DeleteCustomer(int CustomerID, Connection conn)
+        {
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_Delete_Customer(?)}");
+
+                stmt.setInt(1, CustomerID);
+                stmt.execute();
+
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                return false;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                return true;
+            }
+        }
+        @Override
+        public boolean UpdateCustomer(DTO_JPOS_Customer customer, Connection conn)
+        {
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_Update_Customer(?,?,?,?,?,?,?,?,?,?)}");
+
+                stmt.setInt(1, customer.getJPOS_CustomerID());
+                stmt.setString(2, customer.getFirstName());
+                stmt.setString(3, customer.getLastName());
+                stmt.setString(4, customer.getAddress());
+                stmt.setString(5, customer.getEmail());
+                stmt.setString(6, customer.getBirthDay().toString());
+                stmt.setBoolean(7, customer.isGender());
+                stmt.setString(8, customer.getFavorite());
+                stmt.setInt(9, customer.getJPOS_CurrentPoint());
+                stmt.setInt(10, customer.getStatusCode());
+
+                stmt.execute();
+
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                return false;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                return true;
+            }
         }
 }

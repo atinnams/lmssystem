@@ -294,8 +294,8 @@ go
 create procedure sp_Customer_Infor(@CustomerID int)
 as
 begin
-	select * from JPOS_Customer	
-	where JPOS_CustomerID = @CustomerID	
+	select * from JPOS_Customer	left join JPOS_Status on JPOS_Status = JPOS_StatusID
+	where JPOS_CustomerID = @CustomerID	and JPOS_StatusName not like '%Delete%'
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------
@@ -467,3 +467,50 @@ begin
 	set @result = 1;
 end
 go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_New_Customer') is not null
+	drop proc sp_New_Customer
+go
+
+create procedure sp_New_Customer (@CustomerID int,@FirstName varchar(50),@LastName varchar(50),@Address varchar(200),@Email varchar(200),@BirthDay Datetime,@Gender bit,@Favorite varchar(100),@Point int)
+as
+begin
+	insert into JPOS_Customer values (@CustomerID,@FirstName,@LastName,@Address,@Email,getdate(),@BirthDay,@Gender,@Favorite,@Point,7)
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Delete_Customer') is not null
+	drop proc sp_Delete_Customer
+go
+
+create procedure sp_Delete_Customer (@CustomerID int)
+as
+begin
+	Update JPOS_Customer set JPOS_Status = 12 where JPOS_Customer.JPOS_CustomerID = @CustomerID
+end
+go
+
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Update_Customer') is not null
+	drop proc sp_New_Customer
+go
+
+create procedure sp_Update_Customer (@CustomerID int,@FirstName varchar(50),@LastName varchar(50),@Address varchar(200),@Email varchar(200),@BirthDay Datetime,@Gender bit,@Favorite varchar(100),@Point int,@Status int)
+as
+begin
+	Update JPOS_Customer 
+	Set 
+	JPOS_FirstName = @FirstName,
+	JPOS_LastName = @LastName,
+	JPOS_Address = @Address,
+	JPOS_Email = @Email,
+	JPOS_BirthDay = @BirthDay,
+	JPOS_Gender = @Gender,
+	JPOS_Favorite = @Favorite,
+	JPOS_CurrentPoint = @Point,
+	JPOS_Status = @Status
+	where
+	JPOS_CustomerID = @CustomerID
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------

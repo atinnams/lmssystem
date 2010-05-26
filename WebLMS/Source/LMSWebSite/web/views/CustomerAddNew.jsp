@@ -138,7 +138,7 @@
                             <div >
                                 <div class="content" <%=strStyle%>>
                                     <h1><%=strWebTitle%></h1>
-
+                                    <font color="red"><%=strErrorAdd %></font>
                                     <form action="index.jsp" method="post">
                                         <input type="hidden" name="TaskID" value="6">
                                         <input type="hidden" name="CustTask" value="2">
@@ -146,16 +146,19 @@
                                     <table>
 
                                         <tr>
-                                            <th align="left"> Mã khách hàng : </th>
+                                            <th align="left" width="125px"> Mã khách hàng : </th>
                                             <td><input type="text" value="<%=iGenCustID %>" name="txtMaKhachHang" readonly></td>
+                                            <td></td>
                                         </tr>
                                         <tr>
                                             <th align="left"> Họ khách hàng : </th>
                                             <td><input type="text" value="" name="txtHo"></td>
+                                            <td><font style="color:red"><%=strErrorLastName %></font></td>
                                         </tr>
                                         <tr>
                                             <th align="left"> Tên khách hàng : </th>
                                             <td><input type="text" value="" name="txtTen"></td>
+                                            <td><font style="color:red"><%=strErrorFirstName %></font></td>
                                         </tr>
                                         <tr>
                                             <th align="left"> Giới tính : </th>
@@ -165,31 +168,38 @@
                                                     <option value="0">Nữ</option>
                                                 </select>
                                             </td>
+                                            <td></td>
                                         </tr>
                                         <tr>
                                             <th align="left"> Số điểm hiện tại : </th>
                                             <td><input type="text" value="0" name="txtSoDiem"></td>
+                                            <td><font style="color:red"><%=strErrorCurrentPoint %></font></td>
                                         </tr>
 
                                         <tr>
                                             <th align="left"> Địa chỉ : </th>
                                             <td><input type="text" value="" name="txtDiaChi" ></td>
+                                            <td><font style="color:red"><%=strErrorAddress %></font></td>
                                         </tr>
                                         <tr>
                                             <th align="left"> Email : </th>
                                             <td><input type="text" value="" name="txtEmail"> </td>
+                                            <td><font style="color:red"><%=strErrorEmail %></font></td>
                                         </tr>
                                         <tr>
                                             <th align="left"> Ngày sinh : </th>
                                             <td><input type="text" value="dd/MM/YYYY" name="txtNgaySinh"></td>
+                                            <td><font style="color:red"><%=strErrorBirthDay %></font></td>
                                         </tr>                                       
                                         <tr>
                                             <th align="left"> Sở thích : </th>
                                             <td><textarea name="txtSoThich"></textarea></td>
+                                            <td><font style="color:red"><%=strErrorFavorite %></font></td>
                                         </tr>
                                         <tr>
                                             <td></td>
                                             <td><input type="submit" value="Lưu"></td>
+                                            <td></td>
                                         </tr>
                                     </table>
                                     </form>

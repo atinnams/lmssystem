@@ -135,7 +135,7 @@
                             <div align="center">
                                 <div style="height:50px"></div>
                                 <p>&nbsp;</p>
-                                <p><strong>Yêu cầu của bạn đang được xử lý, vui lòng chở trong giây lát<br /></strong></p>
+                                <p><strong>Yêu cầu của bạn đang được xử lý, vui lòng chờ trong giây lát<br /></strong></p>
                                 <img src="images/loading.gif">
                                 <div style="height:200px"></div>
                             </div>

@@ -94,5 +94,7 @@ public interface IJPOS_Customer {
         public DTO_JPOS_Customer GetCustomerInfor(int iCustomerID,Connection conn) ;
         public ArrayList<DTO_JPOS_Customer> GetCustomerList(Connection conn);
         public int GenerateCustomerID(Connection conn);
-                
+        public boolean AddCustomer(DTO_JPOS_Customer customer, Connection conn);
+        public boolean DeleteCustomer(int CustomerID, Connection conn);
+        public boolean UpdateCustomer(DTO_JPOS_Customer customer, Connection conn);
 }
