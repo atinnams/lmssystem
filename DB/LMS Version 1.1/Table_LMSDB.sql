@@ -66,12 +66,13 @@ create table JPOS_Admin
 	
 	primary key(JPOS_Username)
 )
+go
+
+-----------------------------------------------------------------------------------------------------
 
 if object_id('JPOS_Issuer') is not null
 	drop table JPOS_Issuer
 go
-
------------------------------------------------------------------------------------------------------
 
 create table JPOS_Issuer
 (
@@ -143,6 +144,8 @@ create table JPOS_Log
 	JPOS_Date	datetime not null,
 	JPOS_Task	int not null,					--references to JPOS_Task
 	JPOS_CardID	varchar(16) not null,
+	JPOS_InvoiceId varchar(16),
+	JPOS_Amount int,
 	JPOS_PointGain	int not null,
 	JPOS_PointLoss	int not null,
 	JPOS_TID varchar(8) not null,				--references to JPOS_Terminal
