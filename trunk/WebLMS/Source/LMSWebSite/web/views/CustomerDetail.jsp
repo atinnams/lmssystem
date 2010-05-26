@@ -202,7 +202,10 @@
                                             <th align="left"> Sở thích </th>
                                             <td><%=custInfor.getFavorite() %></td>
                                         </tr>
-
+                                        <tr>
+                                            <th align="left"> Trạng thái </th>
+                                            <td><%=custInfor.getStatusName() %></td>
+                                        </tr>
                                     </table>
 
                                     <%}%>

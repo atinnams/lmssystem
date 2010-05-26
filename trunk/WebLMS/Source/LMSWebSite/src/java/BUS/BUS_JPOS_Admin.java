@@ -21,4 +21,5 @@ public class BUS_JPOS_Admin {
 	IJPOS_Admin myAdmin = factory.getJPOS_Admin();
         return myAdmin.Login(strUsername, strPassword, cn);
     }
+
 }

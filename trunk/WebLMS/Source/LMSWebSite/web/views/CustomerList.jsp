@@ -145,6 +145,7 @@
                                     java.util.Date date = new java.util.Date();                                    
                                 %>                                
                                 <br>
+                                <font color="red"><%=strErrorDelete %></font>
                                 <div align="Right">
                                     <table>
                                         <tr>

@@ -149,4 +149,22 @@ public class BUS_JPOS_Customer {
             IJPOS_Customer myCustomer = factory.getJPOS_Customer();
             return myCustomer.GenerateCustomerID(conn);
         }
+        public static boolean AddCustomer(DTO_JPOS_Customer customer, Connection conn)
+        {
+            LMSDAOFactory factory = LMSDAOFactory.getInstances();
+            IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+            return myCustomer.AddCustomer(customer, conn);
+        }
+        public static boolean DeleteCustomer(int CustomerID, Connection conn)
+        {
+            LMSDAOFactory factory = LMSDAOFactory.getInstances();
+            IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+            return myCustomer.DeleteCustomer(CustomerID, conn);
+        }
+        public static boolean UpdateCustomer(DTO_JPOS_Customer customer, Connection conn)
+        {
+            LMSDAOFactory factory = LMSDAOFactory.getInstances();
+            IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+            return myCustomer.UpdateCustomer(customer, conn);
+        }
 }
