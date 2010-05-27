@@ -243,6 +243,7 @@ select @result = dbo.fn_check_redemption_point('1234567812345678',100);
 select @result;
 
 */
+--===========================================================================
 
 if object_id('fn_get_rule_point') is not null
 	drop function fn_get_rule_point;
@@ -262,6 +263,7 @@ begin
 end
 go
 
+
 /*test
 declare @Point int;
 select @Point = dbo.fn_get_rule_point(300000,1);
@@ -271,6 +273,7 @@ select @Point = dbo.fn_get_rule_point(298000,1);
 select @Point; --expected 2
 
 */
+--===========================================================================
 
 if object_id('fn_get_amount_card') is not null
 	drop function fn_get_amount_card;
@@ -291,7 +294,33 @@ go
 declare @result int;
 select @result = dbo.fn_get_amount_card('8704353300000015');
 select @result;
+
+--===========================================================================
+
+if object_id('fn_check_invoice') is not null
+	drop function fn_check_invoice;
+go
+
+create function fn_check_invoice(@cardId varchar(16),@invoiceId varchar(16))
+returns int
+as
+begin
+	declare @result int ;
+	set @result = (select top 1 JPOS_LogId from JPOS_Log where JPOS_CardId = @cardId and JPOS_InvoiceId = @invoiceId and JPOS_Task <> 3 ) ;
+	if (@result is NULL)
+		set @result = 0;
+	return @result;
+end
+go
+
+/*
+--test
+declare @result int;
+select @result = dbo.fn_check_invoice('9704215000000046','052514412207');
+select @result;
 */
+
+--===========================================================================
 
 if object_id('fn_Generate_CustomerID') is not null
 	drop function fn_Generate_CustomerID
