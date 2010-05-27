@@ -4,12 +4,13 @@ if object_id('sp_add_n_log_point') is not null
 	drop proc sp_add_n_log_point
 go
 
-create procedure sp_add_n_log_point(@CardId varchar(16),@TaskID int,@Point int,@MID varchar(15),@TID varchar(8),@PoSCC varchar(2),@Result int output)
+create procedure sp_add_n_log_point(@CardId varchar(16),@TaskID int,@Amount int,@InvoiceId varchar(16),@Point int,@MID varchar(15),@TID varchar(8),@PoSCC varchar(2),@Result int output)
 as
 begin	
 	declare @Customer int;
+	declare @CurrentPoint int;
 	begin transaction;	
-	select @Customer = jCustomer.JPOS_CustomerID from JPOS_Customer jCustomer,JPOS_Card jCard where jCard.JPOS_CardId = @CardId and jCard.JPOS_CustomerID = jCustomer.JPOS_CustomerID;
+	select @Customer = jCustomer.JPOS_CustomerID,@CurrentPoint = jCustomer.JPOS_CurrentPoint from JPOS_Customer jCustomer,JPOS_Card jCard where jCard.JPOS_CardId = @CardId and jCard.JPOS_CustomerID = jCustomer.JPOS_CustomerID;
 		if  (@@rowcount = 0)
 		begin
 			set @Result = 0;
@@ -23,16 +24,57 @@ begin
 		rollback transaction;
 	end
 	
-	insert into JPOS_Log(JPOS_Date,JPOS_Task,JPOS_CardID,JPOS_PointGain,JPOS_PointLoss,JPOS_MID,JPOS_TID,JPOS_PoSCC_ID) 
-	values (getdate(),@TaskID,@CardId,@Point,0,@MID,@TID,@PoSCC)				
+	insert into JPOS_Log(JPOS_Date,JPOS_Task,JPOS_CardID,JPOS_InvoiceId,JPOS_Amount,JPOS_PointGain,JPOS_PointLoss,JPOS_MID,JPOS_TID,JPOS_PoSCC_ID) 
+	values (getdate(),@TaskID,@CardId,@InvoiceId,@Amount,@Point,0,@MID,@TID,@PoSCC)				
 	if  (@@rowcount = 0)
 	begin
 		set @Result = 0;
 		rollback transaction;
 	end
-	
-	set @Result = @@identity;
+	set @Result = @CurrentPoint + @Point;
 	commit transaction;
+end
+go
+
+--=========================================================================
+
+if object_id('sp_balance_inquiry_log') is not null
+	drop proc sp_balance_inquiry_log
+go
+
+create procedure sp_balance_inquiry_log(@CardId varchar(16),@TaskID int,@Amount int,@MID varchar(15),@TID varchar(8),@PoSCC varchar(2))
+as
+begin
+	insert into JPOS_Log(JPOS_Date,JPOS_Task,JPOS_CardID,JPOS_InvoiceId,JPOS_Amount,JPOS_PointGain,JPOS_PointLoss,JPOS_MID,JPOS_TID,JPOS_PoSCC_ID) 
+	values (getdate(),@TaskID,@CardId,NULL,@Amount,0,0,@MID,@TID,@PoSCC)
+end
+go
+
+--=========================================================================
+
+if object_id('sp_void_log') is not null
+	drop proc sp_void_log
+go
+
+create procedure sp_void_log(@CardId varchar(16),@TaskID int,@Amount int,@InvoiceId varchar(16),@MID varchar(15),@TID varchar(8),@PoSCC varchar(2))
+as
+begin
+	insert into JPOS_Log(JPOS_Date,JPOS_Task,JPOS_CardID,JPOS_InvoiceId,JPOS_Amount,JPOS_PointGain,JPOS_PointLoss,JPOS_MID,JPOS_TID,JPOS_PoSCC_ID) 
+	values (getdate(),@TaskID,@CardId,@InvoiceId,@Amount,0,0,@MID,@TID,@PoSCC)
+end
+go
+
+--=========================================================================
+
+if object_id('sp_reload_log') is not null
+	drop proc sp_reload_log
+go
+
+create procedure sp_reload_log(@CardId varchar(16),@TaskID int,@Amount int,@InvoiceId varchar(16),@MID varchar(15),@TID varchar(8),@PoSCC varchar(2))
+as
+begin
+	insert into JPOS_Log(JPOS_Date,JPOS_Task,JPOS_CardID,JPOS_InvoiceId,JPOS_Amount,JPOS_PointGain,JPOS_PointLoss,JPOS_MID,JPOS_TID,JPOS_PoSCC_ID) 
+	values (getdate(),@TaskID,@CardId,@InvoiceId,@Amount,0,0,@MID,@TID,@PoSCC)
 end
 go
 
@@ -116,6 +158,7 @@ end
 go
 -------------------------------------------------------------------------------------------------------------------------------
 
+/*
 if object_id('sp_Sub_Point') is not null
 	drop proc sp_Sub_Point;
 go
@@ -151,7 +194,7 @@ begin
 	commit transaction;
 end
 go
-
+*/
 -------------------------------------------------------------------------------------------------------------------------------
 
 if object_id('sp_card_activate') is not null
@@ -168,6 +211,7 @@ begin
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------
+/*
 if object_id('sp_redemption') is not null
 	drop proc sp_redemption
 go
@@ -216,6 +260,8 @@ begin
 	commit transaction;
 end
 go
+*/
+
 -------------------------------------------------------------------------------------------------------------------------------
 if object_id('sp_Login') is not null
 	drop proc sp_Login
@@ -440,6 +486,7 @@ create procedure sp_redeem_Card (@CardID varchar(16),@Amount int,@result int out
 as
 begin
 	declare @card_amount int;
+	begin transaction;
 	set @card_amount = dbo.fn_get_amount_card(@CardID);
 	if(@card_amount < @Amount)
 	begin
@@ -448,11 +495,13 @@ begin
 	end
 	set @card_amount = @card_amount - @Amount;
 	update JPOS_Card Set JPOS_Monetary = @card_amount where JPOS_CardId = @CardID;
-	set @result = 1;
+	set @result = @card_amount;
+	commit transaction;
 end
 go
 
 -------------------------------------------------------------------------------------------------------------------------------
+
 if object_id('sp_reload_Card') is not null
 	drop proc sp_reload_Card
 go
@@ -461,10 +510,12 @@ create procedure sp_reload_Card (@CardID varchar(16),@Amount int,@result int out
 as
 begin
 	declare @card_amount int;
+	begin transaction;
 	set @card_amount = dbo.fn_get_amount_card(@CardID);
 	set @card_amount = @card_amount + @Amount;
 	update JPOS_Card Set JPOS_Monetary = @card_amount where JPOS_CardId = @CardID;
-	set @result = 1;
+	set @result = @card_amount;
+	commit transaction;
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------
@@ -514,3 +565,25 @@ begin
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------
+
+if object_id('sp_void_card') is not null
+	drop proc sp_void_card;
+go
+
+create proc sp_void_card(@cardId varchar(16),@invoiceId varchar(16),@amount int,@result int output)
+as
+begin
+	declare @task int ;
+	set @result = 0;
+	select @task = JPOS_Task from JPOS_Log where JPOS_CardId = @cardId and JPOS_InvoiceId = @invoiceId and JPOS_Task <> 3 ;
+	if(@task = 1) --The prior transaction is redeem.
+	begin
+		exec sp_reload_Card @cardId , @amount , @result output;
+	end
+	else if (@task = 2) -- The prior transaction is reload.
+	begin
+		exec sp_redeem_Card @cardId, @amount, @result output;
+	end
+end
+go
