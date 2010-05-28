@@ -14,14 +14,8 @@ import org.jpos.iso.ISOFilter.VetoException;
 import org.jpos.transaction.AbortParticipant;
 import org.jpos.transaction.Context;
 
-/**
- * Send transaction information to client.
- * 
- * @author HUNGPT
- * 
- */
-public class SendResponse implements AbortParticipant {
-
+public class VoidCardSendResponse implements AbortParticipant {
+	
 	@Override
 	public void abort(long id, Serializable context) {
 	}
@@ -54,8 +48,11 @@ public class SendResponse implements AbortParticipant {
 
 	/**
 	 * Send response to client.
-	 * @param id Identify of transaction
-	 * @param ctx Context of transaction
+	 * 
+	 * @param id
+	 *            Identify of transaction
+	 * @param ctx
+	 *            Context of transaction
 	 */
 	private void sendResponse(long id,Context ctx) {
 		
@@ -70,6 +67,10 @@ public class SendResponse implements AbortParticipant {
 			//Get response code 
 			String rc = (String)ctx.get(Constant.RC);
 			
+			//Get point
+			String point = (String)ctx.get(Constant.POINT);
+			
+			
 			if (source != null && source.isConnected() && msg != null) {
 				
 				//Create new message response
@@ -83,6 +84,7 @@ public class SendResponse implements AbortParticipant {
 				msgResponse.set(48,ISOUtil.hex2byte(field48Value));
 				if(rc == null || "00".equals(rc)) {
 					msgResponse.set(39, "00");
+					msgResponse.set(61,ISOUtil.hex2byte(point));
 				}
 				else if(rc != null) {
 					int error = Integer.parseInt(rc);
@@ -113,14 +115,14 @@ public class SendResponse implements AbortParticipant {
 						strError = MessageHelper.makeTLV("FF39",Constant.POSCC_NOT_FOUND);
 						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
-					case 24:
-						msgResponse.set(39,"24");
-						strError = MessageHelper.makeTLV("FF39",Constant.FORWARD_FAIL);
-						msgResponse.set(61,ISOUtil.hex2byte(strError));
-						break;
 					case 93 :
 						msgResponse.set(39,"93");
 						strError = MessageHelper.makeTLV("FF39",Constant.NO_ACTIVATED_CARD);
+						msgResponse.set(61,ISOUtil.hex2byte(strError));
+						break;
+					case 17 :
+						msgResponse.set(39,"17");
+						strError = MessageHelper.makeTLV("FF39",Constant.INVOICE_FAIL);
 						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
 					default :
@@ -132,10 +134,9 @@ public class SendResponse implements AbortParticipant {
 				}
 				
 				source.send(msgResponse);
-				
 				LMSLogSource logSource = LMSLogSource.getLogSource("LMS");
-				logSource.printHexValue("Error_Receive", ISOUtil.hexString(msg.pack()));
-				logSource.printHexValue("Error_Response", ISOUtil.hexString(msgResponse.pack()));
+				logSource.printHexValue("Void_Receive", ISOUtil.hexString(msg.pack()));
+				logSource.printHexValue("Void_Response", ISOUtil.hexString(msgResponse.pack()));
 				
 			}
 		} catch (VetoException e) {
@@ -146,5 +147,4 @@ public class SendResponse implements AbortParticipant {
 			e.printStackTrace();
 		}
 	}
-
 }

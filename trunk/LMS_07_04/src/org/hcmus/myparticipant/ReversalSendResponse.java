@@ -14,13 +14,7 @@ import org.jpos.iso.ISOFilter.VetoException;
 import org.jpos.transaction.AbortParticipant;
 import org.jpos.transaction.Context;
 
-/**
- * Send transaction information to client.
- * 
- * @author HUNGPT
- * 
- */
-public class SendResponse implements AbortParticipant {
+public class ReversalSendResponse implements AbortParticipant {
 
 	@Override
 	public void abort(long id, Serializable context) {
@@ -54,8 +48,11 @@ public class SendResponse implements AbortParticipant {
 
 	/**
 	 * Send response to client.
-	 * @param id Identify of transaction
-	 * @param ctx Context of transaction
+	 * 
+	 * @param id
+	 *            Identify of transaction
+	 * @param ctx
+	 *            Context of transaction
 	 */
 	private void sendResponse(long id,Context ctx) {
 		
@@ -74,9 +71,8 @@ public class SendResponse implements AbortParticipant {
 				
 				//Create new message response
 				ISOMsg msgResponse = new ISOMsg();
-				msgResponse.set(0,"0210");
+				msgResponse.set(0,"0410");
 				msgResponse.set(3,(String)msg.getValue(3));
-				msgResponse.set(11,(String)msg.getValue(11));
 				msgResponse.set(41,(String)msg.getValue(41));
 				msgResponse.set(42,(String)msg.getValue(42));
 				String field48Value = ISOUtil.hexString(msg.getComponent(48).getBytes());
@@ -85,57 +81,16 @@ public class SendResponse implements AbortParticipant {
 					msgResponse.set(39, "00");
 				}
 				else if(rc != null) {
-					int error = Integer.parseInt(rc);
-					String strError = "";
-					switch(error){
-					case 14 :
-						msgResponse.set(39,"14");
-						strError = MessageHelper.makeTLV("FF39",Constant.CARD_NOT_FOUND);
-						msgResponse.set(61,ISOUtil.hex2byte(strError));
-						break;
-					case 54 :
-						msgResponse.set(39,"54");
-						strError = MessageHelper.makeTLV("FF39",Constant.EXPIRE_CARD);
-						msgResponse.set(61,ISOUtil.hex2byte(strError));
-						break;
-					case 15:
-						msgResponse.set(39,"15");
-						strError = MessageHelper.makeTLV("FF39",Constant.INVALID_FIELD);
-						msgResponse.set(61,ISOUtil.hex2byte(strError));
-						break;
-					case 3 :
-						msgResponse.set(39,"03");
-						strError = MessageHelper.makeTLV("FF39",Constant.MID_OR_TID_NOT_FOUND);
-						msgResponse.set(61,ISOUtil.hex2byte(strError));
-						break;
-					case 58:
-						msgResponse.set(39,"58");
-						strError = MessageHelper.makeTLV("FF39",Constant.POSCC_NOT_FOUND);
-						msgResponse.set(61,ISOUtil.hex2byte(strError));
-						break;
-					case 24:
-						msgResponse.set(39,"24");
-						strError = MessageHelper.makeTLV("FF39",Constant.FORWARD_FAIL);
-						msgResponse.set(61,ISOUtil.hex2byte(strError));
-						break;
-					case 93 :
-						msgResponse.set(39,"93");
-						strError = MessageHelper.makeTLV("FF39",Constant.NO_ACTIVATED_CARD);
-						msgResponse.set(61,ISOUtil.hex2byte(strError));
-						break;
-					default :
-						msgResponse.set(39,"12");
-						strError = MessageHelper.makeTLV("FF39",Constant.OTHER_ERROR);
-						msgResponse.set(61,ISOUtil.hex2byte(strError));
-						break;
-					}
+					msgResponse.set(39,"12");
+					String strError = MessageHelper.makeTLV("FF39",Constant.OTHER_ERROR);
+					msgResponse.set(61,ISOUtil.hex2byte(strError));
 				}
 				
 				source.send(msgResponse);
 				
 				LMSLogSource logSource = LMSLogSource.getLogSource("LMS");
-				logSource.printHexValue("Error_Receive", ISOUtil.hexString(msg.pack()));
-				logSource.printHexValue("Error_Response", ISOUtil.hexString(msgResponse.pack()));
+				logSource.printHexValue("Reversal_Receive", ISOUtil.hexString(msg.pack()));
+				logSource.printHexValue("Reversal_Response", ISOUtil.hexString(msgResponse.pack()));
 				
 			}
 		} catch (VetoException e) {
