@@ -91,9 +91,105 @@ public class JPOS_CardBUS {
 	 * @param con Connection that connect to database
 	 * @return
 	 */
-	public int reloadCard(String cardNumber,int amount,Connection con){
+	public static int reloadCard(String cardNumber,int amount,Connection con){
 		LMSDAOFactory factory = LMSDAOFactory.getInstances();
 		IJPOS_Card myCard = factory.getJPOS_Card();
 		return myCard.reloadCard(cardNumber, amount, con);
 	}
+	
+	/**
+	 * Check card was activated.
+	 * @param cardId Identify of card
+	 * @param invoiceId invoice of the log
+	 * @param con Connection of database server.
+	 * @return Checking result. 0 means that card has been activated yet but 1 means by contrast.
+	 */
+	public static int checkInvoice(String cardId,String invoiceId,Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Card myCard = factory.getJPOS_Card();
+		return myCard.checkInvoice(cardId, invoiceId, con);
+	}
+	
+	/**
+	 * Void amount of card
+	 * @param cardNumber Card Number
+	 * @param amount Amount that is subtracted
+	 * @param con Connection that connect to database
+	 * @return
+	 */
+	public static int voidCard(String cardNumber,String invoiceId,int amount,Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Card myCard = factory.getJPOS_Card();
+		return myCard.voidCard(cardNumber, invoiceId, amount, con);
+	}
+	
+	/**
+	 * Reversal reload.
+	 * @param customer information of customer.
+	 * @param taskid which business id executed.
+	 * @param invoiceId identify of invoice. 
+	 * @param mid Merchant identify.
+	 * @param tid Terminal identify.
+	 * @param poscc POS of service condition.
+	 * @param con Connection.
+	 * @return result of add point business.
+	 */
+	public static void reversalRedeem(String cardNumber,int taskid,String invoiceId,String mid,String tid,String poscc,Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Card myCard = factory.getJPOS_Card();
+		myCard.reversalRedeem(cardNumber, taskid, invoiceId, mid, tid, poscc, con);
+	}
+	
+	/**
+	 * Reversal reload.
+	 * @param customer information of customer.
+	 * @param taskid which business id executed.
+	 * @param invoiceId identify of invoice. 
+	 * @param mid Merchant identify.
+	 * @param tid Terminal identify.
+	 * @param poscc POS of service condition.
+	 * @param con Connection.
+	 * @return result of add point business.
+	 */
+	public static void reversalReload(String cardNumber,int taskid,String invoiceId,String mid,String tid,String poscc,Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Card myCard = factory.getJPOS_Card();
+		myCard.reversalReload(cardNumber, taskid, invoiceId, mid, tid, poscc, con);
+	}
+	
+	/**
+	 * Reversal reload.
+	 * @param customer information of customer.
+	 * @param taskid which business id executed.
+	 * @param invoiceId identify of invoice. 
+	 * @param mid Merchant identify.
+	 * @param tid Terminal identify.
+	 * @param poscc POS of service condition.
+	 * @param con Connection.
+	 * @return result of add point business.
+	 */
+	public static void reversalVoidRedeem(String cardNumber,int taskid,String invoiceId,String mid,String tid,String poscc,Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Card myCard = factory.getJPOS_Card();
+		myCard.reversalVoidRedeem(cardNumber, taskid, invoiceId, mid, tid, poscc, con);
+	}
+	
+	/**
+	 * Reversal reload.
+	 * @param customer information of customer.
+	 * @param taskid which business id executed.
+	 * @param invoiceId identify of invoice. 
+	 * @param mid Merchant identify.
+	 * @param tid Terminal identify.
+	 * @param poscc POS of service condition.
+	 * @param con Connection.
+	 * @return result of add point business.
+	 */
+	public static void reversalVoidReload(String cardNumber,int taskid,String invoiceId,String mid,String tid,String poscc,Connection con){
+		LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Card myCard = factory.getJPOS_Card();
+		myCard.reversalVoidReload(cardNumber, taskid, invoiceId, mid, tid, poscc, con);
+	}
+	
+	
 }
