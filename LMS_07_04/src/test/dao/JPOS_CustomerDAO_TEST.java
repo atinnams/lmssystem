@@ -38,39 +38,4 @@ public class JPOS_CustomerDAO_TEST extends TestCase {
 		JPOS_CustomerDTO customer = customerDAO.getCustomer(1,con);
 		Assert.assertEquals(customer.getJPOS_CurrentPoint(), 150);
 	}
-	
-	public void testAddNormalPoint() {
-		JPOS_CustomerDAO customerDAO = new JPOS_CustomerDAO();
-		int result = customerDAO.addNormalPoint("1234567812345678",1, 150, "000000000000001","00000001","01",con);
-		JPOS_CustomerDTO customerAssert = customerDAO.getCustomer(1,con);
-		Assert.assertEquals(customerAssert.getJPOS_CurrentPoint(), 300);
-		System.out.println(result);
-		if(result == 0){
-			fail("Result must not to be zero.");
-		}
-	}
-	
-	
-	public void testSubPoint() {
-		JPOS_CustomerDAO customerDAO = new JPOS_CustomerDAO();
-		int result = customerDAO.subtractPoint("1234567812345678",2, 100, "000000000000001","00000001","01",con);
-		JPOS_CustomerDTO customerAssert = customerDAO.getCustomer(1,con);
-		Assert.assertEquals(customerAssert.getJPOS_CurrentPoint(), 50);
-		if(result == 0){
-			fail();
-		}
-	}
-	
-	public void testGiftPoint(){
-		JPOS_CustomerDAO customerDAO = new JPOS_CustomerDAO();
-		int result = customerDAO.checkRedemptionPoint("1234567812345678", 200, con);
-		Assert.assertEquals(0,result);
-		
-		result = customerDAO.checkRedemptionPoint("1234567812345678", 10, con);
-		Assert.assertEquals(1,result);
-		
-		if(result == 0){
-			fail();
-		}
-	}
 }
