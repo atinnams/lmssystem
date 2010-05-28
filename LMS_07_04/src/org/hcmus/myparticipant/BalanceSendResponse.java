@@ -79,10 +79,10 @@ public class BalanceSendResponse implements AbortParticipant{
 				msgResponse.set(11,(String)msg.getValue(11));
 				msgResponse.set(41,(String)msg.getValue(41));
 				msgResponse.set(42,(String)msg.getValue(42));
+				String field48Value = ISOUtil.hexString(msg.getComponent(48).getBytes());
+				msgResponse.set(48,ISOUtil.hex2byte(field48Value));
 				if(rc == null || "00".equals(rc)) {
 					msgResponse.set(39, "00");
-					String field48Value = ISOUtil.hexString(msg.getComponent(48).getBytes());
-					msgResponse.set(48,ISOUtil.hex2byte(field48Value));
 					msgResponse.set(61,ISOUtil.hex2byte(amount));
 				}
 				else if(rc != null) {

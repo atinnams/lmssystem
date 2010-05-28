@@ -6,6 +6,7 @@ import java.sql.Connection;
 import org.hcmus.Util.Constant;
 import org.hcmus.Util.MessageHelper;
 import org.hcmus.bus.JPOS_CardBUS;
+import org.hcmus.bus.JPOS_LogBUS;
 import org.jpos.iso.ISOMsg;
 import org.jpos.transaction.Context;
 import org.jpos.transaction.TransactionParticipant;
@@ -36,7 +37,13 @@ public class BalanceInquiry implements TransactionParticipant {
 
 			/** get card number **/
 			String cardNumber = MessageHelper.getCardId(msg);
+			
+			/** get MID **/
+			String mid = MessageHelper.getMID(msg);
 
+			/** get TID **/
+			String tid = MessageHelper.getTID(msg);
+			
 			/** Balance inquiry business **/
 			int result = JPOS_CardBUS.getAmountCard(cardNumber, con);
 			
@@ -45,6 +52,9 @@ public class BalanceInquiry implements TransactionParticipant {
 				ctx.put(Constant.RC, "12");
 				return ABORTED | READONLY | NO_JOIN;
 			}
+			
+			/** Add Balance Log **/
+			JPOS_LogBUS.balanceInquiryLog(cardNumber, 4,result, mid, tid, "01", con);
 			
 			/** convert point to response string message **/
 			String strAmount = "FF3E161111000000000000000000000000000000" + MessageHelper.format(Integer.toString(result),8) + "00"; 

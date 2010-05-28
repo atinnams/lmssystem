@@ -5,26 +5,23 @@ import java.sql.Connection;
 
 import org.hcmus.Util.Constant;
 import org.hcmus.Util.MessageHelper;
-import org.hcmus.bus.JPOS_CustomerBUS;
-import org.hcmus.bus.JPOS_GiftBUS;
+import org.hcmus.bus.JPOS_CardBUS;
 import org.jpos.iso.ISOMsg;
 import org.jpos.transaction.Context;
 import org.jpos.transaction.TransactionParticipant;
 
-public class CheckGiftPoint implements TransactionParticipant {
+public class CheckReversal implements TransactionParticipant {
+	@Override
+	public void abort(long id, Serializable serializeable) { }
 
 	@Override
-	public void abort(long arg0, Serializable arg1) {
-	}
+	public void commit(long id, Serializable serializeable) { }
 
 	@Override
-	public void commit(long arg0, Serializable arg1) {
-	}
+	public int prepare(long id, Serializable serializeable) {
 
-	@Override
-	public int prepare(long id, Serializable serializable) {
 		/** get context from space **/
-		Context ctx = (Context) serializable;
+		Context ctx = (Context) serializeable;
 
 		/** get message from context **/
 		ISOMsg msg = (ISOMsg) ctx.get(Constant.REQUEST);
@@ -37,23 +34,18 @@ public class CheckGiftPoint implements TransactionParticipant {
 		}
 
 		if (msg != null) {
-			String cardNumber = MessageHelper.getCardId(msg);
-			int giftPoint = MessageHelper.getGiftPoint(msg);
-			if (!cardNumber.isEmpty() && giftPoint != -1) {
-				int result = JPOS_CustomerBUS.checkRedemptionPoint(cardNumber, giftPoint, con);
+			String cardId = MessageHelper.getCardId(msg);
+			String invoiceId = MessageHelper.getInvoice(msg);
+			if (!cardId.isEmpty() && !invoiceId.isEmpty()) {
+				int result = JPOS_CardBUS.checkInvoice(cardId, invoiceId, con);
 				if (result == 0 || result == -1) {
-					ctx.put(Constant.RC, "95");
+					ctx.put(Constant.RC, "00");
 					return ABORTED | READONLY | NO_JOIN;
 				} else {
-					result = JPOS_GiftBUS.checkGiftPoint(giftPoint, con);
-					if(result == 0 || result == -1){
-						ctx.put(Constant.RC, "95");
-						return ABORTED | READONLY | NO_JOIN;
-					}
 					return PREPARED | READONLY | NO_JOIN;
 				}
 			} else {
-				ctx.put(Constant.RC, "12");
+				ctx.put(Constant.RC, "00");
 				return ABORTED | READONLY | NO_JOIN;
 			}
 		} else {
