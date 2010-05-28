@@ -172,4 +172,57 @@ public class MessageHelper {
 			return null;
 		}
 	}
+	
+	public static String getInvoiceLog(ISOMsg msg){
+		String field48 = "";
+		try{
+			field48 = ISOUtil.hexString(msg.getComponent(48).getBytes());
+			int index = field48.indexOf("FF2F");
+			if(index != -1){
+				return field48.substring(index+6, index+18);
+			}else{
+				return null;
+			}
+		}catch (ISOException e) {
+			return null;
+		}
+	}
+	
+	public static String getInvoice(ISOMsg msg){
+		String field48 = "";
+		try{
+			field48 = ISOUtil.hexString(msg.getComponent(48).getBytes());
+			int index = field48.indexOf("FF34");
+			if(index != -1){
+				return field48.substring(index+24, index+36);
+			}else{
+				return null;
+			}
+		}catch (ISOException e) {
+			return null;
+		}
+	}
+	
+	public static int getReloadAmount(ISOMsg msg){
+		int result = 0;
+		String field61 = "";
+		try {
+			field61 = ISOUtil.hexString(msg.getComponent(48).getBytes());
+			int index = field61.indexOf("FF2B");
+			if(index != -1){
+				String money =  field61.substring(index+6, index+16);
+				result = Integer.parseInt(money);
+			}else{
+				return -1;
+			}
+		} catch (ISOException e) {
+			e.printStackTrace();
+			result = -1;
+		} catch(NumberFormatException ex) {
+			ex.printStackTrace();
+			result = -1;
+		}
+		
+		return result;
+	}
 }

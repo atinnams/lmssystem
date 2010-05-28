@@ -24,13 +24,16 @@ public class Constant {
 	public final static String NOT_ENOUGH_POINT = "NOT_ENOUGH_POINT";
 	public final static String NO_GIFT = "BAN CHUA DU DIEM DE NHAN QUA.";
 	public final static String NOT_ENOUGH_MONEY = "NOT_ENOUGH_MONEY";
+	public final static String INVOICE_FAIL = "INVOICE_FAIL";
+	public final static String RELOAD_FAIL = "RELOAD_FAIL";
 	
 	public final static String ERROR_FLOW = "000000" ;
-	public final static String ADD_POINT_PROCESS = "027207";
-	public final static String SUBTRACT_POINT_PROCESS = "417000";
+	public final static String REDEEM_PROCESS = "027207";
 	public final static String BALANCE_INQUIRY_PROCESS = "027567";
-	public final static String REDEMPTION_PROCESS = "447000";
-	public final static String ACTIVATION_PROCESS = "457000";
-	
+	public final static String VOID_REDEEM_PROCESS = "027208";
+	public final static String VOID_RELOAD_PROCESS = "027708";
+	public final static String RELOAD_PROCESS = "027707";
+	public final static String REVERSAL_PROCESS = "020400";
+	public final static String REVERSAL_MTI = "0400";
 	public final static String SQL_DB = "SQL";
 }
