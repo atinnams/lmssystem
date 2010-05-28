@@ -38,17 +38,21 @@ public class Switch implements GroupSelector, Configurable {
 				return cfg.get(Constant.ERROR_FLOW);
 			}
 			
-			if (!Constant.ADD_POINT_PROCESS.equals(transactionName)
-					&& !Constant.SUBTRACT_POINT_PROCESS.equals(transactionName)
+			if (!Constant.REDEEM_PROCESS.equals(transactionName)
 					&& !Constant.BALANCE_INQUIRY_PROCESS.equals(transactionName)
-					&& !Constant.REDEMPTION_PROCESS.equals(transactionName)
-					&& !Constant.ACTIVATION_PROCESS.equals(transactionName)) {
+					&& !Constant.VOID_REDEEM_PROCESS.equals(transactionName)
+					&& !Constant.RELOAD_PROCESS.equals(transactionName)
+					&& !Constant.VOID_RELOAD_PROCESS.equals(transactionName)) {
 				return cfg.get(Constant.ERROR_FLOW);
 			}
-
-			groups = cfg.get(transactionName);
-
+			
+			if(msg.getMTI().equals(Constant.REVERSAL_MTI)){
+				groups = cfg.get(Constant.REVERSAL_PROCESS);
+			}else{
+				groups = cfg.get(transactionName);
+			}
 			return groups;
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
