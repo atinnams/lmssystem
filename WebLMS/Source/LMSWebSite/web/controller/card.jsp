@@ -23,6 +23,7 @@
     String strURLforward = "index.jsp?TaskID=9";
     String strErrorDelete = "";
     String strErrorUpdate = "";
+    String strErrorMonetary = "";
     boolean blError = false;
 %>
 <%
@@ -122,7 +123,9 @@
                 String strMyExpireDay = request.getParameter("txtNgayHetHan");
                 String strActiveCode = request.getParameter("txtMaKichHoat");
                 String strStatus = request.getParameter("txtTrangThai");
+                String strMonetary = request.getParameter("txtSoTien");
                 int iStatus = Integer.parseInt(strStatus);
+                int iMoney = 0;
                 java.sql.Date dateExpireDay = null;
                 try
                 {
@@ -133,6 +136,15 @@
                 catch (Exception ex)
                 {
                     strErrorExpireDay = "Ngày hết hạn không đúng định dạng dd/MM/YYYY";
+                    blError = true;
+                }
+                try
+                {
+                    iMoney = Integer.parseInt(strMonetary);
+                }
+                catch (Exception ex)
+                {
+                    strErrorMonetary = "Số tiền không hợp lệ";
                     blError = true;
                 }
                 if (blError == true)
@@ -148,6 +160,7 @@
                     card.setJPOS_CardId(strCardID);
                     card.setJPOS_ExpireDay(dateExpireDay);
                     card.setStatusCode(iStatus);
+                    card.setMonetary(iMoney);
                     boolean blResult = BUS.BUS_JPOS_Card.UpdateCard(card, DAO.DataProvider.getConnection(this.getServletConfig()));
                     if (blResult == false)
                     {

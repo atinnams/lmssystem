@@ -118,6 +118,7 @@ public class DAO_JPOS_Card implements IJPOS_Card {
                         card.setStatus(rs.getString("JPOS_StatusName"));
                         card.setCustomerOwnerID(rs.getInt("JPOS_CustomerID"));
                         card.setActiveCode(rs.getString("JPOS_ActivateCode"));
+                        card.setMonetary(rs.getInt("JPOS_Monetary"));
 
                         ArrayResult.add(card);
                     }
@@ -225,6 +226,7 @@ public class DAO_JPOS_Card implements IJPOS_Card {
                         card.setCustomerOwnerID(rs.getInt("JPOS_CustomerID"));
                         card.setActiveCode(rs.getString("JPOS_ActivateCode"));
                         card.setStatusCode(rs.getInt("JPOS_Status"));
+                        card.setMonetary(rs.getInt("JPOS_Monetary"));
                     }
                 }
             } catch (Exception e) {
@@ -253,12 +255,12 @@ public class DAO_JPOS_Card implements IJPOS_Card {
         {
             CallableStatement stmt = null;
             try {
-                stmt = conn.prepareCall("{call dbo.sp_Update_Card(?,?,?,?)}");
+                stmt = conn.prepareCall("{call dbo.sp_Update_Card(?,?,?,?,?)}");
                 stmt.setString(1, card.getJPOS_CardId());
                 stmt.setDate(2, card.getJPOS_ExpireDay());
                 stmt.setString(3, card.getActiveCode());
                 stmt.setInt(4, card.getStatusCode());
-
+                stmt.setInt(5, card.getMonetary());
                 stmt.execute();
             } catch (Exception e) {
                 System.out.println("Error!!!!!!" + e);

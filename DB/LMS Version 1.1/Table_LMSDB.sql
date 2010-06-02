@@ -96,6 +96,7 @@ create table JPOS_Merchant
 	JPOS_MerchantName nvarchar(200),
 	JPOS_Address nvarchar(200),
 	JPOS_IssuerID int not null, --references to IssuerID of Issuer table
+	JPOS_Status int not null,
 	Primary Key(JPOS_MID)
 )
 go

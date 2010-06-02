@@ -165,6 +165,10 @@
                                             <td><%=card.getActiveCode() %></td>
                                         </tr>
                                         <tr>
+                                            <th align="left"> Số tiền trong thẻ </th>
+                                            <td><%=card.getMonetary() %></td>
+                                        </tr>
+                                        <tr>
                                             <th align="left"> Trạng thái thẻ </th>
                                             <td><%=card.getStatus() %></td>
                                         </tr>

@@ -8,48 +8,43 @@ import java.sql.Date;
  */
 public class DTO_JPOS_Card {
 
-	/********** Attribute ****************/
+    /********** Attribute ****************/
+    // Identify of Card
+    private String jPOS_CardId;
+    // Expire Day of Card
+    private Date jPOS_ExpireDay;
+    // Either activation or not
+    private int jPOS_IsActivate;
+    private String _Status;
+    private String _ActiveCode;
+    private int _CustomerOwnerID;
+    private int _StatusCode;
+    private int _Monetary;
 
-	// Identify of Card
-	private String jPOS_CardId;
+    /*************** Properties *******************/
+    public String getJPOS_CardId() {
+        return jPOS_CardId;
+    }
 
-	// Expire Day of Card
-	private Date jPOS_ExpireDay;
+    public void setJPOS_CardId(String cardId) {
+        jPOS_CardId = cardId;
+    }
 
-	// Either activation or not
-	private int jPOS_IsActivate;
-        private String _Status;
-        private String _ActiveCode;
-        private int _CustomerOwnerID;
-        private int _StatusCode;
-        
-        
+    public Date getJPOS_ExpireDay() {
+        return jPOS_ExpireDay;
+    }
 
-	/*************** Properties *******************/
+    public void setJPOS_ExpireDay(Date expireDay) {
+        jPOS_ExpireDay = expireDay;
+    }
 
-	public String getJPOS_CardId() {
-		return jPOS_CardId;
-	}
+    public int getJPOS_IsActivate() {
+        return jPOS_IsActivate;
+    }
 
-	public void setJPOS_CardId(String cardId) {
-		jPOS_CardId = cardId;
-	}
-
-	public Date getJPOS_ExpireDay() {
-		return jPOS_ExpireDay;
-	}
-
-	public void setJPOS_ExpireDay(Date expireDay) {
-		jPOS_ExpireDay = expireDay;
-	}
-
-	public int getJPOS_IsActivate() {
-		return jPOS_IsActivate;
-	}
-
-	public void setJPOS_IsActivate(int isActivate) {
-		jPOS_IsActivate = isActivate;
-	}
+    public void setJPOS_IsActivate(int isActivate) {
+        jPOS_IsActivate = isActivate;
+    }
 
     /**
      * @return the _Status
@@ -106,6 +101,18 @@ public class DTO_JPOS_Card {
     public void setStatusCode(int StatusCode) {
         this._StatusCode = StatusCode;
     }
-  
 
+    /**
+     * @return the _Monetary
+     */
+    public int getMonetary() {
+        return _Monetary;
+    }
+
+    /**
+     * @param Monetary the _Monetary to set
+     */
+    public void setMonetary(int Monetary) {
+        this._Monetary = Monetary;
+    }
 }
