@@ -1,21 +1,12 @@
-<%--
-    Document   : CustomerDetail
-    Created on : May 11, 2010, 12:48:19 AM
+<%-- 
+    Document   : MerchantAddNew
+    Created on : Jun 1, 2010, 11:50:22 PM
     Author     : NKLapTop
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
-<%@page import="java.util.*,java.text.*,DTO.*" %>
- <%
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-    java.util.Date date = new java.util.Date();
-    String strExpireDay = "";
-    if (card.getJPOS_ExpireDay() != null)
-        strExpireDay = dateFormat.format(card.getJPOS_ExpireDay());    
-    ArrayList arrList = BUS.BUS_JPOS_Status.GetStatus("JPOS_Card", DAO.DataProvider.getConnection(this.getServletConfig()));
-%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -147,87 +138,32 @@
                             <div >
                                 <div class="content">
                                     <h1 style="text-transform:uppercase"><%=strWebTitle%></h1>
+                                    <form method="post" action="index.jsp">
                                     <div style="height:30px"></div>
-                                    <form action="index.jsp" method="post">
-                                    <span style="color:red"><%=strErrorUpdate %> </span>
-                                    <input type="hidden" name="TaskID" value="9" />
-                                    <input type="hidden" name="CardTask" value="4" />
+                                    <span style="color:red"><%=strErrorAdd %> </span>
+                                    <input type="hidden" name="TaskID" value="8" />
+                                    <input type="hidden" name="MerTask" value="2" />
                                     <table>
                                         <tr>
-                                            <th align="left"> Mã Thẻ : </th>
-                                            <td><input type="text" value="<%=card.getJPOS_CardId()%>" name="txtMaThe" readonly></td>
- 
+                                            <th align="left"> Mã đại lý : </th>
+                                            <td><input type="text" name="txtMID"></td>
+                                            <td><span style="color:red"><%=strErrorMID %></span></td>
                                         </tr>
                                         <tr>
-                                            <th align="left"  width="100px"> Ngày hết hạn : </th>
-                                            <td><input type="text" value="<%=strExpireDay %>" name="txtNgayHetHan"</td>
-                                            <td><span style="color:red"><%=strErrorExpireDay %></span></td>
+                                            <th align="left"  width="100px"> Tên đại lý : </th>
+                                            <td><input type="text" name="txtTenDaiLy" value=""></td>
+                                            <td><span style="color:red"></span></td>
                                         </tr>
                                         <tr>
-                                            <th align="left"> Mã kích hoạt </th>
-                                            <td><input type="text" value="<%=card.getActiveCode() %>" name="txtMaKichHoat"></td>
-                                            <td><span style="color:red"><%=strErrorActiveCode %></span></td>
+                                            <th align="left"> Địa chỉ : </th>
+                                            <td><input type="text" name="txtDiaChi"> </td>
+                                            <td><span style="color:red"></span></td>
                                         </tr>
                                         <tr>
-                                            <th align="left"> Số tiền trong thẻ </th>
-                                            <td><input type="text" value="<%=card.getMonetary() %>" name="txtSoTien"></td>
-                                            <td><span style="color:red"><%=strErrorMonetary %></span></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Trạng thái thẻ </th>
-                                            <td>
-                                                <select name="txtTrangThai">
-                                                <%
-                                                for (int i=0;i < arrList.size(); i++ )
-                                                {
-                                                    DTO_JPOS_Status status = (DTO_JPOS_Status)arrList.get(i);
-                                                    if (status.getStatusCode() == card.getStatusCode() )
-                                                    {
-                                                        %><option value="<%=status.getStatusCode() %>" selected><%=status.getStatusName() %></option> <%
-                                                    }
-                                                    else
-                                                    {
-                                                        %><option value="<%=status.getStatusCode() %>"><%=status.getStatusName() %></option> <%
-                                                    }
-                                                }
-                                                %>
-                                                </select>
-                                            </td>
+                                            <td></td>
+                                            <td><input type="submit" value="Tạo mới"></td>
                                             <td></td>
                                         </tr>
-                                        <tr>
-                                            <th align="left" width="170px"> Mã khách hàng sở hữu </th>
-                                            <td>
-                                                <%
-                                                     if (card.getCustomerOwnerID() == 0)
-                                                     {
-                                                        %>
-                                                        Chưa có sỡ hữu &nbsp;&nbsp;<a href="index.jsp?TaskID=9&CardTask=8&CardID=<%=card.getJPOS_CardId() %>" title="Thẻ chưa cấp phát, click để cấp thẻ">(Cấp thẻ)</a></td>                                                        
-                                                        <%
-                                                     }
-                                                     else
-                                                     {
-                                                        %>
-                                                        <%=card.getCustomerOwnerID() %>&nbsp;&nbsp; <a href="index.jsp?TaskID=9&CardTask=8&CardID=<%=card.getJPOS_CardId() %>" title="Cấp lại thẻ">(Cấp lại)</a>&nbsp;&nbsp;<a href="index.jsp?TaskID=9&CardTask=10&CardID=<%=card.getJPOS_CardId() %>" title="Ngưng cấp thẻ cho khách hàng">(Ngưng cấp)</a></td>
-                                                        <%
-                                                        
-                                                     }
-
-                                                %>
-                                            </td>
-                                            <td></td>
-                                        </tr>
-                                        <tr>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                            <td>&nbsp;</td>
-                                        </tr>
-                                        <tr>
-                                            <td><input type="submit" value="Lưu"></td>
-                                            <td><a href="index.jsp?TaskID=9"><input type="button" value="Hủy bỏ"></a></td>
-                                            <td></td>
-                                        </tr>
-
                                     </table>
 
                                     </form>
@@ -270,4 +206,5 @@
 
     </body>
 </html
+
 

@@ -1,3 +1,54 @@
+/*
+Procedure List:
+
+01. sp_Login(@Username nvarchar(50),@Password nvarchar(50),@Result int Output)
+	Record login for admin
+02. sp_Search_Customer(@CustomerID int,@FirstName nvarchar(50),@LastName nvarchar(50), @Address nvarchar(200),@Email varchar(100), @DateJoin datetime, @BirthDay datetime, @Gender bit, @Favorite nvarchar,@CurrentPoint int)
+	Search customer
+03. sp_Transaction_Detail(@CustomerID int)
+	Transaction detail of customer
+04. sp_Customer_Infor(@CustomerID int)
+	Customer's infor
+05. sp_Customer_Report()
+	Customer list report
+06. sp_Card_Report()
+	Card list report
+07. sp_Terminal_Report()
+	Terminal list report
+08. sp_Transaction_Report()
+	Transaction list report
+09. sp_New_Card (@CardID varchar(16), @ExpireDay datetime,@ActivateCode varchar(16))
+	Add new card
+10. sp_Delete_Card (@CardID varchar(16))
+	Delete card with CardID
+11. sp_Get_Card (@CardID varchar(16))
+	Get card information
+12. sp_Get_Status (@TableName varchar(50))
+	Get list status available for table have name @tablename
+13. sp_Update_Card (@CardID varchar(16), @ExpireDay datetime,@ActivateCode varchar(16),@Status int,@Monetary int)
+	Update card
+14. sp_Assign_Card (@CardID varchar(16), @CustomerID int)
+	Assign Card for customer
+15. sp_Stop_Assign_Card (@CardID varchar(16))
+	Stop assign card
+16. sp_New_Customer (@CustomerID int,@FirstName varchar(50),@LastName varchar(50),@Address varchar(200),@Email varchar(200),@BirthDay Datetime,@Gender bit,@Favorite varchar(100),@Point int)
+	Add new Customer
+17. sp_Delete_Customer (@CustomerID int)
+	Delete customer
+18. sp_Update_Customer (@CustomerID int,@FirstName varchar(50),@LastName varchar(50),@Address varchar(200),@Email varchar(200),@BirthDay Datetime,@Gender bit,@Favorite varchar(100),@Point int,@Status int)
+	Update customer information
+19. sp_Merchant_List
+	Get merchant list
+20. sp_New_Merchant(@MID varchar(15),@Name nvarchar(200),@Address nvarchar(200))
+	Add new Merchant
+21. sp_Delete_Merchant(@MID varchar(15))
+	Delete a merchant
+22. sp_Update_Merchant(@MID varchar(15),@Name nvarchar(200),@Address nvarchar(200),@Status int)
+	Update a merchant
+23. sp_Get_Merchant(@MID varchar(15))
+	Get merchant information
+*/
+
 use LMSDB;
 
 if object_id('sp_Login') is not null
@@ -139,7 +190,7 @@ go
 create procedure sp_New_Card (@CardID varchar(16), @ExpireDay datetime,@ActivateCode varchar(16))
 as
 begin	
-	insert into JPOS_Card(JPOS_CardId,JPOS_ExpireDay,JPOS_Status,JPOS_ActivateCode) values (@CardID,@ExpireDay,'1',@ActivateCode)	
+	insert into JPOS_Card(JPOS_CardId,JPOS_ExpireDay,JPOS_Status,JPOS_ActivateCode,JPOS_Monetary) values (@CardID,@ExpireDay,'1',@ActivateCode,0)	
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------
@@ -176,14 +227,15 @@ go
 if object_id('sp_Update_Card') is not null
 	drop proc sp_Update_Card
 go
-create procedure sp_Update_Card (@CardID varchar(16), @ExpireDay datetime,@ActivateCode varchar(16),@Status int)
+create procedure sp_Update_Card (@CardID varchar(16), @ExpireDay datetime,@ActivateCode varchar(16),@Status int,@Monetary int)
 as
 begin	
 	update JPOS_Card
 	Set 
 	JPOS_ExpireDay = @ExpireDay,
 	JPOS_Status = @Status,
-	JPOS_ActivateCode = @ActivateCode 
+	JPOS_ActivateCode = @ActivateCode ,
+	JPOS_Monetary = @Monetary
 	where JPOS_CardId = @CardID
 end
 go
@@ -262,3 +314,65 @@ begin
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Merchant_List') is not null
+	drop proc sp_Merchant_List
+go
+
+create procedure sp_Merchant_List
+as
+begin
+	select * from JPOS_Merchant M left join JPOS_Issuer I on M.JPOS_IssuerID = I.JPOS_IssuerID left join JPOS_Status S on M.JPOS_Status = S.JPOS_StatusID
+	where S.JPOS_StatusName not like '%Delete%'
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_New_Merchant') is not null
+	drop proc sp_New_Merchant
+go
+
+create procedure sp_New_Merchant(@MID varchar(15),@Name nvarchar(200),@Address nvarchar(200))
+as
+begin
+	insert into JPOS_Merchant(JPOS_MID,JPOS_MerchantName,JPOS_Address,JPOS_Status,JPOS_IssuerID) values (@MID,@Name,@Address,'14',1)
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Delete_Merchant') is not null
+	drop proc sp_Delete_Merchant
+go
+
+create procedure sp_Delete_Merchant(@MID varchar(15))
+as
+begin
+	update JPOS_Merchant
+	set JPOS_Status = 15
+	where JPOS_MID = @MID
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Update_Merchant') is not null
+	drop proc sp_Update_Merchant
+go
+
+create procedure sp_Update_Merchant(@MID varchar(15),@Name nvarchar(200),@Address nvarchar(200),@Status int)
+as
+begin
+	update JPOS_Merchant
+	set JPOS_Status = @Status,
+	JPOS_MerchantName = @Name,
+	JPOS_Address = @Address
+	where JPOS_MID = @MID
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Get_Merchant') is not null
+	drop proc sp_Get_Merchant
+go
+
+create procedure sp_Get_Merchant(@MID varchar(15))
+as
+begin
+	select * from JPOS_Merchant M left join JPOS_Issuer I on M.JPOS_IssuerID = I.JPOS_IssuerID left join JPOS_Status S on M.JPOS_Status = S.JPOS_StatusID
+	where S.JPOS_StatusName not like '%Delete%' and M.JPOS_MID = @MID
+end
+go
