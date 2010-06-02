@@ -114,7 +114,7 @@ create table JPOS_Terminal
 	JPOS_PIN varchar(16),
 	JPOS_RetryLimit int,
 	JPOS_ActivateCode varchar(16),
-	JPOS_MID varchar(15) not null,   --references to Merchant ID
+	JPOS_MID varchar(15) not null,   --references to Merchant ID	
 	primary key(JPOS_TID,JPOS_MID)
 )
 go
