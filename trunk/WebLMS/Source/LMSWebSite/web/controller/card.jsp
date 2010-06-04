@@ -25,6 +25,7 @@
     String strErrorUpdate = "";
     String strErrorMonetary = "";
     boolean blError = false;
+    request.setCharacterEncoding("utf8");
 %>
 <%
     String strCardTask = request.getParameter("CardTask");
@@ -48,7 +49,7 @@
                 String strCardID = request.getParameter("txtMaThe");
                 String strMyExpireDay = request.getParameter("txtNgayHetHan");
                 String strActiveCode = request.getParameter("txtMaKichHoat");
-                java.sql.Date dateExpireDay = null;
+                Date dateExpireDay = null;
                 if (strCardID.length() != 16 )
                 {
                     strErrorCardID = "Mã thẻ không đúng quy định 16 kí tự";
@@ -57,13 +58,13 @@
                 }                                
                 try
                 {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    Date d = sdf.parse(strMyExpireDay);
-                    dateExpireDay = new java.sql.Date(d.getYear(),d.getMonth(),d.getDay());
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                    dateExpireDay = (java.util.Date)sdf.parse(strMyExpireDay);
+                    
                 }
                 catch (Exception ex)
                 {
-                    strErrorExpireDay = "Ngày hết hạn không đúng định dạng dd/MM/YYYY";
+                    strErrorExpireDay = "Ngày hết hạn không đúng định dạng dd-MMM-YYYY";
                     blError = true;
                 }
                 if (blError == true)
@@ -108,7 +109,7 @@
                 {
                     strErrorDelete = "Xóa thẻ không thành công";
                     resultViews = BUS.BUS_JPOS_Card.getListCard(DAO.DataProvider.getConnection(this.getServletConfig()));
-                    strWebTitle = "Quản lý thẻ";
+                    strWebTitle = "Danh sách thẻ";
                     %><%@include file="../views/CardList.jsp" %><%
                 }
                 else
@@ -126,16 +127,15 @@
                 String strMonetary = request.getParameter("txtSoTien");
                 int iStatus = Integer.parseInt(strStatus);
                 int iMoney = 0;
-                java.sql.Date dateExpireDay = null;
+                java.util.Date dateExpireDay = null;
                 try
                 {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    Date d = sdf.parse(strMyExpireDay);
-                    dateExpireDay = new java.sql.Date(d.getYear(),d.getMonth(),d.getDay());
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                    dateExpireDay = (java.util.Date)sdf.parse(strMyExpireDay);                    
                 }
                 catch (Exception ex)
                 {
-                    strErrorExpireDay = "Ngày hết hạn không đúng định dạng dd/MM/YYYY";
+                    strErrorExpireDay = "Ngày hết hạn không đúng định dạng dd-MMM-yyyy";
                     blError = true;
                 }
                 try
@@ -239,10 +239,27 @@
                 }
             }
             break;
+        case 11:
+            {
+                String strKey = request.getParameter("Search");
+                resultViews = BUS.BUS_JPOS_Card.searchCard(strKey,DAO.DataProvider.getConnection(this.getServletConfig()));
+                strWebTitle = "Danh sách thẻ";
+                %><%@include file="../views/CardList.jsp" %><%
+            }
+            break;
+        case 12:
+             {
+                String strKey = request.getParameter("Search");
+                resultViews = null;
+                strWebTitle = "Cấp thẻ";
+                resultViews = BUS.BUS_JPOS_Customer.Search_Customer(strKey,DAO.DataProvider.getConnection(this.getServletConfig()));
+                %><%@include file="../views/CardDistribute.jsp" %><%
+            }
+            break;
         default ://view list card
             {
                 resultViews = BUS.BUS_JPOS_Card.getListCard(DAO.DataProvider.getConnection(this.getServletConfig()));
-                strWebTitle = "Quản lý thẻ";
+                strWebTitle = "Danh sách thẻ";
                 %><%@include file="../views/CardList.jsp" %><%
             }
             break;

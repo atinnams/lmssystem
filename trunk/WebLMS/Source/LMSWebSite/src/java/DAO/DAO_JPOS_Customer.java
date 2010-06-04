@@ -8,6 +8,7 @@ import java.sql.Statement;
 
 import DTO.*;
 import DAO.iDAO.IJPOS_Customer;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -444,15 +445,17 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
         public boolean AddCustomer(DTO_JPOS_Customer customer, Connection conn)
         {
             CallableStatement stmt = null;
+            boolean blPass = true;
             try {
                 stmt = conn.prepareCall("{call dbo.sp_New_Customer(?,?,?,?,?,?,?,?,?)}");
-
+                SimpleDateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");                
+                String birthday = myformat.format(customer.getBirthDay());
                 stmt.setInt(1, customer.getJPOS_CustomerID());
                 stmt.setString(2, customer.getFirstName());
                 stmt.setString(3, customer.getLastName());
                 stmt.setString(4, customer.getAddress());
                 stmt.setString(5, customer.getEmail());
-                stmt.setString(6, customer.getBirthDay().toString());
+                stmt.setString(6, birthday);
                 stmt.setBoolean(7, customer.isGender());
                 stmt.setString(8, customer.getFavorite());
                 stmt.setInt(9, customer.getJPOS_CurrentPoint());
@@ -461,7 +464,7 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
 
             } catch (Exception e) {
                 System.out.println("Error!!!!!!" + e);
-                return false;
+                blPass = false;
             } finally {
                 try {
                     if (stmt != null) {
@@ -476,15 +479,16 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
                     }
                 } catch (SQLException e) {
                 }
-
-                return true;
+                
             }
+            return blPass;
         }
         
         @Override
         public boolean DeleteCustomer(int CustomerID, Connection conn)
         {
             CallableStatement stmt = null;
+            boolean blPass = true;
             try {
                 stmt = conn.prepareCall("{call dbo.sp_Delete_Customer(?)}");
 
@@ -493,7 +497,7 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
 
             } catch (Exception e) {
                 System.out.println("Error!!!!!!" + e);
-                return false;
+                blPass = false;
             } finally {
                 try {
                     if (stmt != null) {
@@ -509,22 +513,25 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
                 } catch (SQLException e) {
                 }
 
-                return true;
+                
             }
+            return blPass;
         }
         @Override
         public boolean UpdateCustomer(DTO_JPOS_Customer customer, Connection conn)
         {
             CallableStatement stmt = null;
+            boolean blPass = true;
             try {
                 stmt = conn.prepareCall("{call dbo.sp_Update_Customer(?,?,?,?,?,?,?,?,?,?)}");
-
+                SimpleDateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");
+                String birthday = myformat.format(customer.getBirthDay());
                 stmt.setInt(1, customer.getJPOS_CustomerID());
                 stmt.setString(2, customer.getFirstName());
                 stmt.setString(3, customer.getLastName());
                 stmt.setString(4, customer.getAddress());
                 stmt.setString(5, customer.getEmail());
-                stmt.setString(6, customer.getBirthDay().toString());
+                stmt.setString(6, birthday);
                 stmt.setBoolean(7, customer.isGender());
                 stmt.setString(8, customer.getFavorite());
                 stmt.setInt(9, customer.getJPOS_CurrentPoint());
@@ -534,7 +541,7 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
 
             } catch (Exception e) {
                 System.out.println("Error!!!!!!" + e);
-                return false;
+                blPass = false;
             } finally {
                 try {
                     if (stmt != null) {
@@ -550,7 +557,88 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
                 } catch (SQLException e) {
                 }
 
-                return true;
+                
+            }
+            return blPass;
+        }
+        @Override
+        public boolean CheckCustomerEmailExist(String strEmail,Connection conn)
+        {
+            int result = 0;
+            try {
+                    if(conn != null) {
+                            CallableStatement cstmt = null;
+                            cstmt = (CallableStatement) conn
+                                            .prepareCall("{ ? = call dbo.fn_Check_Email_exist(?)}");
+                            cstmt.registerOutParameter(1,java.sql.Types.INTEGER );
+                            cstmt.setString(1, strEmail);
+                            cstmt.execute();
+
+                            result = cstmt.getInt(1);
+                    }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+                    result = 0;
+            }
+
+            return result != 0;
+        }
+        @Override
+        public ArrayList<DTO_JPOS_Customer> Search_Customer(String strKey, Connection conn)
+        {
+            ArrayList ArrayResult = null ;
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_Customer_Search(?)}");
+
+                stmt.setString(1, strKey);
+                
+                boolean HasRow = stmt.execute();
+                if (HasRow) {
+                    ArrayResult = new ArrayList();
+                    ResultSet rs = stmt.getResultSet();
+                    while (rs.next()) {
+                        DTO_JPOS_Customer jposCustomer = new DTO_JPOS_Customer();
+                        jposCustomer.setJPOS_CustomerID(rs.getInt("JPOS_CustomerID"));
+                        jposCustomer.setFirstName(rs.getString("JPOS_FirstName"));
+                        jposCustomer.setLastName(rs.getString("JPOS_LastName"));
+                        jposCustomer.setAddress(rs.getString("JPOS_Address"));
+                        jposCustomer.setEmail(rs.getString("JPOS_Email"));
+                        try {
+                            jposCustomer.setDateJoin(rs.getDate("JPOS_DateJoin"));
+                        } catch (Exception e) {
+                            jposCustomer.setDateJoin(null);
+                        }
+                        try {
+                            jposCustomer.setBirthDay(rs.getDate("JPOS_BirthDay"));
+                        } catch (Exception e) {
+                            jposCustomer.setBirthDay(null);
+                        }
+                        jposCustomer.setGender(rs.getBoolean("JPOS_Gender"));
+                        jposCustomer.setFavorite(rs.getString("JPOS_Favorite"));
+                        jposCustomer.setJPOS_CurrentPoint(rs.getInt("JPOS_CurrentPoint"));
+                        ArrayResult.add(jposCustomer);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                ArrayResult = null;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                return ArrayResult;
             }
         }
 }

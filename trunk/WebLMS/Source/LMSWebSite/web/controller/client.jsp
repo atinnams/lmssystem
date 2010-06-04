@@ -11,14 +11,26 @@
 <%
     String strCustomerID = request.getParameter("txtCustomerID");
     String strLastName = request.getParameter("txtLastName");
+    if (strLastName != null)
+        strLastName = new String(strLastName.getBytes("ISO-8859-1"),"UTF8");
+    
     String strFirstName = request.getParameter("txtFirstName");
+    if (strFirstName != null)
+        strFirstName = new String(strFirstName.getBytes("ISO-8859-1"),"UTF8");
+
     String strGender = request.getParameter("txtGender");
     String strCurrentPoint = request.getParameter("txtCurrentPoint");
     String strAddress = request.getParameter("txtAddress");
+    if (strAddress != null)
+        strAddress = new String(strAddress.getBytes("ISO-8859-1"),"UTF8");
+    
     String strEmail = request.getParameter("txtEmail");
     String strBirthDay = request.getParameter("txtBirthday");
     String strDateJoin = request.getParameter("txtDateJoin");
     String strFavorite = request.getParameter("txtFavorite");
+    if (strFavorite != null)
+        strFavorite = new String(strFavorite.getBytes("ISO-8859-1"),"UTF8");
+    
     String strDetail = request.getParameter("Detail");
     DTO_JPOS_Customer custInfor = null;
     ArrayList resultViews = null ;

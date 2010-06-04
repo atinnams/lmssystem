@@ -97,4 +97,8 @@ public interface IJPOS_Customer {
         public boolean AddCustomer(DTO_JPOS_Customer customer, Connection conn);
         public boolean DeleteCustomer(int CustomerID, Connection conn);
         public boolean UpdateCustomer(DTO_JPOS_Customer customer, Connection conn);
+        public boolean CheckCustomerEmailExist(String strEmail,Connection conn);
+        public ArrayList<DTO_JPOS_Customer> Search_Customer(String strKey, Connection conn);
+        
+
 }

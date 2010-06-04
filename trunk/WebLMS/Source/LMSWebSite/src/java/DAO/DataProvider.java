@@ -6,6 +6,7 @@ import java.sql.SQLException;
 
 import javax.servlet.ServletConfig;
 import UTIL.LMSConfig;
+import java.util.Properties;
 
 
 /**
@@ -38,6 +39,8 @@ public class DataProvider {
 			String host = dbConfig.getHost();
 			String port = dbConfig.getPort();
 			String dbName = dbConfig.getDBName();
+                        String Username = dbConfig.getUserName();
+                        String Password = dbConfig.getPassword();
 
 			/** Create a variable for the connection string. **/
 			String connectionUrl = "jdbc:sqlserver://" + host + ":" + port
@@ -45,9 +48,14 @@ public class DataProvider {
 
 			/** Register SQL server driver and establish the connection. **/
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			
+
+                        Properties pros=new Properties();
+                        pros.setProperty("characterEncoding", "utf8");
+                        pros.setProperty("user", Username);
+                        pros.setProperty("password", Password);
+
 			/** Get connection **/
-			con = DriverManager.getConnection(connectionUrl, "sa", "matkhau");
+			con = DriverManager.getConnection(connectionUrl,pros);
 			
 			dbConfig = null; //make a change to GC deallocate dbConfig reference
 			

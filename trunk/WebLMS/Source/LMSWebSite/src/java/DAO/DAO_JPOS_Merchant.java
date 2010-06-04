@@ -135,7 +135,7 @@ public class DAO_JPOS_Merchant implements IJPOS_Merchant {
         @Override
         public ArrayList<DTO.DTO_JPOS_Merchant> listMerchant(Connection conn)
         {
-             ArrayList ArrayResult = null ;
+            ArrayList ArrayResult = null ;
             CallableStatement stmt = null;
             try {
                 stmt = conn.prepareCall("{call dbo.sp_Merchant_List()}");
@@ -250,5 +250,52 @@ public class DAO_JPOS_Merchant implements IJPOS_Merchant {
             }
 
             return result;
+        }
+        public ArrayList<DTO.DTO_JPOS_Merchant> searchMerchant(String strKey,Connection conn)
+        {
+            ArrayList ArrayResult = null ;
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_Merchant_Search(?)}");
+                stmt.setString(1, strKey);
+
+                boolean HasRow = stmt.execute();
+                if (HasRow) {
+                    ArrayResult = new ArrayList();
+                    ResultSet rs = stmt.getResultSet();
+                    while (rs.next()) {
+                        DTO.DTO_JPOS_Merchant merchant = new DTO_JPOS_Merchant();
+
+                        merchant.setJPOS_MerchantName(rs.getString("JPOS_MerchantName"));
+                        merchant.setjPOS_MID(rs.getString("JPOS_MID"));
+                        merchant.setAddress(rs.getString("JPOS_Address"));
+                        merchant.setIssuerCode(rs.getInt("JPOS_IssuerID"));
+                        merchant.setIssuerName(rs.getString("JPOS_IssuerName"));
+                        merchant.setStatus(rs.getString("JPOS_StatusName"));
+                        merchant.setStatusCode(rs.getInt("JPOS_StatusID"));
+
+                        ArrayResult.add(merchant);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                ArrayResult = null;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                return ArrayResult;
+            }
         }
 }

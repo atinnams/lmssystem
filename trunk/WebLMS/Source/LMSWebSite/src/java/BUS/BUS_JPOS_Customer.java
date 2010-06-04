@@ -167,4 +167,16 @@ public class BUS_JPOS_Customer {
             IJPOS_Customer myCustomer = factory.getJPOS_Customer();
             return myCustomer.UpdateCustomer(customer, conn);
         }
+        public static boolean CheckCustomerEmailExist(String strEmail,Connection conn)
+        {
+            LMSDAOFactory factory = LMSDAOFactory.getInstances();
+            IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+            return myCustomer.CheckCustomerEmailExist(strEmail, conn);
+        }
+        public static ArrayList<DTO_JPOS_Customer> Search_Customer(String strKey, Connection conn)
+        {
+            LMSDAOFactory factory = LMSDAOFactory.getInstances();
+            IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+            return myCustomer.Search_Customer(strKey, conn);
+        }
 }

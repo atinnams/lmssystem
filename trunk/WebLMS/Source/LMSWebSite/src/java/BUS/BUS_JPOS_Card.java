@@ -95,5 +95,10 @@ public class BUS_JPOS_Card {
 		IJPOS_Card myCard = factory.getJPOS_Card();
 		return myCard.StopAssignCard(strCardID, conn);
         }
+        public static ArrayList<DTO_JPOS_Card> searchCard(String strKey,Connection con){
+                LMSDAOFactory factory = LMSDAOFactory.getInstances();
+		IJPOS_Card myCard = factory.getJPOS_Card();
+		return myCard.searchCard(strKey, con);
+        }
 
 }

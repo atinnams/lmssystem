@@ -37,6 +37,7 @@
     DTO.DTO_JPOS_Terminal TerInfor = null;
     String strStyle = "";
     String strTerminalID = request.getParameter("TID");
+    String strMerchantID = request.getParameter("MID");
 
     String strTID = request.getParameter("txtTID");
     String strRetry = request.getParameter("txtRetry");
@@ -213,9 +214,54 @@
                 %><%@include file="../views/TerminalList.jsp" %><%
             }
             break;
-        case 8:             //assign terminal
+        case 8:             //assign terminal view
+            {
+                resultViews = null;
+                strWebTitle = "Cấp thiết bị";
+                resultViews = BUS.BUS_JPOS_Merchant.listMerchant(DAO.DataProvider.getConnection(this.getServletConfig()));
+                %><%@include file="../views/TerminalDistribute.jsp" %><%
+            }
             break;
         case 9:         //stop assign terminal
+            {
+                boolean blResult = BUS.BUS_JPOS_Terminal.stopAssignTerminal(strTerminalID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                if (blResult == false)
+                {
+                   strErrorUpdate = "Hủy bỏ trực thuộc đại lý không thành công";
+                   TerInfor = BUS.BUS_JPOS_Terminal.getTerminal(strTID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                    strWebTitle = "Thay đổi thông tin thiết bị";
+                    %><%@include file="../views/TerminalModify.jsp" %><%
+                }
+                else
+                {
+                    %><%@include file="../views/WaitingProcess.jsp" %><%
+                }
+            }
+            break;
+        case 10 :   //asssign terminal
+            {
+                boolean blResult = BUS.BUS_JPOS_Terminal.assignTerminal(strTerminalID,strMerchantID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                if (blResult == false)
+                {
+                   strErrorUpdate = "Cấp thiết bị cho đại lý không thành công";
+                   TerInfor = BUS.BUS_JPOS_Terminal.getTerminal(strTID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                   strWebTitle = "Thay đổi thông tin thiết bị";
+                   %><%@include file="../views/TerminalModify.jsp" %><%
+                }
+                else
+                {
+                    %><%@include file="../views/WaitingProcess.jsp" %><%
+                }
+            }
+            break;
+        case 11:    // search for assign
+            {
+                String strKey = request.getParameter("Search");
+                resultViews = null;
+                strWebTitle = "Cấp thiết bị";
+                resultViews = BUS.BUS_JPOS_Merchant.searchMerchant(strKey,DAO.DataProvider.getConnection(this.getServletConfig()));
+                %><%@include file="../views/TerminalDistribute.jsp" %><%
+            }
             break;
         default:        //show list of terminal
             {

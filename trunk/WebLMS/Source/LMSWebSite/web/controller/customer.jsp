@@ -7,13 +7,16 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
-<%@page import="DTO.*,BUS.*,java.util.ArrayList" %>
+<%@page import="DTO.*,BUS.*,java.util.ArrayList,java.text.*" %>
 <%
    if (session.getAttribute("Admin") == null) {
     response.sendRedirect("index.jsp");
    }
 %>
 <%
+    request.setCharacterEncoding("UTF-8");
+    response.setContentType("text/html;charset=UTF-8");
+    
     ArrayList resultViews = null;
     String strWebTitle= "";
     //Error message
@@ -39,20 +42,35 @@
 
     String strCustomerID = request.getParameter("txtMaKhachHang");
     String strLastName = request.getParameter("txtHo");
+    if (strLastName != null)
+        strLastName = new String(strLastName.getBytes("ISO-8859-1"),"UTF8");
+
     String strFirstName = request.getParameter("txtTen");
+    if (strFirstName != null)
+        strFirstName = new String(strFirstName.getBytes("ISO-8859-1"),"UTF8");
+
     String strGender = request.getParameter("txtGioiTinh");
     String strCurrentPoint = request.getParameter("txtSoDiem");
+    
     String strAddress = request.getParameter("txtDiaChi");
+    if (strAddress != null)
+        strAddress = new String(strAddress.getBytes("ISO-8859-1"),"UTF8");
+
     String strEmail = request.getParameter("txtEmail");
     String strBirthDay = request.getParameter("txtNgaySinh");
     String strDateJoin = request.getParameter("txtDateJoin");
     String strFavorite = request.getParameter("txtSoThich");
-    String strStatus = request.getParameter("txtTrangThai");
+    
+    if (strFavorite != null)
+        strFavorite = new String(strFavorite.getBytes("ISO-8859-1"),"UTF8");
 
+    String strStatus = request.getParameter("txtTrangThai");
+    
     int iCustomerID = 0;
     int iPoint = 0;
     boolean blGender = false;
     int iStatusCode = 0;
+    
 %>
 <%
     String strCustTask = request.getParameter("CustTask");
@@ -88,13 +106,12 @@
                 }
                 try
                 {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    Date d = sdf.parse(strBirthDay);
-                    dtBirthday = new java.sql.Date(d.getYear(),d.getMonth(),d.getDay());
+                    DateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                    dtBirthday = (java.util.Date)sdf.parse(strBirthDay);
                 }
                 catch (Exception ex)
                 {
-                    strErrorBirthDay = "Ngày sinh không đúng định dạng dd/MM/YYYY";
+                    strErrorBirthDay = "Ngày sinh không đúng định dạng dd-MM-YYYY";
                     blError = true;
                 }
                 if (strAddress == "" || strAddress == null)
@@ -107,18 +124,15 @@
                     blError = true;
                     strErrorEmail = "Vui lòng nhập Email";
                 }
-                try
-                {
-                    iCustomerID = Integer.parseInt(strCustomerID);
-                }
-                catch(Exception ex)
+                if (BUS.BUS_JPOS_Customer.CheckCustomerEmailExist(strEmail, DAO.DataProvider.getConnection(this.getServletConfig())))
                 {
                     blError = true;
+                    strErrorEmail = "Email đã tồn tại, vui lòng nhập email khác";
                 }
                 try
                 {
                     iPoint = Integer.parseInt(strCurrentPoint);
-                }
+                }                
                 catch(Exception ex)
                 {
                     blError = true;
@@ -180,7 +194,7 @@
                     }
                     else
                     {
-                        strWebTitle = "Quản lý khách hàng";
+                        strWebTitle = "Danh sách khách hàng";
                         strErrorDelete = "Xóa khách hàng không thành công, vui lòng kiểm tra lại";
                         resultViews = BUS.BUS_JPOS_Customer.GetCustomerList(DAO.DataProvider.getConnection(this.getServletConfig()));
                         %><%@include file="../views/CustomerList.jsp" %><%
@@ -188,7 +202,7 @@
                 }
             catch(Exception ex)
                {
-                    strWebTitle = "Quản lý khách hàng";
+                    strWebTitle = "Danh sách khách hàng";
                     strErrorDelete = "Mã khách hàng không hợp lệ";
                     resultViews = BUS.BUS_JPOS_Customer.GetCustomerList(DAO.DataProvider.getConnection(this.getServletConfig()));
                     %><%@include file="../views/CustomerList.jsp" %><%
@@ -224,13 +238,12 @@
                 }
                 try
                 {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                    Date d = sdf.parse(strBirthDay);
-                    dtBirthday = new java.sql.Date(d.getYear(),d.getMonth(),d.getDay());
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                    dtBirthday = sdf.parse(strBirthDay);
                 }
                 catch (Exception ex)
                 {
-                    strErrorBirthDay = "Ngày sinh không đúng định dạng dd/MM/YYYY";
+                    strErrorBirthDay = "Ngày sinh không đúng định dạng dd-MM-YYYY";
                     blError = true;
                 }
                 if (strAddress == "" || strAddress == null)
@@ -325,9 +338,17 @@
                 }
             }
             break;
+        case 7 :
+            {
+                String strKey = request.getParameter("Search");
+                strWebTitle = "Danh sách khách hàng";
+                resultViews = BUS.BUS_JPOS_Customer.Search_Customer(strKey,DAO.DataProvider.getConnection(this.getServletConfig()));
+                %><%@include file="../views/CustomerList.jsp" %><%
+            }
+            break;
         default :               //show list
             {
-                strWebTitle = "Quản lý khách hàng";
+                strWebTitle = "Danh sách khách hàng";
                 resultViews = BUS.BUS_JPOS_Customer.GetCustomerList(DAO.DataProvider.getConnection(this.getServletConfig()));
                 %><%@include file="../views/CustomerList.jsp" %><%
             }

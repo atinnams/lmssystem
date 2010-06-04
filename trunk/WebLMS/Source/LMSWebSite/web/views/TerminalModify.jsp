@@ -195,11 +195,11 @@
                                                 if (TerInfor.getMID() != null)
                                                 {
                                                     %>
-                                                    <td><a href="index.jsp?TaskID=8&MerTask=6&MID=<%=TerInfor.getMID()%>" title="Xem chi tiết đại lý"><%=TerInfor.getMID() %></a></td>
+                                                    <td><a href="index.jsp?TaskID=8&TerTask=6&MID=<%=TerInfor.getMID()%>" title="Xem chi tiết đại lý"><%=TerInfor.getMID() %></a></td>
                                                     <td>
-                                                        <a href="index.jsp?TaskID=7&MerTask=8&MID=<%=TerInfor.getMID()%>" title="Chọn đại lý trực thuộc khác">(Chọn đại lý khác)</a>
+                                                        <a href="index.jsp?TaskID=7&TerTask=8&TID=<%=TerInfor.getTID()%>" title="Chọn đại lý trực thuộc khác">(Chọn đại lý khác)</a>
                                                         &nbsp;&nbsp;
-                                                        <a href="index.jsp?TaskID=7&MerTask=9&MID=<%=TerInfor.getMID()%>">(Hủy bỏ)</a>
+                                                        <a href="index.jsp?TaskID=7&TerTask=9&TID=<%=TerInfor.getTID()%>">(Hủy chọn đại lý)</a>
                                                     </td>
                                                     <%
 
@@ -207,7 +207,7 @@
                                                 else
                                                 {
                                                     %>
-                                                    <td><a href="index.jsp?TaskID=7&MerTask=8&MID=<%=TerInfor.getMID()%>" title="Chọn đại lý trực thuộc">Chưa trực thuộc</a></td>
+                                                    <td><a href="index.jsp?TaskID=7&TerTask=8&TID=<%=TerInfor.getTID()%>" title="Chọn đại lý trực thuộc">Chưa trực thuộc</a></td>
                                                     <td></td>
                                                     <%
                                                 }
@@ -218,8 +218,8 @@
                                         
                                         <tr>
                                             <td></td>
-                                            <td><input type="submit" value="Cập nhật"></td>
-                                            <td><a href="index.jsp?TaskID=7"><input type="button" value="Hủy bỏ"></a></td>
+                                            <td align="right"><input type="submit" value="Cập nhật" style="width:80px"></td>
+                                            <td><a href="index.jsp?TaskID=7"><input type="button" value="Hủy bỏ" style="width:80px"></a></td>
                                         </tr>
                                     </table>
 
