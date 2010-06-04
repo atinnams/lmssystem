@@ -21,52 +21,52 @@ public class DAO_JPOS_Terminal implements IJPOS_Terminal {
     @Override
     public ArrayList<DTO_JPOS_Terminal> getListTerminal(Connection conn)
     {
-         ArrayList ArrayResult = null ;
-            CallableStatement stmt = null;
-            try {
-                stmt = conn.prepareCall("{call dbo.sp_Terminal_Report()}");
+        ArrayList ArrayResult = null ;
+        CallableStatement stmt = null;
+        try {
+            stmt = conn.prepareCall("{call dbo.sp_Terminal_Report()}");
 
 
-                boolean HasRow = stmt.execute();
-                if (HasRow) {
-                    ArrayResult = new ArrayList();
-                    ResultSet rs = stmt.getResultSet();
-                    while (rs.next()) {
-                        DTO_JPOS_Terminal terminal = new DTO_JPOS_Terminal();
+            boolean HasRow = stmt.execute();
+            if (HasRow) {
+                ArrayResult = new ArrayList();
+                ResultSet rs = stmt.getResultSet();
+                while (rs.next()) {
+                    DTO_JPOS_Terminal terminal = new DTO_JPOS_Terminal();
 
-                        terminal.setActiveCode(rs.getString("JPOS_ActivateCode"));
-                        terminal.setMID(rs.getString("JPOS_MID"));
-                        terminal.setMerchantAddress(rs.getString("JPOS_Address"));
-                        terminal.setMerchantName(rs.getString("JPOS_MerchantName"));
-                        terminal.setPIN(rs.getString("JPOS_PIN"));
-                        terminal.setRetry(rs.getInt("JPOS_RetryLimit"));
-                        terminal.setStatus(rs.getInt("JPOS_Status"));
-                        terminal.setStatusName(rs.getString("JPOS_StatusName"));
-                        terminal.setTID(rs.getString("JPOS_TID"));
+                    terminal.setActiveCode(rs.getString("JPOS_ActivateCode"));
+                    terminal.setMID(rs.getString("JPOS_MID"));
+                    terminal.setMerchantAddress(rs.getString("JPOS_Address"));
+                    terminal.setMerchantName(rs.getString("JPOS_MerchantName"));
+                    terminal.setPIN(rs.getString("JPOS_PIN"));
+                    terminal.setRetry(rs.getInt("JPOS_RetryLimit"));
+                    terminal.setStatus(rs.getInt("JPOS_Status"));
+                    terminal.setStatusName(rs.getString("JPOS_StatusName"));
+                    terminal.setTID(rs.getString("JPOS_TID"));
 
-                        ArrayResult.add(terminal);
-                    }
+                    ArrayResult.add(terminal);
                 }
-            } catch (Exception e) {
-                System.out.println("Error!!!!!!" + e);
-                ArrayResult = null;
-            } finally {
-                try {
-                    if (stmt != null) {
-                        stmt.close();
-                    }
-                } catch (SQLException e) {
-                }
-
-                try {
-                    if (conn != null) {
-                        conn.close();
-                    }
-                } catch (SQLException e) {
-                }
-
-                return ArrayResult;
             }
+        } catch (Exception e) {
+            System.out.println("Error!!!!!!" + e);
+            ArrayResult = null;
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+            }
+
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+            }
+
+            return ArrayResult;
+        }
     }
     @Override
     public DTO_JPOS_Terminal getTerminal(String strMID,Connection conn)
@@ -246,5 +246,79 @@ public class DAO_JPOS_Terminal implements IJPOS_Terminal {
 
         }
         return true;
+    }
+    @Override
+    public boolean checkTerminalExist(String strTID,Connection con)
+    {
+        boolean result = false;
+        try {
+            if(con != null) {
+                    CallableStatement cstmt = null;
+                    cstmt = (CallableStatement) con
+                                    .prepareCall("{ ? = call dbo.fn_Check_Terminal_exist(?)}");
+
+                    cstmt.registerOutParameter(1,java.sql.Types.INTEGER );
+                    cstmt.setString(2, strTID);
+                    cstmt.execute();
+                    int iOut = cstmt.getInt(1);
+                    if (iOut != 0)
+                        result = true;
+            }
+        } catch (SQLException e) {
+                e.printStackTrace();
+                result = false;
+        }
+
+        return result;
+    }
+    @Override
+    public ArrayList<DTO_JPOS_Terminal> searchTerminal(String strKey,Connection conn)
+    {
+        ArrayList ArrayResult = null ;
+        CallableStatement stmt = null;
+        try {
+            stmt = conn.prepareCall("{call dbo.sp_Terminal_Search(?)}");
+            stmt.setString(1, strKey);
+
+            boolean HasRow = stmt.execute();
+            if (HasRow) {
+                ArrayResult = new ArrayList();
+                ResultSet rs = stmt.getResultSet();
+                while (rs.next()) {
+                    DTO_JPOS_Terminal terminal = new DTO_JPOS_Terminal();
+
+                    terminal.setActiveCode(rs.getString("JPOS_ActivateCode"));
+                    terminal.setMID(rs.getString("JPOS_MID"));
+                    terminal.setMerchantAddress(rs.getString("JPOS_Address"));
+                    terminal.setMerchantName(rs.getString("JPOS_MerchantName"));
+                    terminal.setPIN(rs.getString("JPOS_PIN"));
+                    terminal.setRetry(rs.getInt("JPOS_RetryLimit"));
+                    terminal.setStatus(rs.getInt("JPOS_Status"));
+                    terminal.setStatusName(rs.getString("JPOS_StatusName"));
+                    terminal.setTID(rs.getString("JPOS_TID"));
+
+                    ArrayResult.add(terminal);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("Error!!!!!!" + e);
+            ArrayResult = null;
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+            }
+
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+            }
+
+            return ArrayResult;
+        }
     }
 }

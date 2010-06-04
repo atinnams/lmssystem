@@ -20,36 +20,48 @@ public class BUS_JPOS_Terminal {
         IJPOS_Terminal terminal = factory.getJPOS_Terminal();
         return terminal.getListTerminal(conn);
     }
-    public DTO_JPOS_Terminal getTerminal(String strMID,Connection conn)
+    public static DTO_JPOS_Terminal getTerminal(String strMID,Connection conn)
     {
         LMSDAOFactory factory = LMSDAOFactory.getInstances();
         IJPOS_Terminal terminal = factory.getJPOS_Terminal();
         return terminal.getTerminal(strMID, conn);
     }
-    public boolean addTerminal(DTO_JPOS_Terminal NewTerminal,Connection conn)
+    public static boolean addTerminal(DTO_JPOS_Terminal NewTerminal,Connection conn)
     {
         LMSDAOFactory factory = LMSDAOFactory.getInstances();
         IJPOS_Terminal terminal = factory.getJPOS_Terminal();
         return terminal.addTerminal(NewTerminal, conn);
     }
-    public boolean updateTerminal(DTO_JPOS_Terminal NewTerminal,Connection conn)
+    public static boolean updateTerminal(DTO_JPOS_Terminal NewTerminal,Connection conn)
     {
         LMSDAOFactory factory = LMSDAOFactory.getInstances();
         IJPOS_Terminal terminal = factory.getJPOS_Terminal();
         return terminal.updateTerminal(NewTerminal, conn);
 
     }
-    public boolean deleteTerminal(String strTID,Connection conn)
+    public static boolean deleteTerminal(String strTID,Connection conn)
     {
         LMSDAOFactory factory = LMSDAOFactory.getInstances();
         IJPOS_Terminal terminal = factory.getJPOS_Terminal();
         return terminal.deleteTerminal(strTID, conn);
     }
-    public boolean assignTerminal(String strTID,String strMID,Connection conn)
+    public static boolean assignTerminal(String strTID,String strMID,Connection conn)
     {
         LMSDAOFactory factory = LMSDAOFactory.getInstances();
         IJPOS_Terminal terminal = factory.getJPOS_Terminal();
         return terminal.assignTerminal(strTID, strMID, conn);
+    }
+    public static boolean checkTerminalExist(String strTID,Connection conn)
+    {
+        LMSDAOFactory factory = LMSDAOFactory.getInstances();
+        IJPOS_Terminal terminal = factory.getJPOS_Terminal();
+        return terminal.checkTerminalExist(strTID, conn);
+    }
+    public static ArrayList<DTO_JPOS_Terminal> searchTerminal(String strKey,Connection conn)
+    {
+        LMSDAOFactory factory = LMSDAOFactory.getInstances();
+        IJPOS_Terminal terminal = factory.getJPOS_Terminal();
+        return terminal.searchTerminal(strKey, conn);
     }
     
 }
