@@ -74,8 +74,8 @@ public class DAO_JPOS_Terminal implements IJPOS_Terminal {
         CallableStatement stmt = null;
         DTO_JPOS_Terminal terminal = null;
         try {
-            stmt = conn.prepareCall("{call dbo.sp_Terminal_Report()}");
-
+            stmt = conn.prepareCall("{call dbo.sp_Get_Terminal(?)}");
+            stmt.setString(1, strMID);
 
             boolean HasRow = stmt.execute();
             if (HasRow) {                
@@ -123,7 +123,7 @@ public class DAO_JPOS_Terminal implements IJPOS_Terminal {
         CallableStatement stmt = null;
         try {
             stmt = conn.prepareCall("{call dbo.sp_New_Terminal(?,?,?,?,?)}");
-            stmt.setString(1, terminal.getMID());
+            stmt.setString(1, terminal.getTID());
             stmt.setInt(2, terminal.getStatus());
             stmt.setString(3, terminal.getPIN());
             stmt.setInt(4, terminal.getRetry());

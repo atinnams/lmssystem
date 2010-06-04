@@ -408,7 +408,7 @@ create procedure sp_New_Terminal(@TID varchar(8),@Status int,@PIN varchar(16),@R
 as
 begin
 	insert into JPOS_Terminal(JPOS_TID, JPOS_Status, JPOS_PIN, JPOS_RetryLimit, JPOS_ActivateCode)
-	values (@TID,@Status,@PIN,@Retry,@ActiveCode)
+	values (@TID,'16',@PIN,@Retry,@ActiveCode)
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------
@@ -451,7 +451,7 @@ go
 create procedure sp_Get_Terminal(@TID varchar(8))
 as
 begin
-	select * from JPOS_Terminal T left join JPOS_Merchant M on T.JPOS_MID = M.JPOS_MID where JPOS_TID = @TID
+	select * from JPOS_Terminal T left join JPOS_Merchant M on T.JPOS_MID = M.JPOS_MID left join JPOS_Status on T.JPOS_Status = JPOS_StatusID where JPOS_TID = @TID 
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------

@@ -77,6 +77,6 @@ end
 go
 /*
 declare @result int;
-set @result = dbo.fn_Convert_String_Int('00000001');
+set @result = dbo.fn_Convert_String_Int('asdasdas1');
 select @result;
 */
