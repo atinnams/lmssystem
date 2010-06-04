@@ -376,3 +376,80 @@ begin
 	where S.JPOS_StatusName not like '%Delete%' and M.JPOS_MID = @MID
 end
 go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Terminal_List') is not null
+	drop proc sp_Terminal_List
+go
+
+create procedure sp_Terminal_List
+as
+begin
+	select * from JPOS_Terminal T left join JPOS_Merchant M on T.JPOS_MID = M.JPOS_MID
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_New_Terminal') is not null
+	drop proc sp_New_Terminal
+go
+
+create procedure sp_New_Terminal(@TID varchar(8),@Status int,@PIN varchar(16),@Retry int,@ActiveCode varchar(16))
+as
+begin
+	insert into JPOS_Terminal(JPOS_TID, JPOS_Status, JPOS_PIN, JPOS_RetryLimit, JPOS_ActivateCode)
+	values (@TID,@Status,@PIN,@Retry,@ActiveCode)
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Update_Terminal') is not null
+	drop proc sp_Update_Terminal
+go
+
+create procedure sp_Update_Terminal(@TID varchar(8),@Status int,@PIN varchar(16),@Retry int,@ActiveCode varchar(16))
+as
+begin
+	Update JPOS_Terminal
+	set JPOS_TID = @TID,
+	JPOS_Status = @Status,
+	JPOS_PIN = @PIN,
+	JPOS_RetryLimit = @Retry,
+	JPOS_ActivateCode = @ActiveCode
+	where JPOS_TID = @TID
+end
+go
+
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Delete_Terminal') is not null
+	drop proc sp_Delete_Terminal
+go
+
+create procedure sp_Delete_Terminal(@TID varchar(8))
+as
+begin
+	delete from JPOS_Terminal where JPOS_TID = @TID
+end
+go
+
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Get_Terminal') is not null
+	drop proc sp_Get_Terminal
+go
+
+create procedure sp_Get_Terminal(@TID varchar(8))
+as
+begin
+	select * from JPOS_Terminal T left join JPOS_Merchant M on T.JPOS_MID = M.JPOS_MID where JPOS_TID = @TID
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Assign_Terminal') is not null
+	drop proc sp_Assign_Terminal
+go
+
+create procedure sp_Assign_Terminal(@TID varchar(8),@MID varchar(15))
+as
+begin
+	update JPOS_Terminal 
+	set JPOS_MID = @MID
+	where JPOS_TID = @TID
+end
+go

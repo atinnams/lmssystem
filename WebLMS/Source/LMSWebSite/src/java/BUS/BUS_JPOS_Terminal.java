@@ -20,5 +20,36 @@ public class BUS_JPOS_Terminal {
         IJPOS_Terminal terminal = factory.getJPOS_Terminal();
         return terminal.getListTerminal(conn);
     }
+    public DTO_JPOS_Terminal getTerminal(String strMID,Connection conn)
+    {
+        LMSDAOFactory factory = LMSDAOFactory.getInstances();
+        IJPOS_Terminal terminal = factory.getJPOS_Terminal();
+        return terminal.getTerminal(strMID, conn);
+    }
+    public boolean addTerminal(DTO_JPOS_Terminal NewTerminal,Connection conn)
+    {
+        LMSDAOFactory factory = LMSDAOFactory.getInstances();
+        IJPOS_Terminal terminal = factory.getJPOS_Terminal();
+        return terminal.addTerminal(NewTerminal, conn);
+    }
+    public boolean updateTerminal(DTO_JPOS_Terminal NewTerminal,Connection conn)
+    {
+        LMSDAOFactory factory = LMSDAOFactory.getInstances();
+        IJPOS_Terminal terminal = factory.getJPOS_Terminal();
+        return terminal.updateTerminal(NewTerminal, conn);
+
+    }
+    public boolean deleteTerminal(String strTID,Connection conn)
+    {
+        LMSDAOFactory factory = LMSDAOFactory.getInstances();
+        IJPOS_Terminal terminal = factory.getJPOS_Terminal();
+        return terminal.deleteTerminal(strTID, conn);
+    }
+    public boolean assignTerminal(String strTID,String strMID,Connection conn)
+    {
+        LMSDAOFactory factory = LMSDAOFactory.getInstances();
+        IJPOS_Terminal terminal = factory.getJPOS_Terminal();
+        return terminal.assignTerminal(strTID, strMID, conn);
+    }
     
 }
