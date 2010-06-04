@@ -197,7 +197,17 @@
                                                     <td><%=terminal.getRetry() %></td>
                                                     <td><%=terminal.getActiveCode() %></td>
                                                     <td><%=terminal.getStatusName() %></td>
-                                                    <td><a href="index.jsp?TaskID=8&MerTask=6&MID=<%=terminal.getMID()%>" title="Xem chi tiết đại lý"><%=terminal.getMID() %></a></td>
+                                                    <%
+                                                        if (terminal.getMID() != null)
+                                                        {
+                                                            %><td><a href="index.jsp?TaskID=8&MerTask=6&MID=<%=terminal.getMID()%>" title="Xem chi tiết đại lý"><%=terminal.getMID() %></a></td><%
+                                                        }
+                                                        else
+                                                        {
+                                                            %><td><a href="index.jsp?TaskID=7&MerTask=8&MID=<%=terminal.getMID()%>" title="Chọn đại lý trực thuộc">Chưa trực thuộc</a></td><%
+                                                        }
+                                                    %>
+                                                    
                                                     <td>
                                                         <a href="index.jsp?TaskID=7&TerTask=6&TID=<%=terminal.getTID() %>" title="Chi tiết thiết bị"><img src="images/detail.jpg"></a>
                                                         <a href="index.jsp?TaskID=7&TerTask=3&TID=<%=terminal.getTID() %>" title="Thay đổi thông tin"><img src="images/modify.jpg"></a>

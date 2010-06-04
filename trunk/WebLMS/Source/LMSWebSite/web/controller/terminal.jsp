@@ -28,6 +28,9 @@
     String strErrorDelete = "";
     String strErrorUpdate = "";
     String strErrorAdd    = "";
+    String strErrorPIN      = "";
+    String strErrorActiveCode = "";
+
     boolean blError = false;
 
 
@@ -77,16 +80,7 @@
                 {
                     strErrorRetry = "Số lần kích hoạt không hợp lệ";
                     blError = true;
-                }
-                try
-                {
-                    iStatusCode = Integer.parseInt(strStatus);
-                }
-                catch (Exception ex)
-                {
-                    strErrorStatus = "Mã trạng thái không phù hợp";
-                    blError = true;
-                }
+                }                
                 if (blError == true)
                 {
                     strWebTitle = "Thêm thiết bị";
@@ -99,6 +93,7 @@
                     terminal.setStatus(iStatusCode);
                     terminal.setPIN(strPin);
                     terminal.setActiveCode(strActiveCode);
+                    terminal.setRetry(iRetry);
 
                     if (BUS.BUS_JPOS_Terminal.checkTerminalExist(strTID, DAO.DataProvider.getConnection(this.getServletConfig())))
                     {
@@ -126,6 +121,7 @@
         case 3:         //show form edit
             {
                 TerInfor = BUS.BUS_JPOS_Terminal.getTerminal(strTerminalID, DAO.DataProvider.getConnection(this.getServletConfig()));
+
                 strWebTitle = "Thay đổi thông tin thiết bị";
                 %><%@include file="../views/TerminalModify.jsp" %><%
             }
