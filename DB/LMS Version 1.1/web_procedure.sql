@@ -161,6 +161,7 @@ create procedure sp_Terminal_Report
 as
 begin
 	select JPOS_TID,JPOS_PIN,JPOS_Terminal.JPOS_Status,JPOS_StatusName,JPOS_ActivateCode,JPOS_RetryLimit,JPOS_Terminal.JPOS_MID,JPOS_MerchantName,JPOS_Address from JPOS_Terminal left join JPOS_Merchant on JPOS_Terminal.JPOS_MID = JPOS_Merchant.JPOS_MID left join JPOS_Status on JPOS_Terminal.JPOS_Status = JPOS_Status.JPOS_StatusID
+	where JPOS_StatusName not like '%Delete%'
 end
 go 
 -------------------------------------------------------------------------------------------------------------------------------
@@ -377,14 +378,25 @@ begin
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------
-if object_id('sp_Terminal_List') is not null
-	drop proc sp_Terminal_List
+if object_id('sp_Terminal_Search') is not null
+	drop proc sp_Terminal_Search
 go
 
-create procedure sp_Terminal_List
+create procedure sp_Terminal_Search(@key varchar(200))
 as
 begin
-	select * from JPOS_Terminal T left join JPOS_Merchant M on T.JPOS_MID = M.JPOS_MID
+	declare @result int;
+	set @result = dbo.fn_Convert_String_Int('asdasdas1');
+	
+	select * from JPOS_Terminal T left join JPOS_Merchant M on T.JPOS_MID = M.JPOS_MID left join JPOS_Status on T.JPOS_Status = JPOS_StatusID
+	where 
+	(JPOS_TID like '%'+ @key +'%' or
+	JPOS_StatusName like '%'+ @key +'%' or
+	JPOS_PIN like '%'+ @key +'%' or
+	JPOS_ActivateCode like '%'+ @key +'%' or
+	T.JPOS_MID like '%'+ @key +'%'
+	or JPOS_RetryLimit = @result)
+	and JPOS_StatusName not like '%Delete%'
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------
@@ -425,7 +437,9 @@ go
 create procedure sp_Delete_Terminal(@TID varchar(8))
 as
 begin
-	delete from JPOS_Terminal where JPOS_TID = @TID
+	update JPOS_Terminal
+	set JPOS_Status = 11
+	where JPOS_TID = @TID
 end
 go
 
