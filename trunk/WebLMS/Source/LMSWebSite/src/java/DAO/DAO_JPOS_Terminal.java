@@ -157,7 +157,7 @@ public class DAO_JPOS_Terminal implements IJPOS_Terminal {
         CallableStatement stmt = null;
         try {
             stmt = conn.prepareCall("{call dbo.sp_Update_Terminal(?,?,?,?,?)}");
-            stmt.setString(1, terminal.getMID());
+            stmt.setString(1, terminal.getTID());
             stmt.setInt(2, terminal.getStatus());
             stmt.setString(3, terminal.getPIN());
             stmt.setInt(4, terminal.getRetry());

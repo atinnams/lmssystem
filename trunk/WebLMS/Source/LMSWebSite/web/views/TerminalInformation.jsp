@@ -159,7 +159,20 @@
                                         </tr>
                                         <tr>
                                             <th align="left" width="130px"> Trạng thái : </th>
-                                            <td><%=TerInfor.getStatusName() %></td>
+                                            <td align="left" width="130px"><%=TerInfor.getStatusName() %></td>
+                                        </tr>
+                                        <tr>
+                                            <th> Mã đại lý trực thuộc </th>
+                                             <%
+                                                    if (TerInfor.getMID() != null)
+                                                    {
+                                                        %><td><a href="index.jsp?TaskID=8&MerTask=6&MID=<%=TerInfor.getMID()%>" title="Xem chi tiết đại lý"><%=TerInfor.getMID() %></a></td><%
+                                                    }
+                                                    else
+                                                    {
+                                                        %><td><a href="index.jsp?TaskID=7&MerTask=8&MID=<%=TerInfor.getMID()%>" title="Chọn đại lý trực thuộc">Chưa trực thuộc</a></td><%
+                                                    }
+                                            %>
                                         </tr>
                                         <tr>
                                             <td colspan="2">&nbsp;</td>
