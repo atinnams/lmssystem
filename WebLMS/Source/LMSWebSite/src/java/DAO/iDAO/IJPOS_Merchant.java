@@ -24,4 +24,5 @@ public interface IJPOS_Merchant {
         public ArrayList<DTO.DTO_JPOS_Merchant> listMerchant(Connection con);
         public DTO.DTO_JPOS_Merchant getMerchant(String MID,Connection con);
         public boolean checkMerchantExist(String mid,Connection con);
+        public ArrayList<DTO.DTO_JPOS_Merchant> searchMerchant(String strKey,Connection con);
 }

@@ -50,6 +50,7 @@ Procedure List:
 */
 
 use LMSDB;
+go
 
 if object_id('sp_Login') is not null
 	drop proc sp_Login
@@ -139,7 +140,7 @@ go
 create procedure sp_Customer_Report
 as
 begin
-	select * from JPOS_Customer		
+	select * from JPOS_Customer	C left join JPOS_Status on C.JPOS_Status = JPOS_StatusID where JPOS_StatusName not like '%Delete%'
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------
@@ -273,10 +274,12 @@ if object_id('sp_New_Customer') is not null
 	drop proc sp_New_Customer
 go
 
-create procedure sp_New_Customer (@CustomerID int,@FirstName varchar(50),@LastName varchar(50),@Address varchar(200),@Email varchar(200),@BirthDay Datetime,@Gender bit,@Favorite varchar(100),@Point int)
+create procedure sp_New_Customer (@CustomerID int,@FirstName nvarchar(50),@LastName nvarchar(50),@Address nvarchar(200),@Email varchar(200),@BirthDay Datetime,@Gender bit,@Favorite nvarchar(100),@Point int)
 as
 begin
-	insert into JPOS_Customer values (@CustomerID,@FirstName,@LastName,@Address,@Email,getdate(),@BirthDay,@Gender,@Favorite,@Point,7)
+	declare @result int;
+	set @result = dbo.fn_Generate_CustomerID();	
+	insert into JPOS_Customer values (@result,@FirstName,@LastName,@Address,@Email,getdate(),@BirthDay,@Gender,@Favorite,@Point,7);
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------
@@ -293,10 +296,10 @@ go
 
 -------------------------------------------------------------------------------------------------------------------------------
 if object_id('sp_Update_Customer') is not null
-	drop proc sp_New_Customer
+	drop proc sp_Update_Customer
 go
 
-create procedure sp_Update_Customer (@CustomerID int,@FirstName varchar(50),@LastName varchar(50),@Address varchar(200),@Email varchar(200),@BirthDay Datetime,@Gender bit,@Favorite varchar(100),@Point int,@Status int)
+create procedure sp_Update_Customer (@CustomerID int,@FirstName nvarchar(50),@LastName nvarchar(50),@Address nvarchar(200),@Email varchar(200),@BirthDay Datetime,@Gender bit,@Favorite nvarchar(100),@Point int,@Status int)
 as
 begin
 	Update JPOS_Customer 
@@ -465,5 +468,71 @@ begin
 	update JPOS_Terminal 
 	set JPOS_MID = @MID
 	where JPOS_TID = @TID
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Stop_Assign_Terminal') is not null
+	drop proc sp_Stop_Assign_Terminal
+go
+
+create procedure sp_Stop_Assign_Terminal(@TID varchar(8))
+as
+begin
+	update JPOS_Terminal 
+	set JPOS_MID = null
+	where JPOS_TID = @TID
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Customer_Search') is not null
+	drop proc sp_Customer_Search
+go
+create procedure sp_Customer_Search(@Key varchar(200))
+as
+begin
+	select * from JPOS_Customer	C left join JPOS_Status on C.JPOS_Status = JPOS_StatusID 
+	where 
+	(JPOS_CustomerID = dbo.fn_Convert_String_Int(@Key) or
+	JPOS_LastName like '%'+@Key+'%' or
+	JPOS_FirstName like '%'+@Key+'%' or
+	JPOS_Address like '%'+@Key+'%' or
+	JPOS_Email like '%'+@Key+'%' or
+	JPOS_Favorite like '%'+@Key+'%' or
+	JPOS_CurrentPoint = dbo.fn_Convert_String_Int(@Key) or
+	JPOS_StatusName like '%'+@Key+'%') and
+	JPOS_StatusName not like '%Delete%'
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Card_Search') is not null
+	drop proc sp_Card_Search
+go
+create procedure sp_Card_Search(@Key varchar(200))
+as
+begin
+	select * from JPOS_Card	C left join JPOS_Status on C.JPOS_Status = JPOS_StatusID 
+	where 
+	(JPOS_CardID like '%'+@Key+'%' or
+	JPOS_ActivateCode like '%'+@Key+'%' or
+	JPOS_Monetary = dbo.fn_Convert_String_Int(@Key) or	
+	JPOS_StatusName like '%'+@Key+'%') and
+	JPOS_StatusName not like '%Delete%'
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Merchant_Search') is not null
+	drop proc sp_Merchant_Search
+go
+create procedure sp_Merchant_Search(@Key varchar(200))
+as
+begin
+	select * from JPOS_Merchant M left join JPOS_Issuer I on M.JPOS_IssuerID = I.JPOS_IssuerID left join JPOS_Status S on M.JPOS_Status = S.JPOS_StatusID
+	where 
+	(JPOS_MID like '%'+@Key+'%' or
+	JPOS_MerchantName like '%'+@Key+'%' or
+	M.JPOS_IssuerID = dbo.fn_Convert_String_Int(@Key) or	
+	JPOS_Address like '%'+@Key+'%' or
+	JPOS_StatusName like '%'+@Key+'%') and
+	JPOS_StatusName not like '%Delete%'
 end
 go

@@ -131,7 +131,7 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle %></a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?TaskID=8">Quản lý đại lý</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
                             </div>
                         </td>
                     </tr>
@@ -145,11 +145,20 @@
                                     java.util.Date date = new java.util.Date();
                                 %>
                                 <br>
-                                <div align="Right">
+                                <div>
                                     <table>
                                         <tr>
-                                            <td><a href="index.jsp?TaskID=8&MerTask=1"><img src="images/AddNew.jpg"></a></td>
-                                            <td><a href="index.jsp?TaskID=8&MerTask=1">Thêm đại lý</a></td>
+                                            <td align="left" width="630px">
+                                                <form action="index.jsp">
+                                                    <input type="Hidden" value="8" name="TaskID"/>
+                                                    <input type="Hidden" value="7" name="MerTask"/>
+                                                    <span>Tìm kiếm : </span>
+                                                    <input type="text" value="" name="Search"/>
+                                                    <input type="submit" value="Tìm">
+                                                </form>
+                                            </td>
+                                            <td align="right"><a href="index.jsp?TaskID=8&MerTask=1"><img src="images/AddNew.jpg"></a></td>
+                                            <td align="left"><a href="index.jsp?TaskID=8&MerTask=1">Thêm đại lý</a></td>
                                         </tr>
 
                                     </table>

@@ -34,7 +34,13 @@
 
     String strMID = request.getParameter("txtMID");
     String strMerchantName = request.getParameter("txtTenDaiLy");
-    String strAddress = request.getParameter("txtDiaChi");    
+    if (strMerchantName != null)
+        strMerchantName = new String(strMerchantName.getBytes("ISO-8859-1"),"UTF8");
+
+    String strAddress = request.getParameter("txtDiaChi");
+    if (strAddress != null)
+        strAddress = new String(strAddress.getBytes("ISO-8859-1"),"UTF8");
+
     String strStatus = request.getParameter("txtTrangThai");
     
     int iStatusCode = 0;
@@ -159,7 +165,7 @@
                 {
                     strErrorDelete = "Xóa đại lý không thành công";
                     resultViews = BUS.BUS_JPOS_Merchant.listMerchant(DAO.DataProvider.getConnection(this.getServletConfig()));
-                    strWebTitle = "Quản lý đại lý";
+                    strWebTitle = "Danh sách đại lý";
                     %><%@include file="../views/MerchantList.jsp" %><%
                 }
                 else
@@ -175,10 +181,18 @@
                 %><%@include file="../views/MerchantInformation.jsp" %><%
             }
             break;
+        case 7:
+            {
+                String strKey = request.getParameter("Search");
+                resultViews = BUS.BUS_JPOS_Merchant.searchMerchant(strKey,DAO.DataProvider.getConnection(this.getServletConfig()));
+                strWebTitle = "Danh sách đại lý";
+                %><%@include file="../views/MerchantList.jsp" %><%
+            }
+            break;
         default:        //show list of merchant
             {
                 resultViews = BUS.BUS_JPOS_Merchant.listMerchant(DAO.DataProvider.getConnection(this.getServletConfig()));
-                strWebTitle = "Quản lý đại lý";
+                strWebTitle = "Danh sách đại lý";
                 %><%@include file="../views/MerchantList.jsp" %><%
             }
             break;

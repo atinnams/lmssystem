@@ -63,5 +63,10 @@ public class BUS_JPOS_Terminal {
         IJPOS_Terminal terminal = factory.getJPOS_Terminal();
         return terminal.searchTerminal(strKey, conn);
     }
-    
+    public static boolean stopAssignTerminal(String strTID,Connection conn)
+    {
+        LMSDAOFactory factory = LMSDAOFactory.getInstances();
+        IJPOS_Terminal terminal = factory.getJPOS_Terminal();
+        return terminal.stopAssignTerminal(strTID, conn);
+    }
 }

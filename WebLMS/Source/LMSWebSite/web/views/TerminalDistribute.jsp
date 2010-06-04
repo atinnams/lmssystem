@@ -1,12 +1,13 @@
 <%-- 
-    Document   : CustomerDetail
-    Created on : May 11, 2010, 12:48:19 AM
+    Document   : TerminalDistribute
+    Created on : Jun 5, 2010, 12:24:32 AM
     Author     : NKLapTop
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
+   "http://www.w3.org/TR/html4/loose.dtd">
+<%@page import="java.util.*,java.text.*" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -79,8 +80,8 @@
 
                     <tr>
                         <td colspan="5" rowspan="3" background="images/menu-blank.jpg">
-                            <% if (session.getAttribute("Admin") == null) {
-                            %>
+<% if (session.getAttribute("Admin") == null) {
+%>
                             <form action="index.jsp" method="post">
                                 <table>
                                     <tr>
@@ -96,9 +97,9 @@
 
                                 </table>
                             </form>
-                            <% } else {
-                                 DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
-                            %>
+<% } else {
+        DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
+%>
                             <table width="280px">
                                 <tr>
                                     <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white" >&raquo;&nbsp;Tài khoản : <%=result.getUsername().toString()%></span></td>
@@ -112,9 +113,9 @@
 
                                 <tr><td colspan="3" align="right" style="font-size:14px;"><a href="index.jsp?TaskID=1" style="color:Red;">Log out</a></td></tr>
                             </table>
-                            <%
-                                        }
-                            %>
+<%
+    }
+%>
                         </td>
                         <td> <img src="images/spacer.gif" alt="" height="31" width="1"></td>
                     </tr>
@@ -129,106 +130,79 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?TaskID=6">Quản lý khách hàng</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?TaskID=9">Quản lý thẻ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="9" class="main">
+                        <td colspan="9">
                             <div >
-                                <div class="content" <%=strStyle%>>
-                                    <h1><%=strWebTitle%></h1>
-                                    <% if (custInfor != null) {%>
-                                    <div style="height:30px"></div>
-                                    <table>
+                                <center><h1 style="text-transform:uppercase"><%=strWebTitle %></h1></center>
+                                <br>
+                                <%
+                                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                    java.util.Date date = new java.util.Date();
+                                %>
+                                 <h2>Mã thiết bị : <%=request.getParameter("TID") %></h2>
+                                <center><span style="color:red"><%=strErrorUpdate %></span></center>
+                                <h2>Chọn đại lý để cấp thiết bị :</h2>
+                                <br>
 
-                                        <tr>
-                                            <th align="left"> Mã khách hàng : </th>
-                                            <td><%=custInfor.getJPOS_CustomerID() %></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Họ khách hàng : </th>
-                                            <td><%=custInfor.getLastName() %></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Tên khách hàng : </th>
-                                            <td><%=custInfor.getFirstName() %></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Giới tính : </th>
-                                            <td>
-                                                <%
-                                                strGender = "Nữ";
-                                                if (custInfor.isGender())
-                                                    strGender = "Nam";
-                                                %>
-                                                <%=strGender %>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Số điểm hiện tại : </th>
-                                            <td><%=custInfor.getJPOS_CurrentPoint() %></td>
-                                        </tr>
-
-                                        <tr>
-                                            <th align="left"> Địa chỉ : </th>
-                                            <td><%=custInfor.getAddress() %></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Email : </th>
-                                            <td><%=custInfor.getEmail() %></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Ngày sinh : </th>
-                                            <td>
-                                            <%if (custInfor.getBirthDay()!= null)
-                                                out.print(custInfor.getBirthDay().toString());
-                                              else
-                                                out.print("null");
-                                            %>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Ngày tham gia : </th>
-                                            <td>
-                                                <%  if (custInfor.getDateJoin()!= null)
-                                                        out.print(custInfor.getDateJoin().toString());
-                                                    else
-                                                        out.print("null");
-                                                %>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Sở thích </th>
-                                            <td><%=custInfor.getFavorite() %></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Trạng thái </th>
-                                            <td><%=custInfor.getStatusName() %></td>
-                                        </tr>
-                                    </table>
-
-                                    <%}%>
-                                    <% if (session.getAttribute("Admin") != null)
-                                        {
-                                           %>
-                                           <div align="center">
-                                               <table>
-                                                   <tr>
-                                                       <td><a href="index.jsp?TaskID=6&CustTask=4&CustID=<%=custInfor.getJPOS_CustomerID() %>" title="Thay đổi thông tin"><img src="images/modify.jpg"></a></td>
-                                                       <td><a href="index.jsp?TaskID=6&CustTask=4&CustID=<%=custInfor.getJPOS_CustomerID() %>" title="Thay đổi thông tin"> Thay đổi thông tin khách hàng</a></td>
-                                                   </tr>
-                                               </table>
-                                           </div>
-                                            <%
-                                        }
-                                    %>                                    
-                                    <div style="height:400px"></div>
+                                <div align="left">
+                                    <form action="index.jsp">
+                                        <input type="Hidden" value="7" name="TaskID"/>
+                                        <input type="Hidden" value="11" name="TerTask"/>
+                                        <input type="Hidden" value="<%=request.getParameter("TID")%>" name="TID"/>
+                                        <span>Tìm kiếm : </span>
+                                        <input type="text" value="" name="Search"/>
+                                        <input type="submit" value="Tìm">
+                                    </form>
                                 </div>
+                                <br>
+                                <% if (resultViews == null)
+                                   {
+                                        %>
+                                        <h3 style="padding-left:20px">Không tìm thấy dữ liệu thống kê</h3>
+                                        <div style="height:400px"></div>
+                                        <%
+                                   }
+                                   else
+                                   {
+                                        int iSize = resultViews.size();
+                                        %>
+                                        <table cellpadding="0" cellspacing="0" border="1px"  width="774px" >
+                                            <tr bgcolor="blue" align="center">
+                                                <th>Mã đại lý</th>
+                                                <th>Tên đại lý</th>
+                                                <th>Địa chỉ</th>
+                                                <th>Trạng thái</th>
+                                                <th>Quản lý</th>
+                                            </tr>
+                                            <%
 
-                                <%@include file="../include/Navigation.jsp" %>
+                                            for (int i= 0 ; i < iSize; i++ )
+                                            {
+                                                DTO.DTO_JPOS_Merchant merchant = (DTO.DTO_JPOS_Merchant)resultViews.get(i);
+                                                %>
 
-                                <div class="clearer">&nbsp;</div>
+                                                <tr align="center">
+                                                    <td><%=merchant.getjPOS_MID() %></td>
+                                                    <td><%=merchant.getJPOS_MerchantName() %></td>
+                                                    <td><%=merchant.getAddress() %></td>
+                                                    <td><%=merchant.getStatus() %></td>
+                                                    <td><a href="index.jsp?TaskID=7&TerTask=10&TID=<%=request.getParameter("TID") %>&MID=<%=merchant.getjPOS_MID()%>"> <img src="images/assign.jpg"> </a></td>
+                                                </tr>
+                                                <%
+                                            } %>
+                                        </table>
+                                        <%
+                                        %>
+                                        <div style="height:200px"></div>
+                                        <%
+
+                                   }
+                                %>
+
 
                             </div>
                         </td>
@@ -262,5 +236,6 @@
 
     </body>
 </html
+
 
 

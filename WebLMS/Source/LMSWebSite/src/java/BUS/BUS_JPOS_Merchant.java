@@ -55,5 +55,10 @@ public class BUS_JPOS_Merchant {
             IJPOS_Merchant merchant = factory.getJPOS_Merchant();
             return merchant.checkMerchantExist(mid, con);
         }
+        public static ArrayList<DTO.DTO_JPOS_Merchant> searchMerchant(String strKey,Connection conn){
+            LMSDAOFactory factory = LMSDAOFactory.getInstances();
+            IJPOS_Merchant merchant = factory.getJPOS_Merchant();
+            return merchant.searchMerchant(strKey, conn);
+        }
 
 }

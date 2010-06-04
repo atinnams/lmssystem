@@ -9,7 +9,7 @@
     "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="java.util.*,java.text.*,DTO.*" %>
  <%
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
     java.util.Date date = new java.util.Date();
     String strExpireDay = "";
     if (card.getJPOS_ExpireDay() != null)
@@ -20,7 +20,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <title>LMS System index page</title>
-
+        <script language="javascript" type="text/javascript" src="js/datetimepicker.js" ></script>
         <script type="text/javascript">
             <!--
             function newImage(arg) {
@@ -138,7 +138,7 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?TaskID=9">Quản lý thẻ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
                             </div>
                         </td>
                     </tr>
@@ -160,7 +160,7 @@
                                         </tr>
                                         <tr>
                                             <th align="left"  width="100px"> Ngày hết hạn : </th>
-                                            <td><input type="text" value="<%=strExpireDay %>" name="txtNgayHetHan"</td>
+                                            <td><input type="text" value="<%=strExpireDay %>" name="txtNgayHetHan"  readonly id="PickUpTime"><a href="javascript:NewCssCal('PickUpTime','ddmmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a></td></td>
                                             <td><span style="color:red"><%=strErrorExpireDay %></span></td>
                                         </tr>
                                         <tr>
@@ -223,8 +223,8 @@
                                             <td>&nbsp;</td>
                                         </tr>
                                         <tr>
-                                            <td><input type="submit" value="Lưu"></td>
-                                            <td><a href="index.jsp?TaskID=9"><input type="button" value="Hủy bỏ"></a></td>
+                                            <td align="right"><input type="submit" value="Lưu"  style="width:80px;"></td>
+                                            <td><a href="index.jsp?TaskID=9"><input type="button" value="Hủy bỏ" style="width:80px;"></a></td>
                                             <td></td>
                                         </tr>
 

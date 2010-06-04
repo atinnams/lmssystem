@@ -217,7 +217,7 @@ public class DAO_JPOS_Terminal implements IJPOS_Terminal {
     }
     
     @Override
-    public boolean assignTerminal(String strMID,String strTID,Connection conn)
+    public boolean assignTerminal(String strTID,String strMID,Connection conn)
     {
          CallableStatement stmt = null;
         try {
@@ -320,5 +320,35 @@ public class DAO_JPOS_Terminal implements IJPOS_Terminal {
 
             return ArrayResult;
         }
+    }
+    @Override
+    public boolean stopAssignTerminal(String strTID,Connection conn)
+    {
+         CallableStatement stmt = null;
+        try {
+            stmt = conn.prepareCall("{call dbo.sp_Stop_Assign_Terminal(?)}");
+            stmt.setString(1, strTID);            
+
+            stmt.execute();
+        } catch (Exception e) {
+            System.out.println("Error!!!!!!" + e);
+            return false;
+        } finally {
+            try {
+                if (stmt != null) {
+                    stmt.close();
+                }
+            } catch (SQLException e) {
+            }
+
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException e) {
+            }
+
+        }
+        return true;
     }
 }

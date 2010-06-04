@@ -11,7 +11,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
         <title>LMS System index page</title>
-
+        <script language="javascript" type="text/javascript" src="js/datetimepicker.js" ></script>
         <script type="text/javascript">
             <!--
             function newImage(arg) {
@@ -41,6 +41,7 @@
             // -->
         </script>   <!-- End Preload Script -->
         <link type="text/css" rel="stylesheet" href="css/style.css" />
+        
     </head>
 
     <body leftmargin="0" topmargin="0" onLoad="preloadImages();" style="background-color: rgb(255, 255, 255);" marginheight="0" marginwidth="0">
@@ -129,7 +130,7 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?TaskID=6">Quản lý khách hàng</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
                             </div>
                         </td>
                     </tr>
@@ -144,12 +145,7 @@
                                         <input type="hidden" name="CustTask" value="2">
                                     <div style="height:30px"></div>
                                     <table>
-
-                                        <tr>
-                                            <th align="left" width="125px"> Mã khách hàng : </th>
-                                            <td><input type="text" value="<%=iGenCustID %>" name="txtMaKhachHang" readonly></td>
-                                            <td></td>
-                                        </tr>
+                                       
                                         <tr>
                                             <th align="left"> Họ khách hàng : </th>
                                             <td><input type="text" value="" name="txtHo"></td>
@@ -188,7 +184,9 @@
                                         </tr>
                                         <tr>
                                             <th align="left"> Ngày sinh : </th>
-                                            <td><input type="text" value="dd/MM/YYYY" name="txtNgaySinh"></td>
+                                            <td>
+                                                <input type="text" value="Chọn ngày>>" name="txtNgaySinh" id="PickUpTime" readonly><a href="javascript:NewCssCal('PickUpTime','ddmmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
+                                            </td>
                                             <td><font style="color:red"><%=strErrorBirthDay %></font></td>
                                         </tr>                                       
                                         <tr>
@@ -198,7 +196,7 @@
                                         </tr>
                                         <tr>
                                             <td></td>
-                                            <td><input type="submit" value="Lưu"></td>
+                                            <td><input type="submit" value="Lưu"  style="width:80px;"></td>
                                             <td></td>
                                         </tr>
                                     </table>

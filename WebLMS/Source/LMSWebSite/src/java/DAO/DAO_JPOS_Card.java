@@ -8,6 +8,7 @@ import DAO.iDAO.IJPOS_Card;
 import java.util.*;
 import DTO.*;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 
 
 /**
@@ -150,8 +151,11 @@ public class DAO_JPOS_Card implements IJPOS_Card {
             CallableStatement stmt = null;
             try {
                 stmt = conn.prepareCall("{call dbo.sp_New_Card(?,?,?)}");
+                SimpleDateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");
+                String strExpireDay = myformat.format( card.getJPOS_ExpireDay());
+
                 stmt.setString(1, card.getJPOS_CardId());
-                stmt.setDate(2, card.getJPOS_ExpireDay());
+                stmt.setString(2, strExpireDay);
                 stmt.setString(3, card.getActiveCode());
 
                 stmt.execute();
@@ -256,8 +260,10 @@ public class DAO_JPOS_Card implements IJPOS_Card {
             CallableStatement stmt = null;
             try {
                 stmt = conn.prepareCall("{call dbo.sp_Update_Card(?,?,?,?,?)}");
+                SimpleDateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");
+                String strExpireDay = myformat.format( card.getJPOS_ExpireDay());
                 stmt.setString(1, card.getJPOS_CardId());
-                stmt.setDate(2, card.getJPOS_ExpireDay());
+                stmt.setString(2, strExpireDay);
                 stmt.setString(3, card.getActiveCode());
                 stmt.setInt(4, card.getStatusCode());
                 stmt.setInt(5, card.getMonetary());
@@ -341,5 +347,51 @@ public class DAO_JPOS_Card implements IJPOS_Card {
 
             }
             return true;
+        }
+        public ArrayList<DTO_JPOS_Card> searchCard(String strKey,Connection conn)
+        {
+            ArrayList ArrayResult = null ;
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_Card_Search(?)}");
+                stmt.setString(1, strKey);
+
+                boolean HasRow = stmt.execute();
+                if (HasRow) {
+                    ArrayResult = new ArrayList();
+                    ResultSet rs = stmt.getResultSet();
+                    while (rs.next()) {
+                        DTO_JPOS_Card card = new DTO_JPOS_Card();
+
+                        card.setJPOS_CardId(rs.getString("JPOS_CardId"));
+                        card.setJPOS_ExpireDay(rs.getDate("JPOS_ExpireDay"));
+                        card.setStatus(rs.getString("JPOS_StatusName"));
+                        card.setCustomerOwnerID(rs.getInt("JPOS_CustomerID"));
+                        card.setActiveCode(rs.getString("JPOS_ActivateCode"));
+                        card.setMonetary(rs.getInt("JPOS_Monetary"));
+
+                        ArrayResult.add(card);
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                ArrayResult = null;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                return ArrayResult;
+            }
         }
 }

@@ -21,4 +21,6 @@ public interface IJPOS_Terminal {
     public boolean assignTerminal(String strTID,String strMID,Connection conn);
     public boolean checkTerminalExist(String strTID,Connection conn);
     public ArrayList<DTO_JPOS_Terminal> searchTerminal(String strKey,Connection conn);
+    public boolean stopAssignTerminal(String strTID,Connection conn);
+    
 }

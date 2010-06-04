@@ -131,7 +131,7 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle %></a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?TaskID=9">Quản lý thẻ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
                             </div>
                         </td>
                     </tr>
@@ -148,8 +148,17 @@
                                 <div align="Right">
                                     <table>
                                         <tr>
-                                            <td><a href="index.jsp?TaskID=9&CardTask=1"><img src="images/AddNew.jpg"></a></td>
-                                            <td><a href="index.jsp?TaskID=9&CardTask=1">Thêm thẻ mới</a></td>
+                                            <td align="left" width="630px">
+                                                <form action="index.jsp">
+                                                    <input type="Hidden" value="9" name="TaskID"/>
+                                                    <input type="Hidden" value="11" name="CardTask"/>
+                                                    <span>Tìm kiếm : </span>
+                                                    <input type="text" value="" name="Search"/>
+                                                    <input type="submit" value="Tìm">
+                                                </form>
+                                            </td>
+                                            <td align="right"><a href="index.jsp?TaskID=9&CardTask=1"><img src="images/AddNew.jpg"></a></td>
+                                            <td align="left"><a href="index.jsp?TaskID=9&CardTask=1">Thêm thẻ mới</a></td>
                                         </tr>
                                     
                                     </table>

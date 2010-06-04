@@ -124,7 +124,7 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle %></a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?TaskID=9">Quản lý thẻ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
                             </div>
                         </td>
                     </tr>
@@ -141,7 +141,18 @@
                                 <center><span style="color:red"><%=strErrorUpdate %></span></center>
                                 <h2>Chọn khách hàng để cấp thẻ :</h2>
                                 <br>
-                               
+                                
+                                <div align="left">
+                                    <form action="index.jsp">
+                                        <input type="Hidden" value="9" name="TaskID"/>
+                                        <input type="Hidden" value="12" name="CardTask"/>
+                                        <input type="Hidden" value="<%=request.getParameter("CardID")%>" name="CardID"/>
+                                        <span>Tìm kiếm : </span>
+                                        <input type="text" value="" name="Search"/>
+                                        <input type="submit" value="Tìm">
+                                    </form>
+                                </div>
+                                <br>
                                 <% if (resultViews == null)
                                    {
                                         %>

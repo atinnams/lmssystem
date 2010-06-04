@@ -131,7 +131,7 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle %></a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?TaskID=6">Quản lý khách hàng</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
                             </div>
                         </td>
                     </tr>
@@ -146,11 +146,20 @@
                                 %>                                
                                 <br>
                                 <font color="red"><%=strErrorDelete %></font>
-                                <div align="Right">
+                                <div>
                                     <table>
                                         <tr>
-                                            <td><a href="index.jsp?TaskID=6&CustTask=1"><img src="images/AddNew.jpg"></a></td>
-                                            <td><a href="index.jsp?TaskID=6&CustTask=1">Thêm khách hàng</a></td>
+                                            <td align="left" width="630px">
+                                                <form action="index.jsp">
+                                                    <input type="Hidden" value="6" name="TaskID"/>
+                                                    <input type="Hidden" value="7" name="CustTask"/>
+                                                    <span>Tìm kiếm : </span>
+                                                    <input type="text" value="" name="Search"/>
+                                                    <input type="submit" value="Tìm">
+                                                </form>
+                                            </td>
+                                            <td align="right"><a href="index.jsp?TaskID=6&CustTask=1"><img src="images/AddNew.jpg"></a></td>
+                                            <td align="left"><a href="index.jsp?TaskID=6&CustTask=1">Thêm khách hàng</a></td>
                                         </tr>
 
                                     </table>
@@ -166,7 +175,7 @@
                                    {
                                         int iSize = resultViews.size();
                                         %>
-                                        <table cellpadding="0" cellspacing="0" border="1px">
+                                        <table cellpadding="0" cellspacing="0" border="1px"  width="775px">
                                             <tr bgcolor="blue" align="center">
                                                 <th width="40px">Mã KH</th>
                                                 <th>Họ khách hàng</th>

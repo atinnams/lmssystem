@@ -1,3 +1,5 @@
+USE LMSDB
+go
 /*
 function list :
 
@@ -64,7 +66,7 @@ if object_id('fn_Convert_String_Int') is not null
 	drop function fn_Convert_String_Int
 go
 
-create function fn_Convert_String_Int(@String varchar(8))
+create function fn_Convert_String_Int(@String varchar(200))
 returns int
 as
 begin	
@@ -80,3 +82,16 @@ declare @result int;
 set @result = dbo.fn_Convert_String_Int('asdasdas1');
 select @result;
 */
+--===========================================================================
+if object_id('fn_Check_Email_exist') is not null
+	drop function fn_Check_Email_exist
+go
+
+create function fn_Check_Email_exist(@Email varchar(200))
+returns int
+as
+begin	
+	return ( select count(*) from JPOS_Customer where JPOS_Email = @Email);
+end
+go
+--===========================================================================

@@ -5,18 +5,19 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
 <%
-    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
     java.util.Date date = new java.util.Date();
     ArrayList arrList = BUS.BUS_JPOS_Status.GetStatus("JPOS_Customer", DAO.DataProvider.getConnection(this.getServletConfig()));
 %>
 <html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>LMS System index page</title>
-
+        <script language="javascript" type="text/javascript" src="js/datetimepicker.js" ></script>
         <script type="text/javascript">
             <!--
             function newImage(arg) {
@@ -134,7 +135,7 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?TaskID=6">Quản lý khách hàng</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
                             </div>
                         </td>
                     </tr>
@@ -200,7 +201,9 @@
                                         </tr>
                                         <tr>
                                             <th align="left"> Ngày sinh : </th>
-                                            <td><input type="text" value="<%=dateFormat.format(custInfor.getBirthDay())%>" name="txtNgaySinh"></td>
+                                            <td>
+                                                <input type="text" value="<%=dateFormat.format(custInfor.getBirthDay())%>" name="txtNgaySinh" id="PickUpTime" readonly><a href="javascript:NewCssCal('PickUpTime','ddmmmyyyy')"><img src="images/cal.gif" width="16" height="16" border="0" alt="Pick a date"></a>
+                                            </td>
                                             <td><font style="color:red"><%=strErrorBirthDay %></font></td>
                                         </tr>                                       
                                         <tr>
@@ -230,10 +233,10 @@
                                             </td>
                                             <td></td>
                                         </tr>
-                                        <tr>
+                                        <tr>                                            
                                             <td></td>
-                                            <td><input type="submit" value="Lưu"></td>
-                                            <td></td>
+                                            <td align="right"><input type="submit" value="Lưu"  style="width:80px;"></td>
+                                            <td><a href="index.jsp?TaskID=6"><input type="button" value="Hủy bỏ" style="width:80px;"></a></td>
                                         </tr>
                                     </table>
                                     </form>
