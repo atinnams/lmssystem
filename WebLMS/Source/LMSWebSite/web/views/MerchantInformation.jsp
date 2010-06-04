@@ -141,7 +141,9 @@
                             <div >
                                 <div class="content">
                                     <h1 style="text-transform:uppercase"><%=strWebTitle%></h1>                                    
-                                    <div style="height:30px"></div>                                                                        
+                                    <div style="height:30px"></div>
+                                    <% if (MerInfor != null)
+                                        { %>
                                     <table>
                                         <tr>
                                             <th align="left"> Mã đại lý : </th>
@@ -166,8 +168,13 @@
                                             <td colspan="2" align="center"><img src="images/modify.jpg"><a href="index.jsp?TaskID=8&MerTask=3&MID=<%=MerInfor.getjPOS_MID() %>" title="Thay đổi thông tin">Thay đổi thông tin đại lý</a></td>
                                         </tr>
                                     </table>
-                                    
-                                    </form>
+                                            <%
+                                                    }
+                                            else{
+                                            %>
+                                            <h2>Thông tin đại lý có mã là <%=request.getParameter("MID") %> đã bị hủy trong CSDL</h2>
+                                            <h2>Vui lòng kiểm tra lại thông tin trong cơ sở dữ liệu</h2>
+                                            <%}%>
                                     <div style="height:400px"></div>
                                 </div>
 
