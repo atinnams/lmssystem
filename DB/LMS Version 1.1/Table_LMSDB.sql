@@ -150,7 +150,7 @@ create table JPOS_Log
 	JPOS_PointGain	int not null,
 	JPOS_PointLoss	int not null,
 	JPOS_TID varchar(8) not null,				--references to JPOS_Terminal
-	JPOS_MID varchar(15) not null,				--references to JPOS_Terminal
+	JPOS_MID varchar(15),				--references to JPOS_Terminal
 	JPOS_PoSCC_ID varchar(2) not null,			--references to JPOS_PoSCC
 	primary key(JPOS_LogID)
 )

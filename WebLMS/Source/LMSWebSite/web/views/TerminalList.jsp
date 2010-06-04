@@ -204,7 +204,7 @@
                                                         }
                                                         else
                                                         {
-                                                            %><td><a href="index.jsp?TaskID=7&MerTask=8&MID=<%=terminal.getMID()%>" title="Chọn đại lý trực thuộc">Chưa trực thuộc</a></td><%
+                                                            %><td><a href="index.jsp?TaskID=7&MerTask=8&TID=<%=terminal.getTID()%>" title="Chọn đại lý trực thuộc">Chưa trực thuộc</a></td><%
                                                         }
                                                     %>
                                                     

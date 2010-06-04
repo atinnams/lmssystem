@@ -408,7 +408,7 @@ create procedure sp_New_Terminal(@TID varchar(8),@Status int,@PIN varchar(16),@R
 as
 begin
 	insert into JPOS_Terminal(JPOS_TID, JPOS_Status, JPOS_PIN, JPOS_RetryLimit, JPOS_ActivateCode)
-	values (@TID,'16',@PIN,@Retry,@ActiveCode)
+	values (@TID,'4',@PIN,@Retry,@ActiveCode)
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------

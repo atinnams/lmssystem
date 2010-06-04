@@ -201,6 +201,7 @@
         case 6:         //Show detail of terminal
             {
                 TerInfor = BUS.BUS_JPOS_Terminal.getTerminal(strTerminalID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                
                 strWebTitle = "Thông tin thiết bị";
                 %><%@include file="../views/TerminalInformation.jsp" %><%
             }
@@ -211,6 +212,10 @@
                 strWebTitle = "Danh sách thiết bị";
                 %><%@include file="../views/TerminalList.jsp" %><%
             }
+            break;
+        case 8:             //assign terminal
+            break;
+        case 9:         //stop assign terminal
             break;
         default:        //show list of terminal
             {

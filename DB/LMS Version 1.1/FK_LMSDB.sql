@@ -30,8 +30,9 @@ go
 alter table JPOS_Log
 add constraint FK_JPOS_Log_JPOS_Card foreign key(JPOS_CardID) references JPOS_Card(JPOS_CardID),
 	constraint FK_JPOS_Log_JPOS_Task foreign key (JPOS_Task) references JPOS_Task(JPOS_TaskID),
-	constraint FK_JPOS_Log_JPOS_Terminal foreign key (JPOS_TID,JPOS_MID) references JPOS_Terminal(JPOS_TID,JPOS_MID),
-	constraint FK_JPOS_Log_JPOS_PoSCC foreign key (JPOS_PoSCC_ID) references JPOS_PoSCC(JPOS_PoSCC_ID)
+	constraint FK_JPOS_Log_JPOS_Terminal foreign key (JPOS_TID) references JPOS_Terminal(JPOS_TID),
+	constraint FK_JPOS_Log_JPOS_PoSCC foreign key (JPOS_PoSCC_ID) references JPOS_PoSCC(JPOS_PoSCC_ID),
+	constraint FK_JPOS_Log_JPOS_Merchant foreign key(JPOS_MID) references JPOS_Merchant(JPOS_MID)
 	
 go
 
