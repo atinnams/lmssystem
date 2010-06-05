@@ -5,6 +5,7 @@ import java.sql.Connection;
 
 import org.hcmus.Util.Constant;
 import org.hcmus.Util.MessageHelper;
+import org.hcmus.Util.ReversalObject;
 import org.hcmus.bus.JPOS_CardBUS;
 import org.hcmus.bus.JPOS_LogBUS;
 import org.jpos.iso.ISOMsg;
@@ -49,6 +50,12 @@ public class VoidCard implements TransactionParticipant {
 
 			/** get TID **/
 			String tid = MessageHelper.getTID(msg);
+			
+			if(ReversalObject.contains(cardNumber, invoiceLog)){
+				ReversalObject.remove(cardNumber, invoiceLog);
+				ctx.put(Constant.RC, "98");
+				return ABORTED | READONLY | NO_JOIN;
+			}
 			
 			int voidCard = JPOS_CardBUS.voidCard(cardNumber, invoiceId, amount, con);
 			

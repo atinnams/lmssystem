@@ -5,6 +5,7 @@ import java.sql.Connection;
 
 import org.hcmus.Util.Constant;
 import org.hcmus.Util.MessageHelper;
+import org.hcmus.Util.ReversalObject;
 import org.hcmus.bus.JPOS_CardBUS;
 import org.jpos.iso.ISOMsg;
 import org.jpos.transaction.Context;
@@ -35,10 +36,14 @@ public class CheckReversal implements TransactionParticipant {
 
 		if (msg != null) {
 			String cardId = MessageHelper.getCardId(msg);
-			String invoiceId = MessageHelper.getInvoice(msg);
+			String invoiceId = MessageHelper.getInvoiceLog(msg);
 			if (!cardId.isEmpty() && !invoiceId.isEmpty()) {
 				int result = JPOS_CardBUS.checkInvoice(cardId, invoiceId, con);
 				if (result == 0 || result == -1) {
+					
+					/** Inform to all Transaction that the transaction with cardid and invoiceid reversaled **/
+					ReversalObject.put(cardId, invoiceId);
+					
 					ctx.put(Constant.RC, "00");
 					return ABORTED | READONLY | NO_JOIN;
 				} else {

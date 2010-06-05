@@ -126,14 +126,14 @@ public class RedeemSendResponse implements AbortParticipant {
 						strError = MessageHelper.makeTLV("FF39",Constant.NO_ACTIVATED_CARD);
 						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
-					case 95 :
-						msgResponse.set(39,"95");
-						strError = MessageHelper.makeTLV("FF39",Constant.NOT_ENOUGH_POINT);
-						msgResponse.set(61,ISOUtil.hex2byte(strError));
-						break;
 					case 16 :
 						msgResponse.set(39,"16");
 						strError = MessageHelper.makeTLV("FF39",Constant.NOT_ENOUGH_MONEY);
+						msgResponse.set(61,ISOUtil.hex2byte(strError));
+						break;
+					case 98 :
+						msgResponse.set(39,"16");
+						strError = MessageHelper.makeTLV("FF39",Constant.TRANSACTION_REVERSAL);
 						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
 					default :

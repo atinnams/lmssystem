@@ -77,6 +77,7 @@ public class VoidCardSendResponse implements AbortParticipant {
 				ISOMsg msgResponse = new ISOMsg();
 				msgResponse.set(0,"0210");
 				msgResponse.set(3,(String)msg.getValue(3));
+				msgResponse.set(4,(String)msg.getValue(4));
 				msgResponse.set(11,(String)msg.getValue(11));
 				msgResponse.set(41,(String)msg.getValue(41));
 				msgResponse.set(42,(String)msg.getValue(42));
@@ -123,6 +124,11 @@ public class VoidCardSendResponse implements AbortParticipant {
 					case 17 :
 						msgResponse.set(39,"17");
 						strError = MessageHelper.makeTLV("FF39",Constant.INVOICE_FAIL);
+						msgResponse.set(61,ISOUtil.hex2byte(strError));
+						break;
+					case 98 :
+						msgResponse.set(39,"16");
+						strError = MessageHelper.makeTLV("FF39",Constant.TRANSACTION_REVERSAL);
 						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
 					default :
