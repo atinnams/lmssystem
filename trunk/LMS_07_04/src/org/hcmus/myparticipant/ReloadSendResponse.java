@@ -132,6 +132,11 @@ public class ReloadSendResponse implements AbortParticipant {
 						strError = MessageHelper.makeTLV("FF39",Constant.RELOAD_FAIL);
 						msgResponse.set(61,ISOUtil.hex2byte(strError));
 						break;
+					case 98 :
+						msgResponse.set(39,"16");
+						strError = MessageHelper.makeTLV("FF39",Constant.TRANSACTION_REVERSAL);
+						msgResponse.set(61,ISOUtil.hex2byte(strError));
+						break;
 					default :
 						msgResponse.set(39,"12");
 						strError = MessageHelper.makeTLV("FF39",Constant.OTHER_ERROR);

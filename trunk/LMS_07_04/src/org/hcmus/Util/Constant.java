@@ -26,6 +26,7 @@ public class Constant {
 	public final static String NOT_ENOUGH_MONEY = "NOT_ENOUGH_MONEY";
 	public final static String INVOICE_FAIL = "INVOICE_FAIL";
 	public final static String RELOAD_FAIL = "RELOAD_FAIL";
+	public final static String TRANSACTION_REVERSAL = "REVERSALING_TRANSACTION";
 	
 	public final static String ERROR_FLOW = "000000" ;
 	public final static String REDEEM_PROCESS = "027207";

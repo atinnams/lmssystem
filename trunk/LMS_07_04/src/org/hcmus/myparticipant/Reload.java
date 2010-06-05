@@ -5,6 +5,7 @@ import java.sql.Connection;
 
 import org.hcmus.Util.Constant;
 import org.hcmus.Util.MessageHelper;
+import org.hcmus.Util.ReversalObject;
 import org.hcmus.bus.JPOS_CardBUS;
 import org.hcmus.bus.JPOS_LogBUS;
 import org.jpos.iso.ISOMsg;
@@ -47,6 +48,12 @@ public class Reload implements TransactionParticipant {
 			
 			if(cardNumber.isEmpty() || amount == -1 || invoiceLog == null){
 				ctx.put(Constant.RC, "14");
+				return ABORTED | READONLY | NO_JOIN;
+			}
+			
+			if(ReversalObject.contains(cardNumber, invoiceLog)){
+				ReversalObject.remove(cardNumber, invoiceLog);
+				ctx.put(Constant.RC, "98");
 				return ABORTED | READONLY | NO_JOIN;
 			}
 			

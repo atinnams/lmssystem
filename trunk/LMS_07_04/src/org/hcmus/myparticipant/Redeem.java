@@ -5,6 +5,7 @@ import java.sql.Connection;
 
 import org.hcmus.Util.Constant;
 import org.hcmus.Util.MessageHelper;
+import org.hcmus.Util.ReversalObject;
 import org.hcmus.bus.JPOS_CardBUS;
 import org.hcmus.bus.JPOS_LogBUS;
 import org.jpos.iso.ISOMsg;
@@ -59,6 +60,12 @@ public class Redeem implements TransactionParticipant {
 				return ABORTED | READONLY | NO_JOIN;
 			}
 			
+			if(ReversalObject.contains(cardNumber, invoiceLog)){
+				ReversalObject.remove(cardNumber, invoiceLog);
+				ctx.put(Constant.RC, "98");
+				return ABORTED | READONLY | NO_JOIN;
+			}
+			
 			int redeem = JPOS_CardBUS.redeem(cardNumber, amount, con);
 			
 			if(redeem == -1){
@@ -66,7 +73,7 @@ public class Redeem implements TransactionParticipant {
 				return ABORTED | READONLY | NO_JOIN;
 			}
 			
-			/** Add point business **/
+			/** Add log business **/
 			int totalPoint = JPOS_LogBUS.addRedeemLog(cardNumber, 1,amount,invoiceLog, point,
 					mid, tid, "01", con);
 			
