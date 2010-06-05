@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="E:/Nam4/LuanVan/JProject/jpos-1.6.4/build/jpos.jar"/>
-	<classpathentry kind="lib" path="E:/Nam4/LuanVan/JProject/jpos-1.6.4/build/lib/bsh-2.0b4.jar"/>
-	<classpathentry kind="output" path="bin"/>
-</classpath>
