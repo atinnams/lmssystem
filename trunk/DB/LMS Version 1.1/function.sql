@@ -294,6 +294,7 @@ go
 declare @result int;
 select @result = dbo.fn_get_amount_card('8704353300000015');
 select @result;
+*/
 
 --===========================================================================
 
@@ -306,7 +307,7 @@ returns int
 as
 begin
 	declare @result int ;
-	set @result = (select top 1 JPOS_LogId from JPOS_Log where JPOS_CardId = @cardId and JPOS_InvoiceId = @invoiceId and JPOS_Task <> 3 ) ;
+	set @result = (select top 1 JPOS_LogId from JPOS_Log where JPOS_CardId = @cardId and JPOS_InvoiceId = @invoiceId and JPOS_Task <> 5 ) ;
 	if (@result is NULL)
 		set @result = 0;
 	return @result;
