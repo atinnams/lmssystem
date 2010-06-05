@@ -238,3 +238,160 @@ begin
 	end
 end
 go
+
+-------------------------------------------------------------------------------------------------------------------------------
+
+if object_id('sp_reversal_redeem_log') is not null
+	drop proc sp_reversal_redeem_log
+go
+
+create procedure sp_reversal_redeem_log(@CardId varchar(16),@TaskID int,@Amount int,@InvoiceId varchar(16),@Point int,@MID varchar(15),@TID varchar(8),@PoSCC varchar(2))
+as
+begin	
+	declare @Customer int;
+	declare @CurrentPoint int;
+	begin transaction;	
+	select @Customer = jCustomer.JPOS_CustomerID,@CurrentPoint = jCustomer.JPOS_CurrentPoint from JPOS_Customer jCustomer,JPOS_Card jCard where jCard.JPOS_CardId = @CardId and jCard.JPOS_CustomerID = jCustomer.JPOS_CustomerID;
+		if  (@@rowcount = 0)
+		begin
+			rollback transaction;
+		end
+
+	update JPOS_Customer set JPOS_CurrentPoint = JPOS_CurrentPoint - @Point where JPOS_CustomerID = @Customer					
+	if  (@@rowcount = 0)
+	begin
+		rollback transaction;
+	end
+	
+	insert into JPOS_Log(JPOS_Date,JPOS_Task,JPOS_CardID,JPOS_InvoiceId,JPOS_Amount,JPOS_PointGain,JPOS_PointLoss,JPOS_MID,JPOS_TID,JPOS_PoSCC_ID) 
+	values (getdate(),@TaskID,@CardId,@InvoiceId,@Amount,0,@Point,@MID,@TID,@PoSCC)				
+	if  (@@rowcount = 0)
+	begin
+		rollback transaction;
+	end
+	commit transaction;
+end
+go
+
+--=========================================================================
+
+if object_id('sp_reversal_reload_log') is not null
+	drop proc sp_reversal_reload_log
+go
+
+create procedure sp_reversal_reload_log(@CardId varchar(16),@TaskID int,@Amount int,@InvoiceId varchar(16),@MID varchar(15),@TID varchar(8),@PoSCC varchar(2))
+as
+begin
+	insert into JPOS_Log(JPOS_Date,JPOS_Task,JPOS_CardID,JPOS_InvoiceId,JPOS_Amount,JPOS_PointGain,JPOS_PointLoss,JPOS_MID,JPOS_TID,JPOS_PoSCC_ID) 
+	values (getdate(),@TaskID,@CardId,@InvoiceId,@Amount,0,0,@MID,@TID,@PoSCC)
+end
+go
+
+--=========================================================================
+
+if object_id('sp_reversal_void_log') is not null
+	drop proc sp_reversal_void_log
+go
+
+create procedure sp_reversal_void_log(@CardId varchar(16),@TaskID int,@Amount int,@InvoiceId varchar(16),@MID varchar(15),@TID varchar(8),@PoSCC varchar(2))
+as
+begin
+	insert into JPOS_Log(JPOS_Date,JPOS_Task,JPOS_CardID,JPOS_InvoiceId,JPOS_Amount,JPOS_PointGain,JPOS_PointLoss,JPOS_MID,JPOS_TID,JPOS_PoSCC_ID) 
+	values (getdate(),@TaskID,@CardId,@InvoiceId,@Amount,0,0,@MID,@TID,@PoSCC)
+end
+go
+
+--=========================================================================
+
+if object_id('sp_reversal_redeem') is not null
+	drop proc sp_reversal_redeem
+go
+
+create procedure sp_reversal_redeem(@CardId varchar(16),@TaskID int,@InvoiceId varchar(16),@MID varchar(15),@TID varchar(8),@PoSCC varchar(2))
+as
+begin
+	declare @redeem_log_id int ;
+	declare @amount int;
+	declare @point int;
+	declare @result int;
+	begin transaction;
+	select @redeem_log_id = JPOS_LogId,@amount = JPOS_Amount,@point = JPOS_PointGain from JPOS_Log where JPOS_CardId = @cardId and JPOS_InvoiceId = @invoiceId;	
+	exec sp_reload_Card @CardId,@amount,@result output;
+	delete from JPOS_Log where JPOS_LogId = @redeem_log_id;
+	exec sp_reversal_redeem_log @CardId,@TaskID,@amount,@InvoiceId,@point,@MID,@TID,@PoSCC;
+	commit transaction;
+end
+go
+
+--=========================================================================
+
+if object_id('sp_reversal_reload') is not null
+	drop proc sp_reversal_reload
+go
+
+create procedure sp_reversal_reload(@CardId varchar(16),@TaskID int,@InvoiceId varchar(16),@MID varchar(15),@TID varchar(8),@PoSCC varchar(2))
+as
+begin
+	declare @redeem_log_id int ;
+	declare @amount int;
+	declare @point int;
+	declare @result int;
+	begin transaction;
+	select @redeem_log_id = JPOS_LogId,@amount = JPOS_Amount,@point = JPOS_PointGain from JPOS_Log where JPOS_CardId = @cardId and JPOS_InvoiceId = @invoiceId;	
+	exec sp_redeem_Card @CardId,@amount,@result output;
+	delete from JPOS_Log where JPOS_LogId = @redeem_log_id;
+	exec sp_reversal_reload_log @CardId,@TaskID,@amount,@InvoiceId,@MID,@TID,@PoSCC;
+	commit transaction;
+end
+go
+
+--=========================================================================
+
+if object_id('sp_reversal_void_redeem') is not null
+	drop proc sp_reversal_void_redeem
+go
+
+create procedure sp_reversal_void_redeem(@CardId varchar(16),@TaskID int,@InvoiceId varchar(16),@MID varchar(15),@TID varchar(8),@PoSCC varchar(2))
+as
+begin
+	declare @redeem_log_id int ;
+	declare @amount int;
+	declare @point int;
+	declare @result int;
+	begin transaction;
+	select @redeem_log_id = JPOS_LogId,@amount = JPOS_Amount,@point = JPOS_PointGain from JPOS_Log where JPOS_CardId = @cardId and JPOS_InvoiceId = @invoiceId;	
+	exec sp_redeem_Card @CardId,@amount,@result output;
+	delete from JPOS_Log where JPOS_LogId = @redeem_log_id;
+	exec sp_reversal_void_log @CardId,@TaskID,@amount,@InvoiceId,@MID,@TID,@PoSCC;
+	commit transaction;
+end
+go
+
+--=========================================================================
+
+if object_id('sp_reversal_void_reload') is not null
+	drop proc sp_reversal_void_reload
+go
+
+create procedure sp_reversal_void_reload(@CardId varchar(16),@TaskID int,@InvoiceId varchar(16),@MID varchar(15),@TID varchar(8),@PoSCC varchar(2))
+as
+begin
+	declare @redeem_log_id int ;
+	declare @amount int;
+	declare @point int;
+	declare @result int;
+	begin transaction;
+	select @redeem_log_id = JPOS_LogId,@amount = JPOS_Amount,@point = JPOS_PointGain from JPOS_Log where JPOS_CardId = @cardId and JPOS_InvoiceId = @invoiceId;	
+	exec sp_reload_Card @CardId,@amount,@result output;
+	delete from JPOS_Log where JPOS_LogId = @redeem_log_id;
+	exec sp_reversal_void_log @CardId,@TaskID,@amount,@InvoiceId,@MID,@TID,@PoSCC;
+	commit transaction;
+end
+go
+
+
+
+
+
+
+
