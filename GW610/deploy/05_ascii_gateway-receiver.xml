@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<server class="org.jpos.q2.iso.QServer" logger="Q2" 
+  name="ascii-gateway-receiver">
+ <attr name="port" type="java.lang.Integer">10000</attr>
+ <channel class="org.jpos.iso.channel.ASCIIChannel"
+        logger="Q2" packager="org.jpos.iso.packager.GenericPackager">
+     <property name="packager-config" value="cfg/packager/edc/edc1_iso87ASCII.xml" />
+ </channel>
+ 
+ <request-listener class="org.hcmus.Gateway.ASCIIGatewayISOListener" logger="Q2">
+ </request-listener>
+</server>
+

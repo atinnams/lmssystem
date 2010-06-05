@@ -1,0 +1,8 @@
+<qbean name="gatewaySender" logger="Q2" realm="gateway-sender"
+  class="org.hcmus.Gateway.Sender">
+
+  <property name="mux" value="gateway-sender-mux" />
+  <property name="timeout" value="30000" />
+
+</qbean>
+
