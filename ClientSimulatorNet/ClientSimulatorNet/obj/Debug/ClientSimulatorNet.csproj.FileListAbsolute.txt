@@ -1,0 +1,8 @@
+E:\Nam4\LuanVan\svn\ClientSimulatorNet\ClientSimulatorNet\obj\Debug\ResolveAssemblyReference.cache
+E:\Nam4\LuanVan\svn\ClientSimulatorNet\ClientSimulatorNet\obj\Debug\ClientSimulatorNet.Form1.resources
+E:\Nam4\LuanVan\svn\ClientSimulatorNet\ClientSimulatorNet\obj\Debug\ClientSimulatorNet.Properties.Resources.resources
+E:\Nam4\LuanVan\svn\ClientSimulatorNet\ClientSimulatorNet\obj\Debug\ClientSimulatorNet.csproj.GenerateResource.Cache
+E:\Nam4\LuanVan\svn\ClientSimulatorNet\ClientSimulatorNet\bin\Debug\ClientSimulatorNet.exe
+E:\Nam4\LuanVan\svn\ClientSimulatorNet\ClientSimulatorNet\bin\Debug\ClientSimulatorNet.pdb
+E:\Nam4\LuanVan\svn\ClientSimulatorNet\ClientSimulatorNet\obj\Debug\ClientSimulatorNet.exe
+E:\Nam4\LuanVan\svn\ClientSimulatorNet\ClientSimulatorNet\obj\Debug\ClientSimulatorNet.pdb
