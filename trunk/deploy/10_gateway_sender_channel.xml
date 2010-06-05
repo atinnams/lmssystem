@@ -1,0 +1,18 @@
+<?xml version="1.0" ?>
+
+<channel-adaptor name='gateway-sender-adaptor' 
+    class="org.jpos.q2.iso.ChannelAdaptor" logger="Q2">
+ <channel class="org.jpos.iso.channel.NACChannel" logger="Q2"
+       packager="org.jpos.iso.packager.GenericPackager" header="6000010002">
+       
+  <property name="packager-config" value="cfg/packager/server/iso87binary.xml" />
+  
+  <property name="host" value="127.0.0.1" />
+  <property name="port" value="9800" />
+  
+ </channel>
+ <in>lms-gateway-send</in>
+ <out>lms-gateway-receive</out>
+ <reconnect-delay>10000</reconnect-delay>
+</channel-adaptor>
+

@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding="iso-8859-1" ?>
+
+<qbean class="org.jpos.q2.ui.UI" name="UI" logger="Q2">
+ <ui width="600" height="300" 
+    full-screen="no" undecorated="no" close="true">
+  <caption>Gateway</caption>
+
+  <components>
+   <border-layout>
+    <center>
+     <grid rows="2" columns="2">
+      <cell>
+       <iso-meter refresh="250" idref="server.ascii-gateway-receiver">ASCII - Receiver</iso-meter>
+      </cell>
+      <cell>
+       <iso-meter refresh="250" idref="server.hex-gateway-receiver">HEX - Receiver</iso-meter>
+      </cell>
+      <cell>
+       <iso-meter refresh="250" idref="channel.gateway-sender-adaptor">Sender</iso-meter>
+      </cell>
+     </grid>
+    </center>
+   </border-layout>
+  </components>
+ </ui>
+</qbean>
+
