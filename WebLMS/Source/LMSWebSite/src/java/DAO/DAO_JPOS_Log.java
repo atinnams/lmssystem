@@ -42,6 +42,8 @@ public class DAO_JPOS_Log implements IJPOS_Log {
                         report.setPointGain(rs.getInt("JPOS_PointGain"));
                         report.setTID(rs.getString("JPOS_TID"));
                         report.setTask(rs.getString("JPOS_TaskName"));
+                        report.setInvoiceID(rs.getString("JPOS_InvoiceId"));
+                        report.setAmount(rs.getInt("JPOS_Amount"));
 
                         ArrayResult.add(report);
                     }

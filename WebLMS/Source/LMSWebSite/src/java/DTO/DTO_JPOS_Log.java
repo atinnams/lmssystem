@@ -1,7 +1,7 @@
 package DTO;
 
-
 public class DTO_JPOS_Log {
+
     private int _LogID;
     private java.sql.Date _Date;
     private int _Task;
@@ -11,6 +11,7 @@ public class DTO_JPOS_Log {
     private String _TID;
     private String _MID;
     private String _PoSCC_ID;
+   
 
     /**
      * @return the _LogID
@@ -137,4 +138,6 @@ public class DTO_JPOS_Log {
     public void setPoSCC_ID(String PoSCC_ID) {
         this._PoSCC_ID = PoSCC_ID;
     }
+
+    
 }

@@ -58,7 +58,7 @@
                 }                                
                 try
                 {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH);
                     dateExpireDay = (java.util.Date)sdf.parse(strMyExpireDay);
                     
                 }
@@ -130,7 +130,7 @@
                 java.util.Date dateExpireDay = null;
                 try
                 {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH);
                     dateExpireDay = (java.util.Date)sdf.parse(strMyExpireDay);                    
                 }
                 catch (Exception ex)

@@ -165,6 +165,8 @@
                                                 <th>Ngày giao dịch</th>
                                                 <th>Mã khách hàng</th>
                                                 <th>Loại giao dịch</th>
+                                                <th>Invoice ID</th>
+                                                <th>Amount</th>
                                                 <th>Điểm cộng</th>
                                                 <th>Điểm trừ</th>
                                                 <th>PoSCC</th>
@@ -186,6 +188,8 @@
                                                 <td><%=dateFormat.format(report.getDate()) %></td>
                                                 <td><a href="index.jsp?TaskID=2&Detail=<%=report.getCustomerID()%>"><%=report.getCustomerID()%></a></td>
                                                 <td><%=report.getTask() %></td>
+                                                <td><%=report.getInvoiceID() %></td>
+                                                <td><%=report.getAmount() %></td>
                                                 <td><%=report.getPointGain() %></td>
                                                 <td><%=report.getPointLoss() %></td>
                                                 <td><%=report.getPoSCCName() %></td>
