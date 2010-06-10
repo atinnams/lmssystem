@@ -9,7 +9,7 @@
     "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="java.util.*,java.text.*,DTO.*" %>
  <%
-    DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH);
     java.util.Date date = new java.util.Date();
     String strExpireDay = "";
     if (card.getJPOS_ExpireDay() != null)
@@ -138,7 +138,7 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?TaskID=9">Quản lý thẻ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?TaskID=9">Quản lý thẻ</a> &#8250; <a href="index.jsp?TaskID=9&CardTask=7&CardID=<% if (request.getParameter("CardID")!= null){ out.print(request.getParameter("CardID"));} else {out.print(strCardID);}  %>"><%=strWebTitle%></a>
                             </div>
                         </td>
                     </tr>

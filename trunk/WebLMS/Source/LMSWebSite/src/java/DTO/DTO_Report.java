@@ -22,6 +22,8 @@ public class DTO_Report {
     private String _MerchantName;
     private String _MerchantAddress;
     private String _GiftName;
+     private String _InvoiceID;
+    private int _Amount;
 
     /**
      * @return the _LogID
@@ -189,5 +191,32 @@ public class DTO_Report {
      */
     public void setGiftName(String GiftName) {
         this._GiftName = GiftName;
+    }
+    /**
+     * @return the _InvoiceID
+     */
+    public String getInvoiceID() {
+        return _InvoiceID;
+    }
+
+    /**
+     * @param InvoiceID the _InvoiceID to set
+     */
+    public void setInvoiceID(String InvoiceID) {
+        this._InvoiceID = InvoiceID;
+    }
+
+    /**
+     * @return the _Amount
+     */
+    public int getAmount() {
+        return _Amount;
+    }
+
+    /**
+     * @param Amount the _Amount to set
+     */
+    public void setAmount(int Amount) {
+        this._Amount = Amount;
     }
 }

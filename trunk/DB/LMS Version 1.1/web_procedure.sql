@@ -47,6 +47,27 @@ Procedure List:
 	Update a merchant
 23. sp_Get_Merchant(@MID varchar(15))
 	Get merchant information
+24. sp_Terminal_Search(@key varchar(200))
+	Search Terminal
+25. sp_New_Terminal(@TID varchar(8),@Status int,@PIN varchar(16),@Retry int,@ActiveCode varchar(16))
+	Add new terminal
+26. sp_Update_Terminal(@TID varchar(8),@Status int,@PIN varchar(16),@Retry int,@ActiveCode varchar(16))
+	update terminal
+27. sp_Delete_Terminal(@TID varchar(8))
+	delete terminal
+28. sp_Get_Terminal(@TID varchar(8))
+	get terminal information
+29. sp_Assign_Terminal(@TID varchar(8),@MID varchar(15))
+	assign terminal to merchant
+30. sp_Stop_Assign_Terminal(@TID varchar(8))
+	stop assign a terminal
+31. sp_Customer_Search(@Key varchar(200))
+	search customer
+32. sp_Card_Search(@Key varchar(200))
+	search card
+33. sp_Merchant_Search(@Key varchar(200))
+	search merchant
+
 */
 
 use LMSDB;

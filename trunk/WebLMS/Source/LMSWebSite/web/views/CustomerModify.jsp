@@ -8,8 +8,9 @@
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
     "http://www.w3.org/TR/html4/loose.dtd">
+<%@page import="java.text.*,java.util.*" %>
 <%
-    DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+    DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH );
     java.util.Date date = new java.util.Date();
     ArrayList arrList = BUS.BUS_JPOS_Status.GetStatus("JPOS_Customer", DAO.DataProvider.getConnection(this.getServletConfig()));
 %>

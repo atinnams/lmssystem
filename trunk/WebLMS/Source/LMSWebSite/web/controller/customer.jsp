@@ -106,7 +106,7 @@
                 }
                 try
                 {
-                    DateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                    DateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH);
                     dtBirthday = (java.util.Date)sdf.parse(strBirthDay);
                 }
                 catch (Exception ex)
@@ -238,7 +238,7 @@
                 }
                 try
                 {
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH);
                     dtBirthday = sdf.parse(strBirthDay);
                 }
                 catch (Exception ex)
@@ -270,6 +270,7 @@
                 }
                 catch(Exception ex)
                 {
+                    strErrorCurrentPoint = "Số điểm không hợp lệ";
                     blError = true;
                 }
                 try
@@ -294,9 +295,9 @@
                 }
                 if (blError == true )
                 {
-                    strWebTitle = "Thêm mới khách hàng";
-                    int iGenCustID = BUS.BUS_JPOS_Customer.GenerateCustomerID(DAO.DataProvider.getConnection(this.getServletConfig()));
-                    %><%@include file="../views/CustomerAddNew.jsp"  %><%
+                    strWebTitle = "Thay đổi thông tin khách hàng";
+                    custInfor = BUS_JPOS_Customer.GetCustomerInfor(iCustomerID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                    %><%@include file="../views/CustomerModify.jsp"  %><%
                 }
                 else
                 {
