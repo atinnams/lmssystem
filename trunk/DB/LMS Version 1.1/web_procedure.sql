@@ -410,7 +410,12 @@ create procedure sp_Terminal_Search(@key varchar(200))
 as
 begin
 	declare @result int;
-	set @result = dbo.fn_Convert_String_Int('asdasdas1');
+	begin try
+		set @result = dbo.fn_Convert_String_Int('asdasdas1');
+	end try
+	begin catch
+		set @result = -1;
+	end catch
 	
 	select * from JPOS_Terminal T left join JPOS_Merchant M on T.JPOS_MID = M.JPOS_MID left join JPOS_Status on T.JPOS_Status = JPOS_StatusID
 	where 
@@ -511,17 +516,31 @@ go
 create procedure sp_Customer_Search(@Key varchar(200))
 as
 begin
-	select * from JPOS_Customer	C left join JPOS_Status on C.JPOS_Status = JPOS_StatusID 
-	where 
-	(JPOS_CustomerID = dbo.fn_Convert_String_Int(@Key) or
-	JPOS_LastName like '%'+@Key+'%' or
-	JPOS_FirstName like '%'+@Key+'%' or
-	JPOS_Address like '%'+@Key+'%' or
-	JPOS_Email like '%'+@Key+'%' or
-	JPOS_Favorite like '%'+@Key+'%' or
-	JPOS_CurrentPoint = dbo.fn_Convert_String_Int(@Key) or
-	JPOS_StatusName like '%'+@Key+'%') and
-	JPOS_StatusName not like '%Delete%'
+	begin try
+		select * from JPOS_Customer	C left join JPOS_Status on C.JPOS_Status = JPOS_StatusID 
+		where 
+		(JPOS_CustomerID = dbo.fn_Convert_String_Int(@Key) or
+		JPOS_LastName like '%'+@Key+'%' or
+		JPOS_FirstName like '%'+@Key+'%' or
+		JPOS_Address like '%'+@Key+'%' or
+		JPOS_Email like '%'+@Key+'%' or
+		JPOS_Favorite like '%'+@Key+'%' or
+		JPOS_CurrentPoint = dbo.fn_Convert_String_Int(@Key) or
+		JPOS_StatusName like '%'+@Key+'%') and
+		JPOS_StatusName not like '%Delete%'
+	end try
+	begin catch
+		select * from JPOS_Customer	C left join JPOS_Status on C.JPOS_Status = JPOS_StatusID 
+		where 
+		(JPOS_CustomerID = dbo.fn_Convert_String_Int(@Key) or
+		JPOS_LastName like '%'+@Key+'%' or
+		JPOS_FirstName like '%'+@Key+'%' or
+		JPOS_Address like '%'+@Key+'%' or
+		JPOS_Email like '%'+@Key+'%' or
+		JPOS_Favorite like '%'+@Key+'%' or		
+		JPOS_StatusName like '%'+@Key+'%') and
+		JPOS_StatusName not like '%Delete%'
+	end catch
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------
@@ -531,13 +550,23 @@ go
 create procedure sp_Card_Search(@Key varchar(200))
 as
 begin
-	select * from JPOS_Card	C left join JPOS_Status on C.JPOS_Status = JPOS_StatusID 
-	where 
-	(JPOS_CardID like '%'+@Key+'%' or
-	JPOS_ActivateCode like '%'+@Key+'%' or
-	JPOS_Monetary = dbo.fn_Convert_String_Int(@Key) or	
-	JPOS_StatusName like '%'+@Key+'%') and
-	JPOS_StatusName not like '%Delete%'
+	begin try
+		select * from JPOS_Card	C left join JPOS_Status on C.JPOS_Status = JPOS_StatusID 
+		where 
+		(JPOS_CardID like '%'+@Key+'%' or
+		JPOS_ActivateCode like '%'+@Key+'%' or
+		JPOS_Monetary = dbo.fn_Convert_String_Int(@Key) or	
+		JPOS_StatusName like '%'+@Key+'%') and
+		JPOS_StatusName not like '%Delete%'
+	end try
+	begin catch
+		select * from JPOS_Card	C left join JPOS_Status on C.JPOS_Status = JPOS_StatusID 
+		where 
+		(JPOS_CardID like '%'+@Key+'%' or
+		JPOS_ActivateCode like '%'+@Key+'%' or		
+		JPOS_StatusName like '%'+@Key+'%') and
+		JPOS_StatusName not like '%Delete%'
+	end catch
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------
@@ -547,13 +576,24 @@ go
 create procedure sp_Merchant_Search(@Key varchar(200))
 as
 begin
-	select * from JPOS_Merchant M left join JPOS_Issuer I on M.JPOS_IssuerID = I.JPOS_IssuerID left join JPOS_Status S on M.JPOS_Status = S.JPOS_StatusID
-	where 
-	(JPOS_MID like '%'+@Key+'%' or
-	JPOS_MerchantName like '%'+@Key+'%' or
-	M.JPOS_IssuerID = dbo.fn_Convert_String_Int(@Key) or	
-	JPOS_Address like '%'+@Key+'%' or
-	JPOS_StatusName like '%'+@Key+'%') and
-	JPOS_StatusName not like '%Delete%'
+	begin try
+		select * from JPOS_Merchant M left join JPOS_Issuer I on M.JPOS_IssuerID = I.JPOS_IssuerID left join JPOS_Status S on M.JPOS_Status = S.JPOS_StatusID
+		where 
+		(JPOS_MID like '%'+@Key+'%' or
+		JPOS_MerchantName like '%'+@Key+'%' or
+		M.JPOS_IssuerID = dbo.fn_Convert_String_Int(@Key) or	
+		JPOS_Address like '%'+@Key+'%' or
+		JPOS_StatusName like '%'+@Key+'%') and
+		JPOS_StatusName not like '%Delete%'
+	end try
+	begin catch
+		select * from JPOS_Merchant M left join JPOS_Issuer I on M.JPOS_IssuerID = I.JPOS_IssuerID left join JPOS_Status S on M.JPOS_Status = S.JPOS_StatusID
+		where 
+		(JPOS_MID like '%'+@Key+'%' or
+		JPOS_MerchantName like '%'+@Key+'%' or		
+		JPOS_Address like '%'+@Key+'%' or
+		JPOS_StatusName like '%'+@Key+'%') and
+		JPOS_StatusName not like '%Delete%'
+	end catch
 end
 go

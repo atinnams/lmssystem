@@ -126,3 +126,40 @@ blockquote {
 	color: #FFE;
 	text-decoration: underline;
 }
+
+div.pagination {
+width:420px;
+padding:5px;
+margin:5px;
+text-align:center;
+float:left;
+clear:both;
+font-size:10px;
+}
+
+div.pagination a {
+padding: 2px 5px 2px 5px;
+margin-right: 2px;
+border: 1px solid #795636;
+text-decoration: none;
+color: #795636;
+}
+div.pagination a:hover, div.pagination a:active {
+border:1px solid #795636;
+color: #fff;
+background-color: #795636;
+}
+div.pagination span.current {
+padding: 2px 5px 2px 5px;
+margin-right: 2px;
+border: 1px solid #795636;
+font-weight: bold;
+background-color: #795636;
+color: #FFF;
+}
+div.pagination span.disabled {
+padding: 2px 5px 2px 5px;
+margin-right: 2px;
+border: 1px solid #f3f3f3;
+color: #ccc;
+}

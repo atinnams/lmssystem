@@ -9,6 +9,21 @@
    "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@page import="java.util.*,java.text.*" %>
+<%@ taglib uri="http://jsptags.com/tags/navigation/pager" prefix="pg" %>
+<%
+    String Reg = "";
+    if (request.getQueryString() != null){
+        String RequestString = request.getQueryString();
+
+        int t = RequestString.indexOf("&pager.offset=");
+        if (t!=-1){
+            Reg = RequestString.substring(0, t);
+        }else{
+            Reg = RequestString;
+        }
+    }
+    int PageItems = 9;
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -173,7 +188,6 @@
                                    }
                                    else
                                    {
-                                        int iSize = resultViews.size();
                                         %>
                                         <table cellpadding="0" cellspacing="0" border="1px"  width="775px">
                                             <tr bgcolor="blue" align="center">
@@ -181,34 +195,38 @@
                                                 <th>Họ khách hàng</th>
                                                 <th>Tên khách hàng</th>
                                                 <th>Địa chỉ</th>
-                                                <th>Email</th>                                                
+                                                <th>Email</th>
                                                 <th>Giới tính</th>
                                                 <th width="50px">Số điểm hiện tại</th>
                                                 <th width="70px">Quản lý</th>
                                             </tr>
-                                        <%
+                                            <pg:pager maxIndexPages="20" export="currentPageNumber=pageNumber" maxPageItems="<%=PageItems %>">
+                                              <pg:param name="pg"/>
+                                              <pg:param name="q"/>
 
-                                        for (int i= 0 ; i < iSize; i++ )
+                                       <%
+                                        for (int i = 0; i < resultViews.size(); i++)
                                         {
-                                            DTO.DTO_JPOS_Customer customer = (DTO.DTO_JPOS_Customer)resultViews.get(i);
-                                            strGender = "Nữ";
-                                            if (customer.isGender())
-                                                strGender = "Nam";
-                                            strDateJoin = "";
-                                            if (customer.getDateJoin() != null)
-                                                strDateJoin = dateFormat.format(customer.getDateJoin());
-                                            strBirthDay = "";
-                                            if (customer.getBirthDay() != null)
-                                                strBirthDay = dateFormat.format(customer.getBirthDay());
+                                                DTO.DTO_JPOS_Customer customer = (DTO.DTO_JPOS_Customer)resultViews.get(i);
+                                                strGender = "Nữ";
+                                                if (customer.isGender())
+                                                    strGender = "Nam";
+                                                strDateJoin = "";
+                                                if (customer.getDateJoin() != null)
+                                                    strDateJoin = dateFormat.format(customer.getDateJoin());
+                                                strBirthDay = "";
+                                                if (customer.getBirthDay() != null)
+                                                    strBirthDay = dateFormat.format(customer.getBirthDay());
+                                        %>
 
-                                            %>
-
+                                      <ex:searchresults>
+                                        <pg:item>
                                             <tr align="center">
                                                 <td><%=customer.getJPOS_CustomerID() %></td>
                                                 <td><%=customer.getLastName() %></td>
                                                 <td><%=customer.getFirstName() %></td>
                                                 <td><%=customer.getAddress() %></td>
-                                                <td><%=customer.getEmail() %></td>                                                
+                                                <td><%=customer.getEmail() %></td>
                                                 <td><%=strGender %></td>
                                                 <td><%=customer.getJPOS_CurrentPoint() %></td>
                                                 <td>
@@ -217,11 +235,34 @@
                                                     <a href="index.jsp?TaskID=6&CustTask=3&CustID=<%=customer.getJPOS_CustomerID() %>" title="Xóa khách hàng"><img src="images/delete.jpg"></a>
                                                 </td>
                                             </tr>
-                                            <%
-                                        }
-                                        %></table><%
-                                        %><div style="height:200px"></div><%
-
+                                        </pg:item>
+                                      </ex:searchresults>
+                                        <%}%>
+                                        </table>
+                                        
+                                        <div class="pagination" align="center">
+                                          <pg:index>
+                                            Pages:
+                                            <pg:prev>&nbsp;<a href="<%= "index.jsp?"+Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>">[&lt;&lt; Prev]</a></pg:prev>
+                                            <pg:pages><%
+                                              if (pageNumber.intValue() < 10) {
+                                                %>&nbsp;<%
+                                              }
+                                              if (pageNumber == currentPageNumber) {
+                                                %><span class="current"><%= pageNumber %></span><%
+                                              } else {
+                                                       %><a href="<%= "index.jsp?" + Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>"><%= pageNumber %></a><%
+                                              }
+                                            %>
+                                            </pg:pages>
+                                            <pg:next>&nbsp;<a href="<%= "index.jsp?"+Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>">[Next &gt;&gt;]</a></pg:next>
+                                            <br>
+                                          </pg:index>
+                                          </div>
+                                        
+                                        </pg:pager>
+                                        <div style="height:200px"></div>
+                                        <%
                                    }
                                 %>
 
