@@ -9,6 +9,21 @@
    "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@page import="java.util.*,java.text.*" %>
+<%@ taglib uri="http://jsptags.com/tags/navigation/pager" prefix="pg" %>
+<%
+    String Reg = "";
+    if (request.getQueryString() != null){
+        String RequestString = request.getQueryString();
+
+        int t = RequestString.indexOf("&pager.offset=");
+        if (t!=-1){
+            Reg = RequestString.substring(0, t);
+        }else{
+            Reg = RequestString;
+        }
+    }
+    int PageItems = 9;
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -184,6 +199,9 @@
                                                 <th>Mã khách hàng</th>
                                                 <th>Quản lý</th>
                                             </tr>
+                                            <pg:pager maxIndexPages="20" export="currentPageNumber=pageNumber" maxPageItems="<%=PageItems %>">
+                                              <pg:param name="pg"/>
+                                              <pg:param name="q"/>
                                             <%
 
                                             for (int i= 0 ; i < iSize; i++ )
@@ -194,37 +212,60 @@
                                                     strExpireDay = dateFormat.format(card.getJPOS_ExpireDay());
                                                 int iCustomerID = card.getCustomerOwnerID();
                                                 %>
+                                                <ex:searchresults>
+                                                <pg:item>
+                                                    <tr align="center">
+                                                        <td><%=card.getJPOS_CardId() %></td>
+                                                        <td><%=strExpireDay %></td>
+                                                        <td><%=card.getStatus() %></td>
+                                                        <td><%=card.getActiveCode() %></td>
+                                                        <td>
+                                                            <%
+                                                             if (iCustomerID == 0)
+                                                             {
+                                                                %><a href="index.jsp?TaskID=9&CardTask=8&CardID=<%=card.getJPOS_CardId() %>" title="Thẻ chưa cấp phát, click để cấp thẻ">Thẻ chưa cấp</a></td><%
+                                                             }
+                                                             else
+                                                             {
+                                                                %><a href="index.jsp?TaskID=2&Detail=<%=iCustomerID %>" title="Xem chi tiết"><%=card.getCustomerOwnerID() %></a></td><%
+                                                             }
 
-                                                <tr align="center">
-                                                    <td><%=card.getJPOS_CardId() %></td>
-                                                    <td><%=strExpireDay %></td>
-                                                    <td><%=card.getStatus() %></td>
-                                                    <td><%=card.getActiveCode() %></td>
-                                                    <td>
-                                                        <%
-                                                         if (iCustomerID == 0)
-                                                         {
-                                                            %><a href="index.jsp?TaskID=9&CardTask=8&CardID=<%=card.getJPOS_CardId() %>" title="Thẻ chưa cấp phát, click để cấp thẻ">Thẻ chưa cấp</a></td><%
-                                                         }
-                                                         else
-                                                         {
-                                                            %><a href="index.jsp?TaskID=2&Detail=<%=iCustomerID %>" title="Xem chi tiết"><%=card.getCustomerOwnerID() %></a></td><%
-                                                         }
+                                                            %>
 
-                                                        %>
-
-                                                    <td>
-                                                        <a href="index.jsp?TaskID=9&CardTask=6&CardID=<%=card.getJPOS_CardId() %>" title="Chi tiết thẻ"><img src="images/detail.jpg"></a>
-                                                        <a href="index.jsp?TaskID=9&CardTask=7&CardID=<%=card.getJPOS_CardId() %>" title="Thay đổi thông tin"><img src="images/modify.jpg"></a>
-                                                        <a href="index.jsp?TaskID=9&CardTask=3&CardID=<%=card.getJPOS_CardId() %>" title="Xóa thẻ"><img src="images/delete.jpg"></a>
-                                                    </td>
-                                                </tr>
+                                                        <td>
+                                                            <a href="index.jsp?TaskID=9&CardTask=6&CardID=<%=card.getJPOS_CardId() %>" title="Chi tiết thẻ"><img src="images/detail.jpg"></a>
+                                                            <a href="index.jsp?TaskID=9&CardTask=7&CardID=<%=card.getJPOS_CardId() %>" title="Thay đổi thông tin"><img src="images/modify.jpg"></a>
+                                                            <a href="index.jsp?TaskID=9&CardTask=3&CardID=<%=card.getJPOS_CardId() %>" title="Xóa thẻ"><img src="images/delete.jpg"></a>
+                                                        </td>
+                                                    </tr>
+                                                </pg:item>
+                                                </ex:searchresults>
                                                 <%
-                                            }
-                                        %></table><%
-                                        %>
-                                        
-                                        <div style="height:200px"></div><%
+                                            }%>
+                                        </table>
+                                        <div class="pagination" align="center">
+                                          <pg:index>
+                                            Pages:
+                                            <pg:prev>&nbsp;<a href="<%= "index.jsp?"+Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>">[&lt;&lt; Prev]</a></pg:prev>
+                                            <pg:pages><%
+                                              if (pageNumber.intValue() < 10) {
+                                                %>&nbsp;<%
+                                              }
+                                              if (pageNumber == currentPageNumber) {
+                                                %><span class="current"><%= pageNumber %></span><%
+                                              } else {
+                                                       %><a href="<%= "index.jsp?" + Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>"><%= pageNumber %></a><%
+                                              }
+                                            %>
+                                            </pg:pages>
+                                            <pg:next>&nbsp;<a href="<%= "index.jsp?"+Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>">[Next &gt;&gt;]</a></pg:next>
+                                            <br>
+                                          </pg:index>
+                                          </div>
+
+                                        </pg:pager>
+                                        <div style="height:200px"></div>
+                                        <%
 
                                    }
                                 %>
