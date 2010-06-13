@@ -200,10 +200,9 @@
                                                 <th>Quản lý</th>
                                             </tr>
                                             <pg:pager maxIndexPages="20" export="currentPageNumber=pageNumber" maxPageItems="<%=PageItems %>">
-                                              <pg:param name="pg"/>
-                                              <pg:param name="q"/>
+                                            <pg:param name="pg"/>
+                                            <pg:param name="q"/>
                                             <%
-
                                             for (int i= 0 ; i < iSize; i++ )
                                             {
                                                 DTO.DTO_JPOS_Card card = (DTO.DTO_JPOS_Card)resultViews.get(i);

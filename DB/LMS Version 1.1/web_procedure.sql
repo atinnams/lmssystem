@@ -193,7 +193,7 @@ go
 create procedure sp_Transaction_Report
 as
 begin
-	Select JPOS_Log.JPOS_LogID,JPOS_Log.JPOS_Date,JPOS_Task.JPOS_TaskName,JPOS_Log.JPOS_CardID,JPOS_Customer.JPOS_CustomerID,JPOS_LOG.JPOS_PointGain,JPOS_LOG.JPOS_PointLoss,JPOS_PoSCC.JPOS_PoSCC_Name,JPOS_Terminal.JPOS_TID,JPOS_Merchant.JPOS_MerchantName,JPOS_Merchant.JPOS_Address,JPOS_Gift.JPOS_GiftName
+	Select JPOS_Log.JPOS_LogID,JPOS_Log.JPOS_Date,JPOS_Task.JPOS_TaskName,JPOS_Log.JPOS_CardID,JPOS_Customer.JPOS_CustomerID,JPOS_LOG.JPOS_PointGain,JPOS_LOG.JPOS_PointLoss,JPOS_PoSCC.JPOS_PoSCC_Name,JPOS_Terminal.JPOS_TID,JPOS_Merchant.JPOS_MerchantName,JPOS_Merchant.JPOS_Address,JPOS_Gift.JPOS_GiftName,JPOS_Log.JPOS_InvoiceId,JPOS_Log.JPOS_Amount
 	from 
 	JPOS_Log left join JPOS_Log_Exchange on JPOS_Log.JPOS_LogID = JPOS_Log_Exchange.JPOS_LogID
 	join jpos_card on JPOS_Log.JPOS_CardID = JPOS_Card.JPOS_CardID
