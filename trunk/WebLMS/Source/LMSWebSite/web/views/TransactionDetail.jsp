@@ -7,7 +7,21 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib uri="http://jsptags.com/tags/navigation/pager" prefix="pg" %>
+<%
+    String Reg = "";
+    if (request.getQueryString() != null){
+        String RequestString = request.getQueryString();
 
+        int t = RequestString.indexOf("&pager.offset=");
+        if (t!=-1){
+            Reg = RequestString.substring(0, t);
+        }else{
+            Reg = RequestString;
+        }
+    }
+    int PageItems = 9;
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -165,6 +179,9 @@
                                                         <th>Địa chỉ giao dịch</th>
                                                         <th>Quà tặng</th>
                                                     </tr>
+                                                 <pg:pager maxIndexPages="20" export="currentPageNumber=pageNumber" maxPageItems="<%=PageItems %>">
+                                                <pg:param name="pg"/>
+                                                <pg:param name="q"/>
                                                 <%
                                                 for (int i=0; i< iSize; i++)
                                                 {
@@ -172,19 +189,46 @@
                                                     String strGift = "";
                                                     if (report.getGiftName() != null)
                                                         strGift = report.getGiftName();
-                                                    %><tr align="center"><%
-                                                        %><td><%=report.getLogID() %></td><%
-                                                        %><td><%=report.getDate().toString() %></td><%
-                                                        %><td><%=report.getTask() %></td><%
-                                                        %><td><%=report.getPointGain() %></td><%
-                                                        %><td><%=report.getPointLoss() %></td><%
-                                                        %><td><%=report.getPoSCCName() %></td><%
-                                                        %><td><%=report.getMerchantAddress() %></td><%
-                                                        %><td><%=strGift %></td><%
-                                                    %></tr><%
-
+                                                    %>
+                                                    <ex:searchresults>
+                                                    <pg:item>
+                                                    <tr align="center">
+                                                        <td><%=report.getLogID() %></td>
+                                                        <td><%=report.getDate().toString() %></td>
+                                                        <td><%=report.getTask() %></td>
+                                                        <td><%=report.getPointGain() %></td>
+                                                        <td><%=report.getPointLoss() %></td>
+                                                        <td><%=report.getPoSCCName() %></td>
+                                                        <td><%=report.getMerchantAddress() %></td>
+                                                        <td><%=strGift %></td>
+                                                    </tr>
+                                                    </pg:item>
+                                                     </ex:searchresults>
+                                                 <%
                                                 }
-                                                %></table><%
+                                                %>
+                                                </table>
+                                                <div class="pagination" align="center">
+                                                  <pg:index>
+                                                    Pages:
+                                                    <pg:prev>&nbsp;<a href="<%= "index.jsp?"+Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>">[&lt;&lt; Prev]</a></pg:prev>
+                                                    <pg:pages><%
+                                                      if (pageNumber.intValue() < 10) {
+                                                        %>&nbsp;<%
+                                                      }
+                                                      if (pageNumber == currentPageNumber) {
+                                                        %><span class="current"><%= pageNumber %></span><%
+                                                      } else {
+                                                               %><a href="<%= "index.jsp?" + Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>"><%= pageNumber %></a><%
+                                                      }
+                                                    %>
+                                                    </pg:pages>
+                                                    <pg:next>&nbsp;<a href="<%= "index.jsp?"+Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>">[Next &gt;&gt;]</a></pg:next>
+                                                    <br>
+                                                  </pg:index>
+                                                  </div>
+                                                </pg:pager>
+                                            <%
                                             }
                                        }
                                        else

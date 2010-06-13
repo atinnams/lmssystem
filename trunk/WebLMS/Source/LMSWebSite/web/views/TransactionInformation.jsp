@@ -7,7 +7,21 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib uri="http://jsptags.com/tags/navigation/pager" prefix="pg" %>
+<%
+    String Reg = "";
+    if (request.getQueryString() != null){
+        String RequestString = request.getQueryString();
 
+        int t = RequestString.indexOf("&pager.offset=");
+        if (t!=-1){
+            Reg = RequestString.substring(0, t);
+        }else{
+            Reg = RequestString;
+        }
+    }
+    int PageItems = 5;
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -141,7 +155,7 @@
                                     <h1><%=strWebTitle %></h1>
                                      <% if (resultViews ==null) { %>
                                     <center><h2>Thông tin tìm kiếm</h2></center>
-                                    <form action="index.jsp" method="post">
+                                    <form action="index.jsp" method="get">
                                         <input type="hidden" name="TaskID" value="4">
                                         <table>
                                             <tr>
@@ -219,12 +233,18 @@
                                                 <h2><%=iSize %> Kết quả tìm thấy</h2>
                                                 <hr>
                                                 <table cellpadding="0px" cellspacing="0px" width="550px">
+                                                <pg:pager maxIndexPages="20" export="currentPageNumber=pageNumber" maxPageItems="<%=PageItems %>">
+                                                <pg:param name="pg"/>
+                                                <pg:param name="q"/>
                                                 <%
                                                 for (int i=0; i< iSize; i++)
                                                 {
                                                     DTO.DTO_JPOS_Customer jposCustomer = (DTO.DTO_JPOS_Customer)resultViews.get(i);
-                                                    %><tr><%
-                                                        %>
+                                                    %>
+
+                                                    <ex:searchresults>
+                                                    <pg:item>
+                                                    <tr>
                                                         <td>
                                                             <div>
                                                                 <span>Mã khách hàng : <%=jposCustomer.getJPOS_CustomerID() %></span><br/>
@@ -236,11 +256,34 @@
                                                             </div>
                                                             <hr>
                                                         </td>
-                                                        <%
-                                                    %></tr><%
-
+                                                     </tr>
+                                                     </pg:item>
+                                                     </ex:searchresults>
+                                                     <%
                                                 }
-                                                %></table><%
+                                                %>
+                                                </table>
+                                                <div class="pagination" align="center">
+                                                  <pg:index>
+                                                    Pages:
+                                                    <pg:prev>&nbsp;<a href="<%= "index.jsp?"+Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>">[&lt;&lt; Prev]</a></pg:prev>
+                                                    <pg:pages><%
+                                                      if (pageNumber.intValue() < 10) {
+                                                        %>&nbsp;<%
+                                                      }
+                                                      if (pageNumber == currentPageNumber) {
+                                                        %><span class="current"><%= pageNumber %></span><%
+                                                      } else {
+                                                               %><a href="<%= "index.jsp?" + Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>"><%= pageNumber %></a><%
+                                                      }
+                                                    %>
+                                                    </pg:pages>
+                                                    <pg:next>&nbsp;<a href="<%= "index.jsp?"+Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>">[Next &gt;&gt;]</a></pg:next>
+                                                    <br>
+                                                  </pg:index>
+                                                  </div>
+                                                </pg:pager>
+                                                <%
                                             }
                                        }
                                     %>
