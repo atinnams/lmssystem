@@ -1,14 +1,22 @@
+<%-- 
+    Document   : AdminInformation
+    Created on : Jun 16, 2010, 10:35:22 PM
+    Author     : NKLapTop
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
-
-<%@page import="java.util.*,java.text.*" %>
+<%
+    DateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH );
+    java.util.Date date = new java.util.Date();
+    ArrayList arrList = BUS.BUS_JPOS_Status.GetStatus("JPOS_Customer", DAO.DataProvider.getConnection(this.getServletConfig()));
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-        <meta http-equiv="Refresh" content="3 URL = '<%=strURLforward %>'"/>
         <title>LMS System index page</title>
-
+        <script language="javascript" type="text/javascript" src="js/datetimepicker.js" ></script>
         <script type="text/javascript">
             <!--
             function newImage(arg) {
@@ -76,8 +84,8 @@
 
                     <tr>
                         <td colspan="5" rowspan="3" background="images/menu-blank.jpg">
-<% if (session.getAttribute("Admin") == null) {
-%>
+                            <% if (session.getAttribute("Admin") == null) {
+                            %>
                             <form action="index.jsp" method="post">
                                 <table>
                                     <tr>
@@ -93,9 +101,9 @@
 
                                 </table>
                             </form>
-<% } else {
-        DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
-%>
+                            <% } else {
+                                 DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
+                            %>
                             <table width="280px">
                                 <tr>
                                     <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white" >&raquo;&nbsp;Tài khoản : <%=result.getUsername().toString()%></span></td>
@@ -109,9 +117,9 @@
 
                                 <tr><td colspan="3" align="right" style="font-size:14px;"><a href="index.jsp?TaskID=1" style="color:Red;">Log out</a></td></tr>
                             </table>
-<%
-    }
-%>
+                            <%
+                                        }
+                            %>
                         </td>
                         <td> <img src="images/spacer.gif" alt="" height="31" width="1"></td>
                     </tr>
@@ -126,18 +134,52 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a> &#8250; Xử lý </a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?TaskID=14">Quản lý tài khoản</a> &#8250; <a href="index.jsp?TaskID=9&CardTask=1"><%=strWebTitle%></a>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="9">
-                            <div align="center">
-                                <div style="height:50px"></div>
-                                <p>&nbsp;</p>
-                                <p><strong>Yêu cầu của bạn đang được xử lý, vui lòng chờ trong giây lát<br /></strong></p>
-                                <img src="images/loading.gif">
-                                <div style="height:200px"></div>
+                        <td colspan="9" class="main">
+                            <div >
+                                <div class="content">
+                                    <h1 style="text-transform:uppercase"><%=strWebTitle%></h1>                                    
+                                    <table>
+                                        <tr>
+                                            <th align="left"> Username : </th>
+                                            <td><%=AdminInfor.getUsername() %></td>
+                                            
+                                        </tr>                                        
+                                        <tr>
+                                            <th align="left"> Họ :</th>
+                                            <td><%=AdminInfor.getLastName() %></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left"> Tên : </th>
+                                            <td><%=AdminInfor.getFirstName()%></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left"> Email : </th>
+                                            <td><%=AdminInfor.getEmail()%></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left"> Ngày tạo tài khoản : </th>
+                                            <td><%=AdminInfor.getDateJoin().toString()%></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left"> Ngày đăng nhập gần nhất : </th>
+                                            <td><%=AdminInfor.getLastLogin().toString()%></td>
+                                        </tr>                                        
+                                    </table>
+                                        <div align="center">
+                                            <a href="index.jsp?TaskID=14&AdminTask=7&User=<%=AdminInfor.getUsername() %>" title="Thay đổi thông tin"><img src="images/modify.jpg">Thay đổi thông tin tài khoản</a>
+                                        </div>
+                                    <div style="height:400px"></div>
+                                </div>
+
+                                <%@include file="../include/Navigation.jsp" %>
+
+                                <div class="clearer">&nbsp;</div>
+
                             </div>
                         </td>
                     </tr>

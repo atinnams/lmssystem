@@ -63,9 +63,16 @@ private DTO_JPOS_Admin Login(String strUsername, String strPassword) {
         case 13 :
             %> <jsp:forward page="controller/report.jsp"></jsp:forward> <%
             break;
+        case 14 :
+            %> <jsp:forward page="controller/admin.jsp"></jsp:forward> <%
+            break;
+        case 15 :
+            %> <jsp:forward page="controller/issuer.jsp"></jsp:forward> <%
+            break;
         default :
             %> <%@include file="views/IndexPage.jsp" %>  <%
             break;
+        
     }
 %>
 

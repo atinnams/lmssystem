@@ -13,6 +13,7 @@ import DAO.iDAO.IJPOS_PoSCC;
 import DAO.iDAO.IJPOS_Task;
 import DAO.iDAO.IJPOS_Terminal;
 import DAO.iDAO.IJPOS_Status;
+import DAO.iDAO.IJPOS_Issuer;
 
 import DAO.DAO_JPOS_Card;
 import DAO.DAO_JPOS_Customer;
@@ -25,7 +26,7 @@ import DAO.DAO_JPOS_Task;
 import DAO.DAO_JPOS_Admin;
 import DAO.DAO_JPOS_Terminal;
 import DAO.DAO_JPOS_Status;
-
+import DAO.DAO_JPOS_Issuer;
 /**
  * Concrete SQL database object of LMS DAO Factory.
  * @author HUNGPT
@@ -86,6 +87,11 @@ public class LMSSqlDAO extends LMSDAOFactory {
         @Override
         public IJPOS_Status getJPOS_Status() {
             return new DAO_JPOS_Status();
+
+        }
+        @Override
+        public IJPOS_Issuer getJPOS_Issuer() {
+            return new DAO_JPOS_Issuer();
 
         }
 }

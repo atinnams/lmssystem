@@ -1,14 +1,17 @@
+<%-- 
+    Document   : AdminModify
+    Created on : Jun 16, 2010, 10:45:10 PM
+    Author     : NKLapTop
+--%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
-
-<%@page import="java.util.*,java.text.*" %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-        <meta http-equiv="Refresh" content="3 URL = '<%=strURLforward %>'"/>
         <title>LMS System index page</title>
-
+        <script language="javascript" type="text/javascript" src="js/datetimepicker.js" ></script>
         <script type="text/javascript">
             <!--
             function newImage(arg) {
@@ -76,8 +79,8 @@
 
                     <tr>
                         <td colspan="5" rowspan="3" background="images/menu-blank.jpg">
-<% if (session.getAttribute("Admin") == null) {
-%>
+                            <% if (session.getAttribute("Admin") == null) {
+                            %>
                             <form action="index.jsp" method="post">
                                 <table>
                                     <tr>
@@ -93,9 +96,9 @@
 
                                 </table>
                             </form>
-<% } else {
-        DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
-%>
+                            <% } else {
+                                 DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
+                            %>
                             <table width="280px">
                                 <tr>
                                     <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white" >&raquo;&nbsp;Tài khoản : <%=result.getUsername().toString()%></span></td>
@@ -109,9 +112,9 @@
 
                                 <tr><td colspan="3" align="right" style="font-size:14px;"><a href="index.jsp?TaskID=1" style="color:Red;">Log out</a></td></tr>
                             </table>
-<%
-    }
-%>
+                            <%
+                                        }
+                            %>
                         </td>
                         <td> <img src="images/spacer.gif" alt="" height="31" width="1"></td>
                     </tr>
@@ -126,18 +129,66 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a> &#8250; Xử lý </a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?TaskID=14">Quản lý tài khoản</a> &#8250; <a href="index.jsp?TaskID=9&CardTask=1"><%=strWebTitle%></a>
                             </div>
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="9">
-                            <div align="center">
-                                <div style="height:50px"></div>
-                                <p>&nbsp;</p>
-                                <p><strong>Yêu cầu của bạn đang được xử lý, vui lòng chờ trong giây lát<br /></strong></p>
-                                <img src="images/loading.gif">
-                                <div style="height:200px"></div>
+                        <td colspan="9" class="main">
+                            <div >
+                                <div class="content">
+                                    <h1 style="text-transform:uppercase"><%=strWebTitle%></h1>
+                                    <form method="post" action="index.jsp">
+                                    <div style="height:30px"></div>
+                                    <span style="color:red"><%=strErrorAddNew %> </span>
+                                    <input type="hidden" name="TaskID" value="14" />
+                                    <input type="hidden" name="AdminTask" value="5" />
+                                    <table>
+                                        <tr>
+                                            <th align="left"> Username : </th>
+                                            <td><input type="text" name="inUsername" readonly value="<%=AdminInfor.getUsername() %>"></td>
+                                            <td><span style="color:red"><%=strErrorUsername %></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left"> Password : </th>
+                                            <td><input type="Password" name="inPassword"></td>
+                                            <td><span style="color:red"><%=strErrorPassword %></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left"> Retype Password : </th>
+                                            <td><input type="Password" name="txtPasswordRetype"></td>
+                                            <td><span style="color:red"><%=strErrorPassword %></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left"> Họ :</th>
+                                            <td><input type="text" name="txtHo" value="<%=AdminInfor.getLastName() %>"> </td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left"> Tên : </th>
+                                            <td><input type="text" name="txtTen" value="<%=AdminInfor.getFirstName() %>"></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left"> Email : </th>
+                                            <td><input type="text" name="txtEmail" value="<%= AdminInfor.getEmail()%>"></td>
+                                            <td><span style="color:red"><%=strErrorMail %></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td></td>
+                                            <td><input type="submit" value="Cập nhật"></td>
+                                            <td></td>
+                                        </tr>
+                                    </table>
+
+                                    </form>
+                                    <div style="height:400px"></div>
+                                </div>
+
+                                <%@include file="../include/Navigation.jsp" %>
+
+                                <div class="clearer">&nbsp;</div>
+
                             </div>
                         </td>
                     </tr>
@@ -170,6 +221,5 @@
 
     </body>
 </html
-
 
 

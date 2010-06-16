@@ -597,3 +597,97 @@ begin
 	end catch
 end
 go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_New_Admin') is not null
+	drop proc sp_New_Admin
+go
+create procedure sp_New_Admin(@Username nvarchar(50), @Password nvarchar(50), @FirstName nvarchar(50), @LastName nvarchar(50), @Email varchar(100))
+as
+begin
+	insert into JPOS_Admin(JPOS_Username,JPOS_Password,JPOS_FirstName,JPOS_LastName,JPOS_DateJoin,JPOS_Email,JPOS_LoginCount,JPOS_LastLogin) values (@Username, @Password, @FirstName, @LastName, getdate(),@Email, 0, getdate())
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Delete_Admin') is not null
+	drop proc sp_Delete_Admin
+go
+create procedure sp_Delete_Admin(@Username nvarchar(50))
+as
+begin
+	delete from JPOS_Admin
+	where JPOS_Username = @Username
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Update_Admin') is not null
+	drop proc sp_Update_Admin
+go
+create procedure sp_Update_Admin(@Username nvarchar(50), @Password nvarchar(50), @FirstName nvarchar(50), @LastName nvarchar(50), @Email varchar(100))
+as
+begin
+	Update JPOS_Admin 
+	set 
+	JPOS_Password = @Password,
+	JPOS_FirstName = @FirstName,
+	JPOS_LastName = @LastName,	
+	JPOS_Email = @Email
+	where JPOS_Username = @Username
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Admin_Search') is not null
+	drop proc sp_Admin_Search
+go
+create procedure sp_Admin_Search(@Key nvarchar(100))
+as
+begin
+	Select * from JPOS_Admin 
+	where
+	JPOS_Username like '%'+@Key+'%'or
+	JPOS_FirstName like '%'+@Key + '%' or
+	JPOS_LastName like '%'+@Key+'%' or	
+	JPOS_Email like '%'+@Key+'%'
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Admin_List') is not null
+	drop proc sp_Admin_List
+go
+create procedure sp_Admin_List
+as
+begin
+	Select * from JPOS_Admin 	
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Get_Admin') is not null
+	drop proc sp_Get_Admin
+go
+create procedure sp_Get_Admin (@Username nvarchar(50))
+as
+begin
+	Select * from JPOS_Admin where JPOS_Username = @Username
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Get_Issuer') is not null
+	drop proc sp_Get_Issuer
+go
+create procedure sp_Get_Issuer
+as
+begin
+	Select * from JPOS_Issuer
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Update_Issuer') is not null
+	drop proc sp_Update_Issuer
+go
+create procedure sp_Update_Issuer (@Name nvarchar(100),@Address nvarchar(200), @Date Datetime)
+as
+begin
+	update JPOS_Issuer 
+	set JPOS_IssuerName = @Name, JPOS_IssuerAddress = @Address, JPOS_DateFound = @Date
+	where JPOS_IssuerID = 1
+end
+go
