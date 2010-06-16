@@ -12,7 +12,7 @@ import DAO.iDAO.IJPOS_PoSCC;
 import DAO.iDAO.IJPOS_Task;
 import DAO.iDAO.IJPOS_Terminal;
 import DAO.iDAO.IJPOS_Status;
-
+import DAO.iDAO.IJPOS_Issuer;
 
 /**
  * 
@@ -50,6 +50,8 @@ public abstract class LMSDAOFactory {
         public abstract IJPOS_Terminal getJPOS_Terminal();
 
         public abstract IJPOS_Status getJPOS_Status();
+
+        public abstract IJPOS_Issuer getJPOS_Issuer();
         
 	/**
 	 * Get instance of class indicate for specific database..
