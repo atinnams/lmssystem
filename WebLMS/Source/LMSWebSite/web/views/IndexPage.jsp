@@ -136,49 +136,59 @@
                         <td colspan="9" class="main">
                             <div >
                                 <div class="content">
-                                    <h1>Porttitor posuere</h1>
-                                    <div class="descr">Jun 13, 2006 by Vulputate</div>
+                                    <h1>LMS Website Project</h1>
+                                    <div class="descr">July 05, 2010 by Nguyễn Khuyến,Phạm Thế Hùng</div>
 
-                                    <p>In hac habitasse platea dictumst. Duis porttitor. Sed vulputate elementum nisl. Vivamus et mi at arcu mattis iaculis. Nullam posuere tristique tortor. In bibendum. Aenean ornare, <a href="index.jsp">nunc eget pretium</a> porttitor, sem est pretium leo, non euismod nulla dui non diam. Pellentesque dictum faucibus leo. Vestibulum ac ante. Sed in est.</p>
-
-                                    <blockquote><p>Sed sodales nisl sit amet augue. Donec ultrices, augue ullamcorper posuere laoreet, turpis massa tristique justo, sed egestas metus magna sed purus.</p></blockquote>
-
-                                    <h2>Sollicitudin</h2>
-
-                                    <p>Aliquam risus justo, mollis in, laoreet a, consectetuer nec, risus. Nunc blandit sodales lacus. Nam luctus semper mi. In eu diam.</p>
-
-                                    <p>Fusce porta pede nec eros. Maecenas ipsum sem, interdum non, aliquam vitae, interdum nec, metus. Maecenas ornare lobortis risus. Etiam placerat varius mauris. Maecenas viverra. Sed feugiat. Donec mattis <a href="index.jsp">quam aliquam</a> risus. Nulla non felis sollicitudin urna blandit egestas. Integer et libero varius pede tristique ultricies. Cras nisl. Proin quis massa semper felis euismod ultricies.
+                                    <h2>Giới thiệu về LMS system</h2>
+                                    <p>
+                                        Khóa luận tập trung vào xây dựng giải pháp server cho hệ thống LMS.<br>
+                                        Hệ thống server sẽ nhận các gói dữ liệu gởi theo chuẩn ISO8583 từ các thiết bị đọc mã vạch hoặc các máy POS terminal hay thậm chí là từ thiết bị di động có hỗ trợ phần mềm đọc mã vạch.<br>
+                                        Sau đó hệ thống sẽ tiến hành thực hiện các tác vụ có liên quan như cộng điểm khi mua hàng trừ điểm khi trả hàng hoặc các tác vụ khác như kích hoạt thẻ sau đó lưu trữ vào database và trả kết quả về cho client.<br>
+                                        Hệ thống hỗ trợ khách hàng quản lý truy vấn thông tin tài khoản của mình thông qua giao diện web. <br>
+                                        Quản lý thống kê các tài khoản khách hàng, thống kê việc mua bán của khách hàng nhầm giúp các doanh nghiệp đưa ra chuyến lược kinh doanh hợp lý.
                                     </p>
+                                    <blockquote>
+                                        <p>
+                                            Ưu điểm : Hỗ trợ các thiết bị có sẵn như điện thoại di động có khả năng đọc barcode.Các kênh truyền được thiết kế độc lập nhờ một module trung gian giúp cho việc khả chuyển các kênh truyền phục vụ cho việc mở rộng bài toàn sau này.<br>
+                                            <br>
+                                            Khuyết điểm : Khả năng bảo mật thấp do mã nguồn mở.Việc ứng dụng vào thực tế cần có sự đầu tư của các doanh nghiệp.<br>
+                                        </p>
+                                    </blockquote>
+                                     <h1>Cập nhật cơ sở dữ liệu</h1>
+                                    <div class="descr">April 19, 2010 by Nguyễn Khuyến, Phạm Thế Hùng</div>
 
-                                    <h1>Adipiscing</h1>
-                                    <div class="descr">Jun 11, 2006 by Laoreet</div>
+                                    <p>Cập nhật cơ sở dữ liệu theo yêu cầu mới từ khách hàng, hỗ trợ thêm cho việc truy vấn số dư, các giao dịch liên quan đến tài khoản, số tiền trong thẻ khách hàng.</p>
 
-                                    <p>Aliquam risus justo, mollis in, laoreet a, consectetuer nec, risus. Nunc blandit sodales lacus. Nam luctus semper mi.</p>
+                                    Các giao dịch bổ sung :
+                                        <ul>
+                                            <li>Redeem</li>
+                                            <li>Reload</li>
+                                            <li>Void</li>
+                                            <li>Balance Inquiry</li>
+                                        </ul>
 
-                                    <ul>
-                                        <li>Tristique</li>
-                                        <li>Aenean</li>
-                                        <li>Pretium</li>
-                                    </ul>
+                                    <p>Thông tin chi tiết về từng giao dịch được miêu tả trong tài liệu luận văn. Để hiểu rõ hơn từng giao dịch xin vui lòng xem chi tiết trong tài liệu đính kèm.</p>
+                                    <h1>Khởi tạo dự án website</h1>
+                                    <div class="descr">April 24, 2010 by Nguyễn Khuyến</div>
 
-                                    <p>In hac habitasse platea dictumst. Duis porttitor. Sed vulputate elementum nisl. Vivamus et mi at arcu mattis iaculis. Nullam posuere tristique tortor. In bibendum. Aenean ornare, nunc eget pretium porttitor, sem est pretium leo, non euismod nulla dui non diam. Pellentesque dictum faucibus leo. Vestibulum ac ante. Sed in est.</p>
+                                    <p>Khởi tạo kiến trúc website, xây dựng nền framework và các thư viện cần thiết, kết hợp với database của JPOS server, cập nhật những class đã có sẵn từ JPOS server và kiến trúc nền trên server</p>
 
-                                    <h1>Interdum</h1>
-                                    <div class="descr">May 24, 2006 by Lectus</div>
+                                    <h3>Cấu trúc Website</h3>
+                                    <p>Website được xây dựng dựa trên ngôn ngữ jsp kết hợp với mô hình MVC, thông tin chi tiết có thể tham khảo thêm trong tài liệu luận văn</p>
 
-                                    <p>Praesent nisi sem, bibendum in, ultrices sit amet, euismod sit amet, dui. Donec varius tincidunt nisi. Ut ut sapien. Integer porta. Fusce nibh. Curabitur pellentesque, lectus at <a href="index.jsp">volutpat interdum</a></p>
+                                    <h1>Kết thúc dự án website.</h1>
 
-                                    <h3>Sem justo</h3>
-
-                                    <p>Placerat elit, eget feugiat est leo tempor quam. Ut quis neque convallis magna consequat molestie. Nullam semper massa eget ligula. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Pellentesque a nibh quis nunc volutpat aliquam</p>
-
-                                    <code>margin-bottom: 12px;
-                                        font: normal 1.1em "Lucida Sans Unicode",serif;
-                                        background: url(img/quote.gif) no-repeat;
-                                        padding-left: 28px;
-                                        color: #555;</code>
-
-                                    <p>Eget feugiat est leo tempor quam. Ut quis neque convallis magna consequat molestie.</p>
+                                    <p>Dự án website LMS là một phần bổ sung cho hệ thống LMS server, giúp hỗ trợ khách hàng tương tác với hệ thống giao diện thân thiện. Do thời gian không cho phép nên chỉ đáp ứng được những thao tác cơ bản nhất đối với hệ thống, những yêu cầu cao hơn như về bảo mật, quản lý các trạng thái sẽ được cập nhật ở những phiên bản nâng cao của hệ thống LMS.</p>
+                                    <p>Thông tin hiển thị trên web site là những thông tin mẫu, được xây dựng để kiểm thử hệ thống, để thay đổi những thông tin này vui lòng liên lạc với quản trị viên website để thay đổi</p>
+                                    <code>Thông tin tổng đại lý
+                            --------------------------------------------------------------------
+                            Tên đại lý              : <%=issuer.getIssuerName() %>
+                            Địa chỉ                  : <%=issuer.getIssuerAddress() %>
+                            Ngày thành lập      : <%=issuer.getIssuerDateFound() %>
+                            --------------------------------------------------------------------
+                                    </code>
+                                    
+                                   
                                 </div>
 
                                 <%@include file="../include/Navigation.jsp" %>

@@ -20,6 +20,7 @@ private DTO_JPOS_Admin Login(String strUsername, String strPassword) {
 
 <%
     int iTaskID = -1;
+    DTO_JPOS_Issuer issuer = BUS.BUS_JPOS_Issuer.getIssuer(DAO.DataProvider.getConnection(this.getServletConfig()));            
     String strTask = request.getParameter("TaskID");
     if (strTask != null)
         try{
@@ -32,7 +33,7 @@ private DTO_JPOS_Admin Login(String strUsername, String strPassword) {
             String strUsername = request.getParameter("txtUsername");
             String strPassword = request.getParameter("txtPassword");
             DTO_JPOS_Admin DTO_admin = Login(strUsername, strPassword);
-            session.setAttribute("Admin",DTO_admin);
+            session.setAttribute("Admin",DTO_admin);            
             %> <%@include file="views/IndexPage.jsp" %>  <%
             break;
         case 1:
