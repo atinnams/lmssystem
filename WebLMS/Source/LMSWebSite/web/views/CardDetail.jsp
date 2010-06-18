@@ -87,7 +87,7 @@
 
                     <tr>
                         <td colspan="5" rowspan="3" background="images/menu-blank.jpg">
-                            <% if (session.getAttribute("Admin") == null) {
+                            <% if (session.getAttribute("Admin") == null && session.getAttribute("Cust")==null) {
                             %>
                             <form action="index.jsp" method="post">
                                 <table>
@@ -106,16 +106,32 @@
                             </form>
                             <% } else {
                                  DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
+								 DTO_JPOS_Customer Customer = (DTO_JPOS_Customer) session.getAttribute("Cust");
+                                String Username ;
+                                String FirstName;
+                                String DateLogin;
+                                if (result != null)
+                                {
+                                    Username = result.getUsername();
+                                    FirstName = result.getFirstName();
+                                    DateLogin = result.getLastLogin().toString();
+                                }
+                                else
+                                {
+                                    Username = Customer.getUsername();
+                                    FirstName = Customer.getFirstName();
+                                    DateLogin = (new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH)).format(new Date()).toString();
+                                }
                             %>
                             <table width="280px">
                                 <tr>
-                                    <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white" >&raquo;&nbsp;Tài khoản : <%=result.getUsername().toString()%></span></td>
+                                    <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white" >&raquo;&nbsp;Tài khoản : <%=Username %></span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white">&raquo;&nbsp;Chào mừng  : <%=result.getFirstName()%></span></td>
+                                    <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white">&raquo;&nbsp;Chào mừng  : <%=FirstName %></span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white">&raquo;&nbsp;Ngày đăng nhập gần nhất : <%=result.getLastLogin().toString()%></span> </td>
+                                    <td colspan="2"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white">&raquo;&nbsp;Ngày đăng nhập gần nhất : <%=DateLogin %></span> </td>
                                 </tr>
 
                                 <tr><td colspan="3" align="right" style="font-size:14px;"><a href="index.jsp?TaskID=1" style="color:Red;">Log out</a></td></tr>
@@ -137,7 +153,13 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?TaskID=9">Quản lý thẻ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
+                                <a href="index.jsp">Trang chủ</a>
+                                <% if (session.getAttribute("Admin")!=null)
+                                    { %>
+                                     &#8250; <a href="index.jsp?TaskID=9">Quản lý thẻ</a>
+                                <%} %>
+
+                                &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
                             </div>
                         </td>
                     </tr>
@@ -145,7 +167,9 @@
                         <td colspan="9" class="main">
                             <div >
                                 <div class="content">
-                                    <h1 style="text-transform:uppercase"><%=strWebTitle%></h1>                                    
+                                    <h1 style="text-transform:uppercase"><%=strWebTitle%></h1>
+                                    <% if (card!=null)
+                                    { %>
                                     <div style="height:30px"></div>                                    
                                     <input type="hidden" name="TaskID" value="9" />
                                     <input type="hidden" name="CardTask" value="2" />
@@ -192,13 +216,21 @@
                                             <td>&nbsp;</td>
                                             <td>&nbsp;</td>
                                         </tr>
+                                        <% if (session.getAttribute("Admin") != null) 
+                                            {
+                                        %>
                                         <tr>
                                             <td></td>
                                             <td><img src="images/modify.jpg"><a href="index.jsp?TaskID=9&CardTask=7&CardID=<%=card.getJPOS_CardId() %>" title="Thay đổi thông tin">Thay đổi thông tin thẻ</a><td>
                                         </tr>
+                                        <% } %>
                                     </table>
 
-                                    </form>
+                                    <%} else { %>
+
+                                    <h3>Không tìm thấy thông tin thẻ</h3>
+
+                                    <% } %>
                                     <div style="height:400px"></div>
                                 </div>
 

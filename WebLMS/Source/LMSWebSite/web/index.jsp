@@ -22,6 +22,13 @@ private DTO_JPOS_Admin Login(String strUsername, String strPassword) {
     int iTaskID = -1;
     DTO_JPOS_Issuer issuer = BUS.BUS_JPOS_Issuer.getIssuer(DAO.DataProvider.getConnection(this.getServletConfig()));            
     String strTask = request.getParameter("TaskID");
+    String strClassMain = "";
+    String strClassContent = "style='padding-left:30px;padding-right:30px'";
+    if (session.getAttribute("Admin") != null || session.getAttribute("Cust") != null)
+    {
+        strClassMain = "class='main'";
+        strClassContent = "class='content'";
+    }
     if (strTask != null)
         try{
             iTaskID = Integer.parseInt(strTask);
@@ -30,20 +37,36 @@ private DTO_JPOS_Admin Login(String strUsername, String strPassword) {
         }
     switch (iTaskID){
         case 0:
-            String strUsername = request.getParameter("txtUsername");
-            String strPassword = request.getParameter("txtPassword");
-            DTO_JPOS_Admin DTO_admin = Login(strUsername, strPassword);
-            session.setAttribute("Admin",DTO_admin);            
-            %> <%@include file="views/IndexPage.jsp" %>  <%
+            {
+                String strUsername = request.getParameter("txtUsername");
+                String strPassword = request.getParameter("txtPassword");
+                DTO_JPOS_Admin DTO_Admin    = BUS_JPOS_Admin.Login(strUsername, strPassword, DAO.DataProvider.getConnection(this.getServletConfig()));
+                DTO_JPOS_Customer DTO_Cust  = BUS.BUS_JPOS_Customer.Login(strUsername, strPassword, DAO.DataProvider.getConnection(this.getServletConfig()));
+                if (DTO_Admin != null || DTO_Cust != null)
+                {
+                    session.setAttribute("Admin",DTO_Admin);
+                    session.setAttribute("Cust", DTO_Cust);
+                    strClassMain = "class='main'";
+                    strClassContent = "class='content'";
+                }
+                %> <%@include file="views/IndexPage.jsp" %>  <%
+             }
             break;
         case 1:
-            session.removeAttribute("Admin");
+            {
+                session.removeAttribute("Admin");
+                session.removeAttribute("Cust");
+                strClassMain = "";
+                strClassContent = "style='padding-left:30px;padding-right:30px'";
+             }
             %> <%@include file="views/IndexPage.jsp" %>  <%
             break;
         case 2 :
         case 3 :
         case 4 :
         case 5 :
+        case 16:
+        case 17:
             %> <jsp:forward page="controller/client.jsp"></jsp:forward> <%
             break;
         case 6 :

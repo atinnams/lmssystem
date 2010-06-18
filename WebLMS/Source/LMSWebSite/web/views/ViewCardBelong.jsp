@@ -1,12 +1,29 @@
 <%-- 
-    Document   : CustomerDetail
-    Created on : May 11, 2010, 12:48:19 AM
+    Document   : ViewCardBelong
+    Created on : Jun 18, 2010, 10:35:12 PM
     Author     : NKLapTop
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
+   "http://www.w3.org/TR/html4/loose.dtd">
+
+<%@page import="java.util.*,java.text.*" %>
+<%@ taglib uri="http://jsptags.com/tags/navigation/pager" prefix="pg" %>
+<%
+    String Reg = "";
+    if (request.getQueryString() != null){
+        String RequestString = request.getQueryString();
+
+        int t = RequestString.indexOf("&pager.offset=");
+        if (t!=-1){
+            Reg = RequestString.substring(0, t);
+        }else{
+            Reg = RequestString;
+        }
+    }
+    int PageItems = 9;
+%>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -79,8 +96,8 @@
 
                     <tr>
                         <td colspan="5" rowspan="3" background="images/menu-blank.jpg">
-                            <% if (session.getAttribute("Admin") == null && session.getAttribute("Cust")==null) {
-                            %>
+<% if (session.getAttribute("Admin") == null && session.getAttribute("Cust")==null) {
+%>
                             <form action="index.jsp" method="post">
                                 <table>
                                     <tr>
@@ -96,9 +113,9 @@
 
                                 </table>
                             </form>
-                            <% } else {
-                                 DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
-								 DTO_JPOS_Customer Customer = (DTO_JPOS_Customer) session.getAttribute("Cust");
+<% } else {
+        DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
+		DTO_JPOS_Customer Customer = (DTO_JPOS_Customer) session.getAttribute("Cust");
                                 String Username ;
                                 String FirstName;
                                 String DateLogin;
@@ -114,7 +131,7 @@
                                     FirstName = Customer.getFirstName();
                                     DateLogin = (new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH)).format(new Date()).toString();
                                 }
-                            %>
+%>
                             <table width="280px">
                                 <tr>
                                     <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white" >&raquo;&nbsp;Tài khoản : <%=Username %></span></td>
@@ -128,9 +145,9 @@
 
                                 <tr><td colspan="3" align="right" style="font-size:14px;"><a href="index.jsp?TaskID=1" style="color:Red;">Log out</a></td></tr>
                             </table>
-                            <%
-                                        }
-                            %>
+<%
+    }
+%>
                         </td>
                         <td> <img src="images/spacer.gif" alt="" height="31" width="1"></td>
                     </tr>
@@ -145,115 +162,99 @@
                     <tr>
                         <td colspan="9" style="padding-top:4px">
                             <div class="path">
-                                <a href="index.jsp">Trang chủ</a>
-                                <% if (session.getAttribute("Admin") != null) {
-                                    %>
-                                &#8250; <a href="index.jsp?TaskID=6">Quản lý khách hàng</a> <% }
-                                %>&#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
+                                <a href="index.jsp">Trang chủ</a> &#8250; <a href="index.jsp?<%=request.getQueryString()%>"><%=strWebTitle%></a>
                             </div>
                         </td>
                     </tr>
                     <tr>
                         <td colspan="9" class="main">
-                            <div >
-                                <div class="content" <%=strStyle%>>
-                                    <h1><%=strWebTitle%></h1>
-                                    <% if (custInfor != null) {%>
-                                    <div style="height:30px"></div>
-                                    <table>
-
-                                        <tr>
-                                            <th align="left"> Mã khách hàng : </th>
-                                            <td><%=custInfor.getJPOS_CustomerID() %></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Username : </th>
-                                            <td><%=custInfor.getUsername() %></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Họ khách hàng : </th>
-                                            <td><%=custInfor.getLastName() %></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Tên khách hàng : </th>
-                                            <td><%=custInfor.getFirstName() %></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Giới tính : </th>
-                                            <td>
-                                                <%
-                                                strGender = "Nữ";
-                                                if (custInfor.isGender())
-                                                    strGender = "Nam";
-                                                %>
-                                                <%=strGender %>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Số điểm hiện tại : </th>
-                                            <td><%=custInfor.getJPOS_CurrentPoint() %></td>
-                                        </tr>
-
-                                        <tr>
-                                            <th align="left"> Địa chỉ : </th>
-                                            <td><%=custInfor.getAddress() %></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Email : </th>
-                                            <td><%=custInfor.getEmail() %></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Ngày sinh : </th>
-                                            <td>
-                                            <%if (custInfor.getBirthDay()!= null)
-                                                out.print(custInfor.getBirthDay().toString());
-                                              else
-                                                out.print("null");
-                                            %>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Ngày tham gia : </th>
-                                            <td>
-                                                <%  if (custInfor.getDateJoin()!= null)
-                                                        out.print(custInfor.getDateJoin().toString());
-                                                    else
-                                                        out.print("null");
-                                                %>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Sở thích </th>
-                                            <td><%=custInfor.getFavorite() %></td>
-                                        </tr>
-                                        <tr>
-                                            <th align="left"> Trạng thái </th>
-                                            <td><%=custInfor.getStatusName() %></td>
-                                        </tr>
-                                    </table>
-
-                                    <%}%>
-                                    <% if (session.getAttribute("Admin") != null)
-                                        {
-                                           %>
-                                           <div align="center">
-                                               <table>
-                                                   <tr>
-                                                       <td><a href="index.jsp?TaskID=6&CustTask=4&CustID=<%=custInfor.getJPOS_CustomerID() %>" title="Thay đổi thông tin"><img src="images/modify.jpg"></a></td>
-                                                       <td><a href="index.jsp?TaskID=6&CustTask=4&CustID=<%=custInfor.getJPOS_CustomerID() %>" title="Thay đổi thông tin"> Thay đổi thông tin khách hàng</a></td>
-                                                   </tr>
-                                               </table>
-                                           </div>
+                            <div>
+                                <div class="content" >
+                                <center><h1 style="text-transform:uppercase"><%=strWebTitle %></h1></center>
+                                <br>
+                                <%
+                                    DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+                                    java.util.Date date = new java.util.Date();
+                                %>
+                                <br>                                
+                                <% if (resultViews == null)
+                                   {
+                                        %>
+                                        <h3 style="padding-left:20px">Lỗi dữ liệu, vui lòng kiểm tra lại</h3>
+                                        <div style="height:400px"></div>
+                                        <%
+                                   }
+                                   else
+                                   {
+                                        int iSize = resultViews.size();
+                                        %>                                        
+                                       <table cellpadding="0" cellspacing="0" border="1px">
+                                            <tr bgcolor="blue" align="center">
+                                                <th>Mã thẻ</th>
+                                                <th>Ngày hết hạn</th>
+                                                <th>Trạng thái</th>
+                                                <th>Mã kích hoạt</th>
+                                                <th>Chi tiết</th>
+                                            </tr>
+                                            <pg:pager maxIndexPages="20" export="currentPageNumber=pageNumber" maxPageItems="<%=PageItems %>">
+                                            <pg:param name="pg"/>
+                                            <pg:param name="q"/>
                                             <%
-                                        }
-                                    %>                                    
-                                    <div style="height:400px"></div>
-                                </div>
+                                            for (int i= 0 ; i < iSize; i++ )
+                                            {
+                                                DTO.DTO_JPOS_Card card = (DTO.DTO_JPOS_Card)resultViews.get(i);
+                                                String strExpireDay = "";
+                                                if (card.getJPOS_ExpireDay() != null)
+                                                    strExpireDay = dateFormat.format(card.getJPOS_ExpireDay());
+                                                int iCustomerID = card.getCustomerOwnerID();
+                                                %>
+                                                <ex:searchresults>
+                                                <pg:item>
+                                                    <tr align="center">
+                                                        <td><%=card.getJPOS_CardId() %></td>
+                                                        <td><%=strExpireDay %></td>
+                                                        <td><%=card.getStatus() %></td>
+                                                        <td><%=card.getActiveCode() %></td>
+                                                        <td>
+                                                            <a href="index.jsp?TaskID=9&CardTask=6&CardID=<%=card.getJPOS_CardId() %>" title="Chi tiết thẻ"><img src="images/detail.jpg"></a>                                                            
+                                                        </td>
+                                                    </tr>
+                                                </pg:item>
+                                                </ex:searchresults>
+                                                <%
+                                            }%>
+                                        </table>
+                                        <div class="pagination" align="center">
+                                          <pg:index>
+                                            Pages:
+                                            <pg:prev>&nbsp;<a href="<%= "index.jsp?"+Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>">[&lt;&lt; Prev]</a></pg:prev>
+                                            <pg:pages><%
+                                              if (pageNumber.intValue() < 10) {
+                                                %>&nbsp;<%
+                                              }
+                                              if (pageNumber == currentPageNumber) {
+                                                %><span class="current"><%= pageNumber %></span><%
+                                              } else {
+                                                       %><a href="<%= "index.jsp?" + Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>"><%= pageNumber %></a><%
+                                              }
+                                            %>
+                                            </pg:pages>
+                                            <pg:next>&nbsp;<a href="<%= "index.jsp?"+Reg + "&pager.offset=" + (pageNumber-1)*PageItems %>">[Next &gt;&gt;]</a></pg:next>
+                                            <br>
+                                          </pg:index>
+                                          </div>
 
+                                        </pg:pager>
+                                        <div style="height:200px"></div>
+                                        <%
+
+                                   }
+                                %>
+
+                                </div>
                                 <%@include file="../include/Navigation.jsp" %>
 
                                 <div class="clearer">&nbsp;</div>
-
                             </div>
                         </td>
                     </tr>
@@ -286,5 +287,7 @@
 
     </body>
 </html
+
+
 
 

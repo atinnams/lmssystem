@@ -95,3 +95,14 @@ begin
 end
 go
 --===========================================================================
+if object_id('fn_Check_Username_exist') is not null
+	drop function fn_Check_Username_exist
+go
+
+create function fn_Check_Username_exist(@Username varchar(50))
+returns int
+as
+begin	
+	return ( select count(*) from JPOS_Customer where JPOS_Username = @Username);
+end
+go

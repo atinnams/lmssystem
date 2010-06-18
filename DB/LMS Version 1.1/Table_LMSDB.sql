@@ -32,7 +32,10 @@ go
 
 create table JPOS_Customer
 (
+	
 	JPOS_CustomerID	int not null,
+	JPOS_Username varchar(50) not null unique,
+	JPOS_Password varchar(50) not null,
 	JPOS_FirstName nvarchar(50) not null,
 	JPOS_LastName nvarchar(50),
 	JPOS_Address nvarchar(200),

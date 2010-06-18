@@ -99,6 +99,6 @@ public interface IJPOS_Customer {
         public boolean UpdateCustomer(DTO_JPOS_Customer customer, Connection conn);
         public boolean CheckCustomerEmailExist(String strEmail,Connection conn);
         public ArrayList<DTO_JPOS_Customer> Search_Customer(String strKey, Connection conn);
-        
-
+        public boolean CheckUsernameExist(String strUsername,Connection conn);
+        public DTO_JPOS_Customer Login(String Username, String Password,Connection conn) ;
 }

@@ -313,7 +313,7 @@ begin
 	return @result;
 end
 go
-*/
+
 /*
 --test
 declare @result int;

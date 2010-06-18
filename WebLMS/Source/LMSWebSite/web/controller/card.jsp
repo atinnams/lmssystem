@@ -9,11 +9,6 @@
    "http://www.w3.org/TR/html4/loose.dtd">
 <%@page import="DTO.*,BUS.*,java.util.ArrayList" %>
 <%
-   if (session.getAttribute("Admin") == null) {
-    response.sendRedirect("index.jsp");
-   }
-%>
-<%
     ArrayList resultViews = null;
     String strWebTitle= "";
     String strErrorCardID = "";
@@ -36,6 +31,30 @@
         }catch (Exception ex){
             iCardTask = -1;
         }
+    
+   if (session.getAttribute("Admin") == null && session.getAttribute("Cust") == null )
+   {
+        response.sendRedirect("index.jsp");
+        
+   }
+   else
+   if (session.getAttribute("Cust") != null)
+   {
+       if (iCardTask == 6)
+        {
+            String strCardID = request.getParameter("CardID");
+            strWebTitle = "Chi tiết thẻ";
+            DTO_JPOS_Card card = BUS.BUS_JPOS_Card.GetCard(strCardID, DAO.DataProvider.getConnection(this.getServletConfig()));
+            %><%@include file="../views/CardDetail.jsp" %><%
+        }
+   }
+   else
+   {
+   
+   
+%>
+
+<%    
     switch (iCardTask)
     {
         case 1 :            //Form to add new card
@@ -265,3 +284,4 @@
             break;
     }
 %>
+<% } %>

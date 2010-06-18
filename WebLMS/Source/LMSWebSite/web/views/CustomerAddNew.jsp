@@ -80,7 +80,7 @@
 
                     <tr>
                         <td colspan="5" rowspan="3" background="images/menu-blank.jpg">
-                            <% if (session.getAttribute("Admin") == null) {
+                            <% if (session.getAttribute("Admin") == null && session.getAttribute("Cust")==null) {
                             %>
                             <form action="index.jsp" method="post">
                                 <table>
@@ -99,16 +99,32 @@
                             </form>
                             <% } else {
                                  DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
+								 DTO_JPOS_Customer Customer = (DTO_JPOS_Customer) session.getAttribute("Cust");
+                                String Username ;
+                                String FirstName;
+                                String DateLogin;
+                                if (result != null)
+                                {
+                                    Username = result.getUsername();
+                                    FirstName = result.getFirstName();
+                                    DateLogin = result.getLastLogin().toString();
+                                }
+                                else
+                                {
+                                    Username = Customer.getUsername();
+                                    FirstName = Customer.getFirstName();
+                                    DateLogin = (new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH)).format(new Date()).toString();
+                                }
                             %>
                             <table width="280px">
                                 <tr>
-                                    <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white" >&raquo;&nbsp;Tài khoản : <%=result.getUsername().toString()%></span></td>
+                                    <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white" >&raquo;&nbsp;Tài khoản : <%=Username %></span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white">&raquo;&nbsp;Chào mừng  : <%=result.getFirstName()%></span></td>
+                                    <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white">&raquo;&nbsp;Chào mừng  : <%=FirstName %></span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white">&raquo;&nbsp;Ngày đăng nhập gần nhất : <%=result.getLastLogin().toString()%></span> </td>
+                                    <td colspan="2"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white">&raquo;&nbsp;Ngày đăng nhập gần nhất : <%=DateLogin %></span> </td>
                                 </tr>
 
                                 <tr><td colspan="3" align="right" style="font-size:14px;"><a href="index.jsp?TaskID=1" style="color:Red;">Log out</a></td></tr>
@@ -145,7 +161,21 @@
                                         <input type="hidden" name="CustTask" value="2">
                                     <div style="height:30px"></div>
                                     <table>
-                                       
+                                        <tr>
+                                            <th align="left">Username : </th>
+                                            <td><input type="text" value="" name="txtUsername"></td>
+                                            <td><font style="color:red"><%=strErrorUsername %></font></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left">Password : </th>
+                                            <td><input type="password" value="" name="txtPassword"></td>
+                                            <td><font style="color:red"><%=strErrorPassword %></font></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left">Retype Password : </th>
+                                            <td><input type="password" value="" name="txtRePassword"></td>
+                                            <td><font style="color:red"><%=strErrorPassword %></font></td>
+                                        </tr>
                                         <tr>
                                             <th align="left"> Họ khách hàng : </th>
                                             <td><input type="text" value="" name="txtHo"></td>

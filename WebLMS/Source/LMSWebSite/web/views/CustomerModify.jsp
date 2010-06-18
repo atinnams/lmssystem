@@ -86,7 +86,7 @@
 
                     <tr>
                         <td colspan="5" rowspan="3" background="images/menu-blank.jpg">
-                            <% if (session.getAttribute("Admin") == null) {
+                            <% if (session.getAttribute("Admin") == null && session.getAttribute("Cust")==null) {
                             %>
                             <form action="index.jsp" method="post">
                                 <table>
@@ -105,6 +105,22 @@
                             </form>
                             <% } else {
                                  DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
+								 DTO_JPOS_Customer Customer = (DTO_JPOS_Customer) session.getAttribute("Cust");
+                                String Username ;
+                                String FirstName;
+                                String DateLogin;
+                                if (result != null)
+                                {
+                                    Username = result.getUsername();
+                                    FirstName = result.getFirstName();
+                                    DateLogin = result.getLastLogin().toString();
+                                }
+                                else
+                                {
+                                    Username = Customer.getUsername();
+                                    FirstName = Customer.getFirstName();
+                                    DateLogin = (new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH)).format(new Date()).toString();
+                                }
                             %>
                             <table width="280px">
                                 <tr>
@@ -149,13 +165,29 @@
                                     <form action="index.jsp" method="post">
                                         <input type="hidden" name="TaskID" value="6">
                                         <input type="hidden" name="CustTask" value="5">
+                                        <input type="hidden" value="<%=custInfor.getJPOS_CustomerID() %>" name="txtMaKhachHang">
+                                        <input type="hidden" value="<%=custInfor.getUsername() %>" name="txtUsername">
                                     <div style="height:30px"></div>
                                     <table>
-
                                         <tr>
                                             <th align="left" width="125px"> Mã khách hàng : </th>
-                                            <td><input type="text" value="<%=custInfor.getJPOS_CustomerID() %>" name="txtMaKhachHang" readonly></td>
+                                            <td><%=custInfor.getJPOS_CustomerID() %></td>
                                             <td></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left">Username : </th>
+                                            <td><%=custInfor.getUsername()%></td>
+                                            <td><font style="color:red"><%=strErrorUsername %></font></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left">Password : </th>
+                                            <td><input type="password" value="" name="txtPassword"></td>
+                                            <td><font style="color:red"><%=strErrorPassword %></font></td>
+                                        </tr>
+                                        <tr>
+                                            <th align="left">Retype Password : </th>
+                                            <td><input type="password" value="" name="txtRePassword"></td>
+                                            <td><font style="color:red"><%=strErrorPassword %></font></td>
                                         </tr>
                                         <tr>
                                             <th align="left"> Họ khách hàng : </th>
