@@ -20,7 +20,7 @@
             Reg = RequestString;
         }
     }
-    int PageItems = 9;
+    int PageItems = 20;
 %>
 <html>
     <head>
@@ -94,7 +94,7 @@
 
                     <tr>
                         <td colspan="5" rowspan="3" background="images/menu-blank.jpg">
-<% if (session.getAttribute("Admin") == null) {
+<% if (session.getAttribute("Admin") == null && session.getAttribute("Cust")==null) {
 %>
                             <form action="index.jsp" method="post">
                                 <table>
@@ -113,16 +113,32 @@
                             </form>
 <% } else {
         DTO_JPOS_Admin result = (DTO_JPOS_Admin) session.getAttribute("Admin");
+		DTO_JPOS_Customer Customer = (DTO_JPOS_Customer) session.getAttribute("Cust");
+                                String Username ;
+                                String FirstName;
+                                String DateLogin;
+                                if (result != null)
+                                {
+                                    Username = result.getUsername();
+                                    FirstName = result.getFirstName();
+                                    DateLogin = result.getLastLogin().toString();
+                                }
+                                else
+                                {
+                                    Username = Customer.getUsername();
+                                    FirstName = Customer.getFirstName();
+                                    DateLogin = (new SimpleDateFormat("dd-MMM-yyyy",Locale.ENGLISH)).format(new Date()).toString();
+                                }
 %>
                             <table width="280px">
                                 <tr>
-                                    <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white" >&raquo;&nbsp;Tài khoản : <%=result.getUsername().toString()%></span></td>
+                                    <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white" >&raquo;&nbsp;Tài khoản : <%=Username %></span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white">&raquo;&nbsp;Chào mừng  : <%=result.getFirstName()%></span></td>
+                                    <td colspan="3"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white">&raquo;&nbsp;Chào mừng  : <%=FirstName %></span></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white">&raquo;&nbsp;Ngày đăng nhập gần nhất : <%=result.getLastLogin().toString()%></span> </td>
+                                    <td colspan="2"><span style="font-size:13px;font-family:'Lucida Sans Unicode',sans-serif;color:white">&raquo;&nbsp;Ngày đăng nhập gần nhất : <%=DateLogin %></span> </td>
                                 </tr>
 
                                 <tr><td colspan="3" align="right" style="font-size:14px;"><a href="index.jsp?TaskID=1" style="color:Red;">Log out</a></td></tr>
@@ -149,16 +165,18 @@
                         </td>
                     </tr>
                     <tr>
-                        <td colspan="9" class="main">
+                        <td colspan="9" >
                             <div >
-                                <div class="content" <%=strStyle%>>
+                                <div <%=strStyle%>>
                                     <h1><%=strWebTitle %></h1>                                     
                                     <% if (resultViews!=null)
                                        {    %>
+                                       <div style="padding-left:30px">
                                             <h2>Mã khách hàng : <%=iCustID %></h2>
                                                 <h3>Tên khách hàng : <%=custInfor.getLastName() + " " + custInfor.getFirstName() %></h3>
                                                 <h3>Địa chỉ : <%=custInfor.getAddress() %></h3>
                                                 <h3>Email : <%=custInfor.getEmail() %></h3>
+                                       </div>
                                             <hr>
                                             <%
                                             if (resultViews.isEmpty())
@@ -168,16 +186,17 @@
                                             {
                                                 int iSize = resultViews.size();
                                                 %>                                                
-                                                <table cellpadding="0px" cellspacing="0px" width="550px" border="1px" >
+                                                <table cellpadding="0px" cellspacing="0px" width="774px" border="1px" >
                                                     <tr bgcolor="Blue" style="color:white" align="center">
                                                         <th>Mã giao dịch</th>
                                                         <th>Ngày giao dịch</th>
                                                         <th>Loại giao dịch</th>
                                                         <th>Điểm cộng</th>
                                                         <th>Điểm trừ</th>
+                                                        <th>Số tiền</th>
                                                         <th>PoSCC</th>
                                                         <th>Địa chỉ giao dịch</th>
-                                                        <th>Quà tặng</th>
+                                                        <th>Mã thẻ giao dịch</th>
                                                     </tr>
                                                  <pg:pager maxIndexPages="20" export="currentPageNumber=pageNumber" maxPageItems="<%=PageItems %>">
                                                 <pg:param name="pg"/>
@@ -198,9 +217,10 @@
                                                         <td><%=report.getTask() %></td>
                                                         <td><%=report.getPointGain() %></td>
                                                         <td><%=report.getPointLoss() %></td>
+                                                        <td><%=report.getAmount() %></td>
                                                         <td><%=report.getPoSCCName() %></td>
                                                         <td><%=report.getMerchantAddress() %></td>
-                                                        <td><%=strGift %></td>
+                                                        <td><%=report.getCardID() %></td>
                                                     </tr>
                                                     </pg:item>
                                                      </ex:searchresults>
@@ -239,7 +259,7 @@
                                     <div style="height:400px"></div>
                                 </div>
 
-                                <%@include file="../include/Navigation.jsp" %>
+                                
 
                                 <div class="clearer">&nbsp;</div>
 

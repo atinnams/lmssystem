@@ -292,6 +292,7 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
                         report.setPointLoss(rs.getInt("JPOS_PointLoss"));
                         report.setTID(rs.getString("JPOS_TID"));
                         report.setTask(rs.getString("JPOS_TaskName"));
+                        report.setAmount(rs.getInt("JPOS_Amount"));
                         
                         ArrayResult.add(report);
                     }
@@ -328,11 +329,12 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
                 stmt.setInt(1, iCustomerID);
 
                 boolean HasRow = stmt.execute();
-                if (HasRow) {
-                    customer = new DTO_JPOS_Customer();
+                if (HasRow) {                    
                     ResultSet rs = stmt.getResultSet();
-                    while (rs.next()) {                        
-
+                    while (rs.next()) {
+                        customer = new DTO_JPOS_Customer();
+                        customer.setPassword(rs.getString("JPOS_Password"));
+                        customer.setUsername(rs.getString("JPOS_Username"));
                         customer.setAddress(rs.getString("JPOS_Address"));
                         customer.setBirthDay(rs.getDate("JPOS_BirthDay"));
                         customer.setDateJoin(rs.getDate("JPOS_DateJoin"));
@@ -364,10 +366,9 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
                         conn.close();
                     }
                 } catch (SQLException e) {
-                }
-
-                return customer;
+                }                
             }
+            return customer;
         }
         @Override
         public ArrayList<DTO_JPOS_Customer> GetCustomerList(Connection conn)
@@ -384,7 +385,8 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
                     ResultSet rs = stmt.getResultSet();
                     while (rs.next()) {
                         DTO_JPOS_Customer customer = new DTO_JPOS_Customer();
-
+                        customer.setPassword(rs.getString("JPOS_Password"));
+                        customer.setUsername(rs.getString("JPOS_Username"));
                         customer.setAddress(rs.getString("JPOS_Address"));
                         customer.setBirthDay(rs.getDate("JPOS_BirthDay"));
                         customer.setDateJoin(rs.getDate("JPOS_DateJoin"));
@@ -447,18 +449,20 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
             CallableStatement stmt = null;
             boolean blPass = true;
             try {
-                stmt = conn.prepareCall("{call dbo.sp_New_Customer(?,?,?,?,?,?,?,?,?)}");
+                stmt = conn.prepareCall("{call dbo.sp_New_Customer(?,?,?,?,?,?,?,?,?,?,?)}");
                 SimpleDateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");                
                 String birthday = myformat.format(customer.getBirthDay());
                 stmt.setInt(1, customer.getJPOS_CustomerID());
-                stmt.setString(2, customer.getFirstName());
-                stmt.setString(3, customer.getLastName());
-                stmt.setString(4, customer.getAddress());
-                stmt.setString(5, customer.getEmail());
-                stmt.setString(6, birthday);
-                stmt.setBoolean(7, customer.isGender());
-                stmt.setString(8, customer.getFavorite());
-                stmt.setInt(9, customer.getJPOS_CurrentPoint());
+                stmt.setString(2, customer.getUsername());
+                stmt.setString(3, customer.getPassword());
+                stmt.setString(4, customer.getFirstName());
+                stmt.setString(5, customer.getLastName());
+                stmt.setString(6, customer.getAddress());
+                stmt.setString(7, customer.getEmail());
+                stmt.setString(8, birthday);
+                stmt.setBoolean(9, customer.isGender());
+                stmt.setString(10, customer.getFavorite());
+                stmt.setInt(11, customer.getJPOS_CurrentPoint());
 
                 stmt.execute();
 
@@ -523,19 +527,21 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
             CallableStatement stmt = null;
             boolean blPass = true;
             try {
-                stmt = conn.prepareCall("{call dbo.sp_Update_Customer(?,?,?,?,?,?,?,?,?,?)}");
+                stmt = conn.prepareCall("{call dbo.sp_Update_Customer(?,?,?,?,?,?,?,?,?,?,?,?)}");
                 SimpleDateFormat myformat = new SimpleDateFormat("yyyy-MM-dd");
                 String birthday = myformat.format(customer.getBirthDay());
                 stmt.setInt(1, customer.getJPOS_CustomerID());
-                stmt.setString(2, customer.getFirstName());
-                stmt.setString(3, customer.getLastName());
-                stmt.setString(4, customer.getAddress());
-                stmt.setString(5, customer.getEmail());
-                stmt.setString(6, birthday);
-                stmt.setBoolean(7, customer.isGender());
-                stmt.setString(8, customer.getFavorite());
-                stmt.setInt(9, customer.getJPOS_CurrentPoint());
-                stmt.setInt(10, customer.getStatusCode());
+                stmt.setString(2, customer.getUsername());
+                stmt.setString(3, customer.getPassword());
+                stmt.setString(4, customer.getFirstName());
+                stmt.setString(5, customer.getLastName());
+                stmt.setString(6, customer.getAddress());
+                stmt.setString(7, customer.getEmail());
+                stmt.setString(8, birthday);
+                stmt.setBoolean(9, customer.isGender());
+                stmt.setString(10, customer.getFavorite());
+                stmt.setInt(11, customer.getJPOS_CurrentPoint());
+                stmt.setInt(12, customer.getStatusCode());
 
                 stmt.execute();
 
@@ -584,6 +590,29 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
             return result != 0;
         }
         @Override
+        public boolean CheckUsernameExist(String Username,Connection conn)
+        {
+            int result = 0;
+            try {
+                    if(conn != null) {
+                            CallableStatement cstmt = null;
+                            cstmt = (CallableStatement) conn
+                                            .prepareCall("{ ? = call dbo.fn_Check_Username_exist(?)}");
+                            cstmt.registerOutParameter(1,java.sql.Types.INTEGER );
+                            cstmt.setString(1, Username);
+                            
+                            cstmt.execute();
+
+                            result = cstmt.getInt(1);
+                    }
+            } catch (SQLException e) {
+                    e.printStackTrace();
+                    result = 0;
+            }
+
+            return result != 0;
+        }
+        @Override
         public ArrayList<DTO_JPOS_Customer> Search_Customer(String strKey, Connection conn)
         {
             ArrayList ArrayResult = null ;
@@ -599,6 +628,8 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
                     ResultSet rs = stmt.getResultSet();
                     while (rs.next()) {
                         DTO_JPOS_Customer jposCustomer = new DTO_JPOS_Customer();
+                        jposCustomer.setPassword(rs.getString("JPOS_Password"));
+                        jposCustomer.setUsername(rs.getString("JPOS_Username"));
                         jposCustomer.setJPOS_CustomerID(rs.getInt("JPOS_CustomerID"));
                         jposCustomer.setFirstName(rs.getString("JPOS_FirstName"));
                         jposCustomer.setLastName(rs.getString("JPOS_LastName"));
@@ -640,5 +671,57 @@ public class DAO_JPOS_Customer implements IJPOS_Customer {
 
                 return ArrayResult;
             }
+        }
+        public DTO_JPOS_Customer Login(String Username, String Password,Connection conn)
+        {
+            DTO_JPOS_Customer customer = null;
+            CallableStatement stmt = null;
+            try {
+                stmt = conn.prepareCall("{call dbo.sp_User_Login(?,?)}");
+
+                stmt.setString(1, Username);
+                stmt.setString(2, Password);
+
+                boolean HasRow = stmt.execute();
+                if (HasRow) {
+                    ResultSet rs = stmt.getResultSet();
+                    while (rs.next()) {
+                        customer = new DTO_JPOS_Customer();
+                        customer.setPassword(rs.getString("JPOS_Password"));
+                        customer.setUsername(rs.getString("JPOS_Username"));
+                        customer.setAddress(rs.getString("JPOS_Address"));
+                        customer.setBirthDay(rs.getDate("JPOS_BirthDay"));
+                        customer.setDateJoin(rs.getDate("JPOS_DateJoin"));
+                        customer.setEmail(rs.getString("JPOS_Email"));
+                        customer.setFavorite(rs.getString("JPOS_Favorite"));
+                        customer.setFirstName(rs.getString("JPOS_FirstName"));
+                        customer.setGender(rs.getBoolean("JPOS_Gender"));
+                        customer.setLastName(rs.getString("JPOS_LastName"));
+                        customer.setJPOS_CustomerID(rs.getInt("JPOS_CustomerID"));
+                        customer.setJPOS_CurrentPoint(rs.getInt("JPOS_CurrentPoint"));
+                        customer.setStatusName(rs.getString("JPOS_StatusName"));
+                        customer.setStatusCode(rs.getInt("JPOS_Status"));
+
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("Error!!!!!!" + e);
+                customer = null;
+            } finally {
+                try {
+                    if (stmt != null) {
+                        stmt.close();
+                    }
+                } catch (SQLException e) {
+                }
+
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException e) {
+                }
+            }
+            return customer;
         }
 }

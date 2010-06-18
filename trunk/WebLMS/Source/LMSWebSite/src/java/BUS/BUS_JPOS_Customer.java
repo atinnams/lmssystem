@@ -179,4 +179,16 @@ public class BUS_JPOS_Customer {
             IJPOS_Customer myCustomer = factory.getJPOS_Customer();
             return myCustomer.Search_Customer(strKey, conn);
         }
+        public static boolean CheckUsernameExist(String strUsername,Connection conn)
+        {
+            LMSDAOFactory factory = LMSDAOFactory.getInstances();
+            IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+            return myCustomer.CheckUsernameExist(strUsername, conn);
+        }
+        public static DTO_JPOS_Customer Login(String Username, String Password,Connection conn)
+        {
+            LMSDAOFactory factory = LMSDAOFactory.getInstances();
+            IJPOS_Customer myCustomer = factory.getJPOS_Customer();
+            return myCustomer.Login(Username, Password, conn);
+        }
 }

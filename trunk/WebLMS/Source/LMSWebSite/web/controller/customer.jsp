@@ -28,6 +28,8 @@
     String strErrorBirthDay = "";
     String strErrorFavorite = "";
     String strErrorPoint = "";
+    String strErrorUsername = "";
+    String strErrorPassword = "";
     
     String strURLforward = "index.jsp?TaskID=6";
     String strErrorDelete = "";
@@ -65,6 +67,11 @@
         strFavorite = new String(strFavorite.getBytes("ISO-8859-1"),"UTF8");
 
     String strStatus = request.getParameter("txtTrangThai");
+
+
+    String CustUsername = request.getParameter("txtUsername");
+    String CustPassword = request.getParameter("txtPassword");
+    String RePassword = request.getParameter("txtRePassword");
     
     int iCustomerID = 0;
     int iPoint = 0;
@@ -94,6 +101,16 @@
             {
                 blError = false;
                 Date dtBirthday = null;
+                if (BUS.BUS_JPOS_Customer.CheckUsernameExist(CustUsername, DAO.DataProvider.getConnection(this.getServletConfig())))
+                {
+                    blError = true;
+                    strErrorUsername = "Đã tồn tại username này trong hệ thống";
+                }
+                if (CustPassword.equals(RePassword) == false)
+                {
+                    blError = true;
+                    strErrorPassword = "Mật khẩu không giống nhau";
+                }
                 if (strFirstName == "" || strFirstName == null)
                 {
                     blError = true;
@@ -159,6 +176,8 @@
                 else
                 {
                     DTO_JPOS_Customer cust = new DTO_JPOS_Customer();
+                    cust.setUsername(CustUsername);
+                    cust.setPassword(CustPassword);
                     cust.setJPOS_CustomerID(iCustomerID);
                     cust.setFirstName(strFirstName);
                     cust.setLastName(strLastName);
@@ -226,6 +245,11 @@
         case 5 :                //Update customer
             blError = false;
                 Date dtBirthday = null;
+                if (!CustPassword.equals(RePassword))
+                {
+                    blError = true;
+                    strErrorPassword = "Mật khẩu không giống nhau";
+                }
                 if (strFirstName == "" || strFirstName == null)
                 {
                     blError = true;
@@ -301,8 +325,12 @@
                 }
                 else
                 {
-                    DTO_JPOS_Customer cust = new DTO_JPOS_Customer();
-                    cust.setJPOS_CustomerID(iCustomerID);
+                    DTO_JPOS_Customer cust = BUS.BUS_JPOS_Customer.GetCustomerInfor(iCustomerID, DAO.DataProvider.getConnection(this.getServletConfig()));
+
+                    if (CustPassword != "" || CustPassword != null)
+                    {
+                        cust.setPassword(CustPassword);
+                    }
                     cust.setFirstName(strFirstName);
                     cust.setLastName(strLastName);
                     cust.setEmail(strEmail);

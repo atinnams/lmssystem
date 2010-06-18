@@ -81,9 +81,12 @@ as
 begin
 	select * from JPOS_Admin where JPOS_Username = @Username and JPOS_Password = @Password
 	if  (@@rowcount = 0)
-	begin
-		set @Result = 0;
-		rollback transaction;
+	begin		
+		select * from JPOS_Customer where JPOS_Username = @Username and JPOS_Password = @Password
+		if (@@rowcount = 0)
+			set @Result = 0;
+		else
+			set @Result = 2;
 	end
 	
 	update JPOS_Admin set 
@@ -129,7 +132,7 @@ go
 create procedure sp_Transaction_Detail(@CustomerID int)
 as
 begin
-	Select JPOS_Log.JPOS_LogID,JPOS_Log.JPOS_Date,JPOS_Task.JPOS_TaskName,JPOS_Log.JPOS_CardID,JPOS_Customer.JPOS_CustomerID,JPOS_LOG.JPOS_PointGain,JPOS_LOG.JPOS_PointLoss,JPOS_PoSCC.JPOS_PoSCC_Name,JPOS_Terminal.JPOS_TID,JPOS_Merchant.JPOS_MerchantName,JPOS_Merchant.JPOS_Address,JPOS_Gift.JPOS_GiftName
+	Select JPOS_Log.JPOS_LogID,JPOS_Log.JPOS_Date,JPOS_Task.JPOS_TaskName,JPOS_Log.JPOS_CardID,JPOS_Customer.JPOS_CustomerID,JPOS_LOG.JPOS_PointGain,JPOS_LOG.JPOS_PointLoss,JPOS_PoSCC.JPOS_PoSCC_Name,JPOS_Terminal.JPOS_TID,JPOS_Merchant.JPOS_MerchantName,JPOS_Merchant.JPOS_Address,JPOS_Gift.JPOS_GiftName,JPOS_Log.JPOS_Amount
 	from 
 	JPOS_Log left join JPOS_Log_Exchange on JPOS_Log.JPOS_LogID = JPOS_Log_Exchange.JPOS_LogID
 	join jpos_card on JPOS_Log.JPOS_CardID = JPOS_Card.JPOS_CardID
@@ -295,12 +298,12 @@ if object_id('sp_New_Customer') is not null
 	drop proc sp_New_Customer
 go
 
-create procedure sp_New_Customer (@CustomerID int,@FirstName nvarchar(50),@LastName nvarchar(50),@Address nvarchar(200),@Email varchar(200),@BirthDay Datetime,@Gender bit,@Favorite nvarchar(100),@Point int)
+create procedure sp_New_Customer (@CustomerID int,@Username varchar(50),@Password varchar(50),@FirstName nvarchar(50),@LastName nvarchar(50),@Address nvarchar(200),@Email varchar(200),@BirthDay Datetime,@Gender bit,@Favorite nvarchar(100),@Point int)
 as
 begin
 	declare @result int;
 	set @result = dbo.fn_Generate_CustomerID();	
-	insert into JPOS_Customer values (@result,@FirstName,@LastName,@Address,@Email,getdate(),@BirthDay,@Gender,@Favorite,@Point,7);
+	insert into JPOS_Customer values (@result,@Username,@Password,@FirstName,@LastName,@Address,@Email,getdate(),@BirthDay,@Gender,@Favorite,@Point,7);
 end
 go
 -------------------------------------------------------------------------------------------------------------------------------
@@ -320,7 +323,7 @@ if object_id('sp_Update_Customer') is not null
 	drop proc sp_Update_Customer
 go
 
-create procedure sp_Update_Customer (@CustomerID int,@FirstName nvarchar(50),@LastName nvarchar(50),@Address nvarchar(200),@Email varchar(200),@BirthDay Datetime,@Gender bit,@Favorite nvarchar(100),@Point int,@Status int)
+create procedure sp_Update_Customer (@CustomerID int,@Username varchar(50),@Password varchar(50),@FirstName nvarchar(50),@LastName nvarchar(50),@Address nvarchar(200),@Email varchar(200),@BirthDay Datetime,@Gender bit,@Favorite nvarchar(100),@Point int,@Status int)
 as
 begin
 	Update JPOS_Customer 
@@ -333,7 +336,8 @@ begin
 	JPOS_Gender = @Gender,
 	JPOS_Favorite = @Favorite,
 	JPOS_CurrentPoint = @Point,
-	JPOS_Status = @Status
+	JPOS_Status = @Status,
+	JPOS_Password = @Password
 	where
 	JPOS_CustomerID = @CustomerID
 end
@@ -526,6 +530,7 @@ begin
 		JPOS_Email like '%'+@Key+'%' or
 		JPOS_Favorite like '%'+@Key+'%' or
 		JPOS_CurrentPoint = dbo.fn_Convert_String_Int(@Key) or
+		JPOS_Username like '%'+@Key+ '%' or	
 		JPOS_StatusName like '%'+@Key+'%') and
 		JPOS_StatusName not like '%Delete%'
 	end try
@@ -537,9 +542,10 @@ begin
 		JPOS_FirstName like '%'+@Key+'%' or
 		JPOS_Address like '%'+@Key+'%' or
 		JPOS_Email like '%'+@Key+'%' or
-		JPOS_Favorite like '%'+@Key+'%' or		
+		JPOS_Favorite like '%'+@Key+'%' or
+		JPOS_Username like '%'+@Key+ '%' or		
 		JPOS_StatusName like '%'+@Key+'%') and
-		JPOS_StatusName not like '%Delete%'
+		JPOS_StatusName not like '%Delete%'		
 	end catch
 end
 go
@@ -689,5 +695,28 @@ begin
 	update JPOS_Issuer 
 	set JPOS_IssuerName = @Name, JPOS_IssuerAddress = @Address, JPOS_DateFound = @Date
 	where JPOS_IssuerID = 1
+end
+go
+
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_User_Login') is not null
+	drop proc sp_User_Login
+go
+create procedure sp_User_Login (@Username varchar(50), @Password varchar(50))
+as
+begin
+	select * from JPOS_Customer	left join JPOS_Status on JPOS_Status = JPOS_StatusID
+	where
+	JPOS_StatusName not like '%Delete%' and JPOS_Username = @Username and JPOS_Password = @Password
+end
+go
+-------------------------------------------------------------------------------------------------------------------------------
+if object_id('sp_Get_Card_Belong_Customer') is not null
+	drop proc sp_Get_Card_Belong_Customer
+go
+create procedure sp_Get_Card_Belong_Customer(@CustomerID int)
+as
+begin
+	select * from JPOS_Card left join JPOS_Status on JPOS_Status.JPOS_StatusID = JPOS_Card.JPOS_Status where JPOS_CustomerID = @CustomerID
 end
 go

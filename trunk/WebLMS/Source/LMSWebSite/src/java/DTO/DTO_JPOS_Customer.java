@@ -43,6 +43,9 @@ public class DTO_JPOS_Customer {
 
         private String _StatusName;
         private int _StatusCode;
+
+        private String _Username;
+        private String _Password;
 	
 	/**************** Constructor ************************/
 	
@@ -179,5 +182,33 @@ public class DTO_JPOS_Customer {
      */
     public void setStatusCode(int StatusCode) {
         this._StatusCode = StatusCode;
+    }
+
+    /**
+     * @return the _Username
+     */
+    public String getUsername() {
+        return _Username;
+    }
+
+    /**
+     * @param Username the _Username to set
+     */
+    public void setUsername(String Username) {
+        this._Username = Username;
+    }
+
+    /**
+     * @return the _Password
+     */
+    public String getPassword() {
+        return _Password;
+    }
+
+    /**
+     * @param Password the _Password to set
+     */
+    public void setPassword(String Password) {
+        this._Password = Password;
     }
 }

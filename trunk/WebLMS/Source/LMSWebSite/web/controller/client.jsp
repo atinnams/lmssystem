@@ -34,7 +34,9 @@
     String strDetail = request.getParameter("Detail");
     DTO_JPOS_Customer custInfor = null;
     ArrayList resultViews = null ;
-    String strStyle = "";    
+    String strStyle = "";
+
+    String strError = "";
 %>
 <%
     int iTaskID = -1;
@@ -50,20 +52,84 @@
     {
         case 2:
             strWebTitle = "Thông tin khách hàng";
-            if (strDetail != null)
+            if (session.getAttribute("Cust") != null)
             {
-                int iCustID = 0;
-                try{
-                    iCustID = Integer.parseInt(strDetail);
-                }catch (Exception ex){}
-                custInfor = BUS_JPOS_Customer.GetCustomerInfor(iCustID, DAO.DataProvider.getConnection(this.getServletConfig()));
-                
+                custInfor = (DTO_JPOS_Customer)session.getAttribute("Cust");
                 %><%@include file="../views/CustomerDetail.jsp"  %><%
             }
             else
             {
-                if (strCustomerID != null && strAddress != null && strBirthDay != null && strCurrentPoint != null && strDateJoin != null && strEmail != null && strFavorite != null && strFirstName != null && strGender != null && strLastName != null)
+                if (strDetail != null)
                 {
+                    int iCustID = 0;
+                    try{
+                        iCustID = Integer.parseInt(strDetail);
+                    }catch (Exception ex){}
+                    custInfor = BUS_JPOS_Customer.GetCustomerInfor(iCustID, DAO.DataProvider.getConnection(this.getServletConfig()));
+
+                    %><%@include file="../views/CustomerDetail.jsp"  %><%
+                }
+                else
+                {
+                    if (strCustomerID != null && strAddress != null && strBirthDay != null && strCurrentPoint != null && strDateJoin != null && strEmail != null && strFavorite != null && strFirstName != null && strGender != null && strLastName != null)
+                    {
+                        int iCustomerID = -1;
+                        int iCurrentPoint = -1;
+                        boolean  blGender = false;
+                        try
+                        {
+                            iCustomerID = Integer.parseInt(strCustomerID);
+                        }catch (Exception ex){}
+                        try
+                        {
+                            iCurrentPoint = Integer.parseInt(strCurrentPoint);
+                        }catch (Exception ex){}
+                        try
+                        {
+                            int iGetGender = Integer.parseInt(strGender);
+                            if (iGetGender == 1) blGender = true;
+                        }catch (Exception ex){}
+                        resultViews = BUS_JPOS_Customer.Search_Customer(iCustomerID, strFirstName, strLastName, strAddress, strEmail, strDateJoin, strBirthDay, blGender, strFavorite, iCurrentPoint, DAO.DataProvider.getConnection(this.getServletConfig()));
+                    }else {
+                    }
+                    %><%@include file="../views/CustomerInformation.jsp"  %><%
+                }
+            
+            }
+            break;
+        case 4:
+            strWebTitle = "Thông tin giao dịch";
+            if (session.getAttribute("Cust") != null)
+            {
+                int iCustID = 0;
+                custInfor = (DTO_JPOS_Customer)session.getAttribute("Cust");
+                iCustID = custInfor.getJPOS_CustomerID();
+                resultViews = BUS_JPOS_Customer.Transaction_Detail(iCustID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                %><%@include file="../views/TransactionDetail.jsp"  %><%
+            }
+            else
+            {
+                if (strDetail != null)
+                {
+                    int iCustID = 0;
+                    try{
+                        iCustID = Integer.parseInt(strDetail);
+                    }catch (Exception ex){}
+                    custInfor = BUS_JPOS_Customer.GetCustomerInfor(iCustID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                    if (custInfor == null)
+                    {
+                        strError = "Không tìm thấy khách hàng";
+                        %><%@include file="../views/ViewTransaction.jsp" %><%
+                    }
+                    else
+                    {
+                        resultViews = BUS_JPOS_Customer.Transaction_Detail(iCustID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                        %><%@include file="../views/TransactionDetail.jsp"  %><%
+                    }
+                }
+                else {
+                    if (strCustomerID != null && strAddress != null && strBirthDay != null && strCurrentPoint != null && strDateJoin != null && strEmail != null && strFavorite != null && strFirstName != null && strGender != null && strLastName != null)
+                    {
                     int iCustomerID = -1;
                     int iCurrentPoint = -1;
                     boolean  blGender = false;
@@ -81,50 +147,62 @@
                         if (iGetGender == 1) blGender = true;
                     }catch (Exception ex){}
                     resultViews = BUS_JPOS_Customer.Search_Customer(iCustomerID, strFirstName, strLastName, strAddress, strEmail, strDateJoin, strBirthDay, blGender, strFavorite, iCurrentPoint, DAO.DataProvider.getConnection(this.getServletConfig()));
-                }else {
+                    }
+                    %><%@include file="../views/TransactionInformation.jsp"  %><%
                 }
-                %><%@include file="../views/CustomerInformation.jsp"  %><%
             }
             break;
-        case 4:
-            strWebTitle = "Thông tin giao dịch";
-            if (strDetail != null)
+        case 16:
             {
-                int iCustID = 0;
-                try{
-                    iCustID = Integer.parseInt(strDetail);
-                }catch (Exception ex){}
-                custInfor = BUS_JPOS_Customer.GetCustomerInfor(iCustID, DAO.DataProvider.getConnection(this.getServletConfig()));
-                
+                strWebTitle = "Thông tin thẻ khách hàng";
+                if (session.getAttribute("Cust") == null)
+                {
 
-                resultViews = BUS_JPOS_Customer.Transaction_Detail(iCustID, DAO.DataProvider.getConnection(this.getServletConfig()));
-                %><%@include file="../views/TransactionDetail.jsp"  %><%
-            }
-            else {
-                if (strCustomerID != null && strAddress != null && strBirthDay != null && strCurrentPoint != null && strDateJoin != null && strEmail != null && strFavorite != null && strFirstName != null && strGender != null && strLastName != null)
-                {
-                int iCustomerID = -1;
-                int iCurrentPoint = -1;
-                boolean  blGender = false;
-                try
-                {
-                    iCustomerID = Integer.parseInt(strCustomerID);
-                }catch (Exception ex){}
-                try
-                {
-                    iCurrentPoint = Integer.parseInt(strCurrentPoint);
-                }catch (Exception ex){}
-                try
-                {
-                    int iGetGender = Integer.parseInt(strGender);
-                    if (iGetGender == 1) blGender = true;
-                }catch (Exception ex){}
-                resultViews = BUS_JPOS_Customer.Search_Customer(iCustomerID, strFirstName, strLastName, strAddress, strEmail, strDateJoin, strBirthDay, blGender, strFavorite, iCurrentPoint, DAO.DataProvider.getConnection(this.getServletConfig()));                
+                    if (strDetail!=null)
+                    {
+                        DTO_JPOS_Card card = BUS.BUS_JPOS_Card.GetCard(strDetail, DAO.DataProvider.getConnection(this.getServletConfig()));
+                        if (card == null)
+                        {
+                            strError = "Không tìm thấy thông tin thẻ";
+                            %><%@include file="../views/ViewCard.jsp" %><%
+                        }
+                        else
+                        {
+                            %><%@include file="../views/CardDetail.jsp" %><%
+                        }
+
+                    }
+                    else
+                    {
+                        %><%@include file="../views/ViewCard.jsp" %><%
+                    }
                 }
-                %><%@include file="../views/TransactionInformation.jsp"  %><%
+                else
+                {
+                    custInfor = (DTO_JPOS_Customer)session.getAttribute("Cust");
+                    resultViews = BUS.BUS_JPOS_Card.GetCardBelongToCustomer(custInfor.getJPOS_CustomerID(),DAO.DataProvider.getConnection(this.getServletConfig()));
+                    strWebTitle = "Danh sách thẻ";
+                    %><%@include file="../views/ViewCardBelong.jsp" %><%
+                }
             }
-            
             break;
+       case 17:
+           {
+               if (session.getAttribute("Cust") != null)
+                {
+                    int iCustID = 0;
+                    custInfor = (DTO_JPOS_Customer)session.getAttribute("Cust");
+                    iCustID = custInfor.getJPOS_CustomerID();
+                    resultViews = BUS_JPOS_Customer.Transaction_Detail(iCustID, DAO.DataProvider.getConnection(this.getServletConfig()));
+                    strWebTitle = "Thông tin giao dịch";
+                    %><%@include file="../views/TransactionDetail.jsp"  %><%
+                }
+               else{
+
+                %><%@include file="../views/ViewTransaction.jsp" %><%
+                }
+           }
+           break;
     }
 %>
 
